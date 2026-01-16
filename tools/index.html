@@ -3,15 +3,119 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+
   <title>ツール一覧 | ToolBox</title>
-  <meta name="description" content="無料で使えるブラウザ完結ツール一覧。CSV→JSONなど。" />
+  <meta name="description" content="無料で使えるブラウザ完結ツール一覧。CSV→JSONなどの変換・整形ツールを提供しています。" />
+  <link rel="canonical" href="https://mat4645.github.io/tools/" />
+
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#111827; --muted:#6b7280; --border:#e5e7eb;
+      --shadow: 0 10px 25px rgba(0,0,0,.06);
+      --radius:14px; --accent:#2563eb;
+      --max: 980px;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:var(--sans); color:var(--fg); background:linear-gradient(180deg,#fff,#fff 30%, #f7f8fb);}
+    a{color:var(--accent); text-decoration:none} a:hover{text-decoration:underline}
+    header{position:sticky; top:0; z-index:10; background:rgba(255,255,255,.9); backdrop-filter: blur(8px); border-bottom:1px solid var(--border);}
+    .wrap{max-width:var(--max); margin:0 auto; padding:14px 16px}
+    .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .brand{display:flex; align-items:center; gap:10px}
+    .logo{width:34px; height:34px; border-radius:10px; background: radial-gradient(circle at 30% 30%, #93c5fd, #2563eb); box-shadow: var(--shadow);}
+    .brand strong{font-size:15px}
+    .nav{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .nav a{font-size:13px; color:var(--muted)} .nav a:hover{color:var(--fg); text-decoration:none}
+    main{padding:18px 0 38px}
+    h1{margin:0; font-size:26px; letter-spacing:-.02em}
+    .sub{color:var(--muted); line-height:1.7; margin:8px 0 0}
+    .grid{display:grid; grid-template-columns:1fr; gap:12px; margin-top:14px}
+    @media (min-width: 860px){ .grid{grid-template-columns: 1fr 1fr;} }
+    .card{background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); box-shadow: var(--shadow); overflow:hidden;}
+    .hd{padding:12px 14px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfbff);}
+    .hd .t{font-weight:800; font-size:14px}
+    .bd{padding:14px}
+    .desc{color:var(--muted); font-size:13px; line-height:1.7; margin:6px 0 0}
+    .tagrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .tag{font-size:12px; color:var(--muted); background:#f3f4f6; border:1px solid var(--border); padding:4px 8px; border-radius:999px}
+    footer{border-top:1px solid var(--border); background:#fff; padding:18px 0 30px}
+    .links{display:flex; gap:10px; flex-wrap:wrap}
+    .links a{font-size:13px; color:var(--muted)}
+    .small{font-size:12px; color:var(--muted); line-height:1.7}
+  </style>
 </head>
+
 <body>
+<header>
+  <div class="wrap topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <strong>ToolBox</strong><div class="small">無料・ブラウザ完結ツール集</div>
+      </div>
+    </div>
+    <nav class="nav" aria-label="サイト内リンク">
+      <a href="/">ホーム</a>
+      <a href="/tools/">ツール一覧</a>
+      <a href="/about/">このサイトについて</a>
+      <a href="/privacy/">プライバシーポリシー</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
   <h1>ツール一覧</h1>
-  <ul>
-    <li><a href="/tools/csv-to-json/">CSV → JSON 変換（文字コード対応）</a></li>
-    <li><a href="/tools/json-formatter/">JSON 整形（Pretty / Minify）</a></li>
-  </ul>
-  <p><a href="/">トップへ戻る</a></p>
+  <p class="sub">よく使う変換・整形ツールを、ブラウザ完結で提供しています（入力データは保存しません）。</p>
+
+  <section class="grid" aria-label="ツール一覧">
+    <!-- ✅ 既存：CSV→JSON -->
+    <article class="card">
+      <div class="hd">
+        <div class="t"><a href="/tools/csv-to-json/">CSV → JSON 変換</a></div>
+        <div class="desc">貼り付け／ファイル選択に対応。文字コード（Auto/Shift-JIS/UTF-8/UTF-16）対応。</div>
+      </div>
+      <div class="bd">
+        <div class="tagrow">
+          <span class="tag">CSV</span>
+          <span class="tag">JSON</span>
+          <span class="tag">Shift-JIS</span>
+          <span class="tag">ブラウザ完結</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ✅ 次に追加予定：JSON整形（先に枠だけ置いておく） -->
+    <article class="card">
+      <div class="hd">
+        <div class="t">JSON 整形（準備中）</div>
+        <div class="desc">JSONを整形（Pretty）／圧縮（Minify）。追加したらリンクが有効になります。</div>
+      </div>
+      <div class="bd">
+        <div class="tagrow">
+          <span class="tag">JSON</span>
+          <span class="tag">整形</span>
+          <span class="tag">Minify</span>
+        </div>
+        <p class="desc">※ 次のステップで作ります。</p>
+      </div>
+    </article>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="links" style="margin-bottom:8px">
+      <a href="/about/">このサイトについて</a>
+      <a href="/privacy/">プライバシーポリシー</a>
+      <a href="/">ホーム</a>
+    </div>
+    <div class="small">© <span id="year"></span> ToolBox. 変換結果の正確性は保証しません（自己責任でご利用ください）。</div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = String(new Date().getFullYear());
+</script>
 </body>
 </html>
