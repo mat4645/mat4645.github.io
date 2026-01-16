@@ -5,29 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="index,follow" />
 
-  <!-- ===== SITE CONFIG（必要なら差し替え） ===== -->
-  <title>CSV→JSON 変換ツール（Shift-JIS対応・無料・ブラウザ完結） | ToolBox</title>
-  <meta name="description" content="CSVをJSONに変換できます。貼り付け/ファイル選択に対応。Shift-JIS/UTF-8の読み込み指定が可能。データはブラウザ内で処理され、サーバーに送信しません。" />
+  <title>CSV→JSON 変換ツール（文字コード対応・無料・ブラウザ完結） | ToolBox</title>
+  <meta name="description" content="CSVをJSONに変換できます。貼り付け/ファイル選択に対応。Auto/Shift-JIS/UTF-8/UTF-16の読み込み指定が可能。データはブラウザ内で処理され、サーバーに送信しません。" />
   <link rel="canonical" href="https://mat4645.github.io/tools/csv-to-json/" />
-
-  <meta property="og:title" content="CSV→JSON 変換ツール（Shift-JIS対応・無料・ブラウザ完結）" />
-  <meta property="og:description" content="CSVを貼り付けて変換。ヘッダ行の有無、区切り文字、文字コード指定、プレビュー、ダウンロードに対応。" />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://mat4645.github.io/tools/csv-to-json/" />
-  <meta name="twitter:card" content="summary" />
-
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"SoftwareApplication",
-    "name":"CSV→JSON 変換ツール",
-    "applicationCategory":"UtilitiesApplication",
-    "operatingSystem":"All",
-    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
-    "description":"CSVをJSONへ変換できる無料ツール。Shift-JIS/UTF-8の読み込み指定、貼り付け/ファイル選択対応。ブラウザ内で処理します。",
-    "url":"https://mat4645.github.io/tools/csv-to-json/"
-  }
-  </script>
 
   <style>
     :root{
@@ -59,9 +39,6 @@
     .hd{padding:12px 14px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfbff); display:flex; align-items:center; justify-content:space-between; gap:10px;}
     .hd .title{font-weight:700; font-size:14px}
     .bd{padding:14px}
-    .ad{border:1px dashed var(--border); border-radius:12px; background:#fff; padding:10px; display:grid; place-items:center; min-height:110px; color:var(--muted); font-size:12px}
-    .ad .label{font-size:11px; color:var(--muted); margin-bottom:6px}
-    .ad.is-top{min-height:90px} .ad.is-side{min-height:250px} .ad.is-bottom{min-height:140px}
     textarea{width:100%; min-height:180px; padding:12px; border-radius:12px; border:1px solid var(--border); background:#fff; resize:vertical; font-family:var(--mono); font-size:13px; line-height:1.6; outline:none;}
     textarea:focus{border-color:#93c5fd; box-shadow: 0 0 0 4px rgba(59,130,246,.12);}
     .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
@@ -73,20 +50,10 @@
     .small{font-size:12px; color:var(--muted); line-height:1.7}
     select, input[type="number"]{border:1px solid var(--border); border-radius:10px; padding:8px 10px; background:#fff; font-size:13px}
     input[type="file"]{font-size:13px}
-    details{border:1px solid var(--border); border-radius:12px; padding:10px 12px; background:#fff}
-    details + details{margin-top:10px}
-    summary{cursor:pointer; font-weight:700; font-size:13px}
-    footer{border-top:1px solid var(--border); background:#fff; padding:18px 0 30px}
-    .links{display:flex; gap:10px; flex-wrap:wrap}
-    .links a{font-size:13px; color:var(--muted)}
+    pre{white-space:pre-wrap; font-family:var(--mono); font-size:12px; border:1px solid var(--border); border-radius:12px; padding:10px; background:#fff; min-height:120px;}
     .hint{font-size:12px; color:var(--muted); margin-top:6px}
     .kbd{font-family:var(--mono); font-size:12px; border:1px solid var(--border); border-bottom-width:2px; padding:1px 6px; border-radius:8px; background:#fff}
   </style>
-
-  <!-- AdSense（審査通過後に有効化）
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
-    crossorigin="anonymous"></script>
-  -->
 </head>
 
 <body>
@@ -100,7 +67,6 @@
     </div>
     <nav class="nav" aria-label="サイト内リンク">
       <a href="/">ホーム</a>
-      <a href="/tools/">ツール一覧</a>
       <a href="/about/">このサイトについて</a>
       <a href="/privacy/">プライバシーポリシー</a>
     </nav>
@@ -109,23 +75,11 @@
 
 <main>
   <section class="hero wrap">
-    <h1>CSV→JSON 変換ツール（Shift-JIS対応・無料・ブラウザ完結）</h1>
+    <h1>CSV→JSON 変換ツール（文字コード対応・無料・ブラウザ完結）</h1>
     <p class="sub">
-      CSVを貼り付けるか、ファイルを選択して変換できます。ヘッダ行の有無・区切り文字・<strong>ファイル文字コード指定</strong>・プレビューに対応。<br/>
+      CSVを貼り付けるか、ファイルを選択して変換できます。ヘッダ行の有無・区切り文字・<strong>ファイル文字コード（Auto/Shift-JIS/UTF-8/UTF-16）</strong>・プレビューに対応。<br/>
       <span class="pill">このページ内で処理（サーバーに送信しません）</span>
     </p>
-
-    <div class="ad is-top" role="complementary" aria-label="広告">
-      <div class="label">広告</div>
-      <!--
-      <ins class="adsbygoogle" style="display:block"
-        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
-        data-ad-slot="1234567890"
-        data-ad-format="auto" data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
-      -->
-      <div>（ここに広告が表示されます）</div>
-    </div>
   </section>
 
   <section class="grid wrap">
@@ -133,7 +87,7 @@
       <div class="hd">
         <div class="title">変換</div>
         <div class="row">
-          <span class="pill" id="toolStatus">v1.1.0</span>
+          <span class="pill" id="toolStatus">v1.2.0</span>
           <button class="btn" id="btnSample" type="button">サンプル入力</button>
           <button class="btn" id="btnClear" type="button">クリア</button>
         </div>
@@ -144,7 +98,7 @@
           <div class="row">
             <label class="small">区切り文字：</label>
             <select id="delimiter">
-              <option value=",">カンマ (,)</option>
+              <option value="," selected>カンマ (,)</option>
               <option value="tab">タブ (\\t)</option>
               <option value=";">セミコロン (;)</option>
             </select>
@@ -164,9 +118,12 @@
             <label class="small">
               ファイル文字コード：
               <select id="fileEncoding" title="ファイルを読み込むときの文字コード">
-                <option value="utf-8" selected>UTF-8</option>
+                <option value="auto" selected>Auto（推奨）</option>
+                <option value="utf-8">UTF-8</option>
                 <option value="utf-8-bom">UTF-8（BOM付き）</option>
                 <option value="shift_jis">Shift-JIS（CP932含む）</option>
+                <option value="utf-16le">UTF-16LE（Excelでありがち）</option>
+                <option value="utf-16be">UTF-16BE</option>
               </select>
             </label>
 
@@ -178,11 +135,11 @@
         </div>
 
         <div class="hint">
-          文字化けする場合：<span class="kbd">ファイル文字コード</span> を <strong>Shift-JIS</strong> にしてから選択し直してください。
+          `[]` になるとき：<span class="kbd">貼り付け欄に内容が入っているか</span> と、<span class="kbd">Auto</span>で読み直しを確認してください（Excel再保存はUTF-16になりがちです）。
         </div>
 
         <label class="small" for="inputText" style="display:block; margin-top:10px">CSV入力（貼り付け）</label>
-        <textarea id="inputText" placeholder="例：&#10;name,age&#10;Alice,30&#10;Bob,25"></textarea>
+        <textarea id="inputText" placeholder="例：&#10;id,name&#10;1,Alice"></textarea>
 
         <div class="row" style="margin-top:10px">
           <button class="btn primary" id="btnRun" type="button">JSONに変換</button>
@@ -196,9 +153,6 @@
           <textarea id="outputText" readonly placeholder="ここにJSONが表示されます"></textarea>
         </div>
 
-        <p class="small" style="margin-top:12px">
-          使い方：①CSVを貼る（またはファイル選択）→ ②「JSONに変換」→ ③コピー/ダウンロード。
-        </p>
       </div>
     </div>
 
@@ -208,86 +162,24 @@
         <div class="pill">先頭N行</div>
       </div>
       <div class="bd">
-        <div class="ad is-side" role="complementary" aria-label="広告">
-          <div class="label">広告</div>
-          <div>（ここに広告が表示されます）</div>
-        </div>
-
-        <h2 style="font-size:14px; margin:14px 0 8px">変換プレビュー（先頭N行）</h2>
-        <pre id="previewBox" style="white-space:pre-wrap; font-family:var(--mono); font-size:12px; border:1px solid var(--border); border-radius:12px; padding:10px; background:#fff; min-height:120px;"></pre>
-
-        <p class="small" style="margin-top:12px">
-          ※このページはブラウザ内で処理します。機密情報の貼り付けは各自の判断でお願いします。
-        </p>
+        <h2 style="font-size:14px; margin:0 0 8px">変換プレビュー</h2>
+        <pre id="previewBox"></pre>
+        <div class="small" id="debugBox" style="margin-top:10px"></div>
       </div>
     </aside>
   </section>
-
-  <section class="wrap" style="padding:0 16px; margin-top:14px">
-    <div class="card">
-      <div class="hd"><div class="title">概要・用途</div></div>
-      <div class="bd">
-        <p class="msg">
-          CSVをJSONに変換します。ヘッダ行ありの場合は <strong>1行目の列名</strong> をキーにしてオブジェクト配列を作ります。
-          ヘッダなしの場合は <strong>col1, col2…</strong> のキーを自動生成します。
-        </p>
-        <ul class="small">
-          <li>API連携用にJSONが欲しいとき</li>
-          <li>ログやデータをWebで確認したいとき</li>
-          <li>Shift-JISのCSVをWebで扱いたいとき（文字化け対策つき）</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="card" style="margin-top:14px">
-      <div class="hd"><div class="title">よくある質問（FAQ）</div></div>
-      <div class="bd">
-        <details>
-          <summary>入力したCSVは保存されますか？</summary>
-          <div class="small" style="margin-top:6px">保存しません。ブラウザ内で処理し、サーバーへ送信しない設計です。</div>
-        </details>
-        <details>
-          <summary>Shift-JISで文字化けします</summary>
-          <div class="small" style="margin-top:6px">ファイル読み込み前に「ファイル文字コード」をShift-JISに変更してから、ファイルを選択し直してください。</div>
-        </details>
-        <details>
-          <summary>ダブルクォートやカンマを含むCSVは対応していますか？</summary>
-          <div class="small" style="margin-top:6px">基本的なCSV（"..."で囲まれた値のカンマや改行）に対応しています。特殊なケースはうまく変換できない場合があります。</div>
-        </details>
-      </div>
-    </div>
-
-    <div class="ad is-bottom" style="margin-top:14px" role="complementary" aria-label="広告">
-      <div class="label">広告</div>
-      <div>（ここに広告が表示されます）</div>
-    </div>
-  </section>
 </main>
-
-<footer>
-  <div class="wrap">
-    <div class="links" style="margin-bottom:8px">
-      <a href="/about/">このサイトについて</a>
-      <a href="/privacy/">プライバシーポリシー</a>
-      <a href="/tools/">ツール一覧</a>
-    </div>
-    <div class="small">
-      © <span id="year"></span> ToolBox. 結果の正確性は保証しません（自己責任でご利用ください）。
-    </div>
-  </div>
-</footer>
 
 <script>
   // ===== CSV -> JSON CORE =====
   function normalizeNewlines(s){ return s.replace(/\\r\\n/g,"\\n").replace(/\\r/g,"\\n"); }
 
-  // RFC4180っぽい簡易CSVパーサ（"..."内のカンマ/改行対応）
   function parseCSV(text, delimiterChar) {
     const rows = [];
     const s = normalizeNewlines(text);
     let i = 0, field = "", row = [], inQuotes = false;
-
     const delim = delimiterChar;
+
     while (i < s.length) {
       const ch = s[i];
 
@@ -308,9 +200,7 @@
     row.push(field);
     rows.push(row);
 
-    while (rows.length && rows[rows.length-1].length === 1 && rows[rows.length-1][0].trim() === "") {
-      rows.pop();
-    }
+    while (rows.length && rows[rows.length-1].length === 1 && rows[rows.length-1][0].trim() === "") rows.pop();
     return rows;
   }
 
@@ -323,7 +213,7 @@
   function csvToJson(text, { delimiter, hasHeader, previewLines }) {
     const delimChar = delimiter === "tab" ? "\\t" : delimiter;
     const rows = parseCSV(text, delimChar);
-    if (!rows.length) return { all: [], preview: [], headers: [] };
+    if (!rows.length) return { all: [], preview: [], headers: [], rowsCount: 0, colsFirstRow: 0 };
 
     let headers = [];
     let start = 0;
@@ -346,33 +236,68 @@
 
     const all = rows.slice(start).map(toObj);
     const preview = all.slice(0, previewLines);
-    return { all, preview, headers };
+
+    return { all, preview, headers, rowsCount: rows.length, colsFirstRow: (rows[0]?.length ?? 0) };
   }
 
-  // ===== Encoding helpers (Shift-JIS / UTF-8) =====
-  function stripUtf8Bom(s){
-    return (s && s.charAt(0) === "\\uFEFF") ? s.slice(1) : s;
+  // ===== Encoding helpers (Auto / UTF-8 / Shift-JIS / UTF-16) =====
+  function stripBomChars(s){
+    if (!s) return s;
+    return s.startsWith("\\uFEFF") ? s.slice(1) : s;
   }
 
-  function decodeArrayBuffer(buf, enc){
-    // enc: "utf-8" / "shift_jis" など
-    // 対応していないブラウザでは例外になるのでUTF-8にフォールバック
+  function detectEncodingFromBOM(u8){
+    // UTF-8 BOM: EF BB BF
+    if (u8.length >= 3 && u8[0]===0xEF && u8[1]===0xBB && u8[2]===0xBF) return "utf-8";
+    // UTF-16 LE BOM: FF FE
+    if (u8.length >= 2 && u8[0]===0xFF && u8[1]===0xFE) return "utf-16le";
+    // UTF-16 BE BOM: FE FF
+    if (u8.length >= 2 && u8[0]===0xFE && u8[1]===0xFF) return "utf-16be";
+    return null;
+  }
+
+  function looksLikeUtf16WithoutBom(u8){
+    // 先頭数百バイトに NUL(0x00) が多ければ UTF-16 の可能性が高い
+    const n = Math.min(u8.length, 400);
+    let zeros = 0;
+    for (let i=0;i<n;i++) if (u8[i]===0) zeros++;
+    return (n > 0 && zeros / n > 0.2);
+  }
+
+  function decodeArrayBufferAuto(buf, encSel){
+    const u8 = new Uint8Array(buf);
+
+    let enc = encSel;
+    if (encSel === "auto") {
+      enc = detectEncodingFromBOM(u8) || (looksLikeUtf16WithoutBom(u8) ? "utf-16le" : "utf-8");
+    } else if (encSel === "utf-8-bom") {
+      enc = "utf-8";
+    }
+
+    // TextDecoderが対応してないエンコーディングはUTF-8にフォールバック
+    let text = "";
     try{
-      const td = new TextDecoder(enc, { fatal: false });
-      return td.decode(buf);
+      text = new TextDecoder(enc, { fatal:false }).decode(buf);
     }catch(e){
       console.warn("TextDecoder unsupported encoding:", enc, e);
-      const td = new TextDecoder("utf-8", { fatal: false });
-      return td.decode(buf);
+      text = new TextDecoder("utf-8", { fatal:false }).decode(buf);
+      enc = "utf-8";
     }
+
+    // UTF-16をUTF-8として誤読すると NUL が混じることがあるので除去（安全側）
+    text = text.replace(/\\u0000/g, "");
+    text = stripBomChars(text);
+
+    return { text, usedEncoding: enc };
   }
 
-  // ===== UI WIRING =====
+  // ===== UI =====
   const $ = (id) => document.getElementById(id);
   const inputEl = $("inputText");
   const outputEl = $("outputText");
   const msgEl = $("msg");
   const previewBox = $("previewBox");
+  const debugBox = $("debugBox");
 
   const delimiterEl = $("delimiter");
   const hasHeaderEl = $("hasHeader");
@@ -400,34 +325,49 @@
       setMsg("CSVが空です。貼り付けるかファイルを選択してください。","ng");
       outputEl.value = "";
       previewBox.textContent = "";
+      debugBox.textContent = "";
       btnCopy.disabled = true;
       btnDownload.disabled = true;
       lastJsonText = "";
       return;
     }
+
     const previewLines = Math.max(1, Math.min(200, Number(previewLinesEl.value || 20)));
-    const opt = {
-      delimiter: delimiterEl.value,
-      hasHeader: !!hasHeaderEl.checked,
-      previewLines
-    };
+    const opt = { delimiter: delimiterEl.value, hasHeader: !!hasHeaderEl.checked, previewLines };
 
     try{
-      const { all, preview, headers } = csvToJson(csv, opt);
+      const { all, preview, headers, rowsCount, colsFirstRow } = csvToJson(csv, opt);
 
       lastJsonText = JSON.stringify(all, null, 2);
       outputEl.value = lastJsonText;
 
       previewBox.textContent =
 `列: ${headers.join(", ")}
-件数: ${all.length} 行
---- プレビュー（先頭 ${preview.length} 行） ---
+CSV行(解析): ${rowsCount} 行
+JSON件数: ${all.length} 件
+--- プレビュー（先頭 ${preview.length} 件） ---
 ${JSON.stringify(preview, null, 2)}`;
+
+      // デバッグ表示（[]問題の自己診断）
+      const firstLine = normalizeNewlines(csv).split("\\n")[0] ?? "";
+      debugBox.innerHTML =
+        `<span class="small">診断：</span> ` +
+        `<span class="small">1行目の長さ=${firstLine.length}</span> / ` +
+        `<span class="small">先頭行の列数=${colsFirstRow}</span> / ` +
+        `<span class="small">区切り=${delimiterEl.value==="tab"?"TAB":delimiterEl.value}</span> / ` +
+        `<span class="small">ヘッダ=${hasHeaderEl.checked?"ON":"OFF"}</span>`;
 
       btnCopy.disabled = !lastJsonText;
       btnDownload.disabled = !lastJsonText;
 
-      setMsg(`変換しました（${all.length}行）。プレビューで確認してください。`, "ok");
+      if (rowsCount <= 1 && hasHeaderEl.checked) {
+        setMsg("データ行が0件です。ファイルが1行だけ、または読み込み/改行が正しく認識できていない可能性があります（Autoで再読み込み推奨）。", "ng");
+      } else if (colsFirstRow <= 1) {
+        setMsg("列数が1です。区切り文字が違う可能性があります（カンマ/タブ/セミコロンを切替）。", "ng");
+      } else {
+        setMsg(`変換しました（${all.length}件）。プレビューで確認してください。`, "ok");
+      }
+
     }catch(e){
       console.error(e);
       setMsg("変換に失敗しました。区切り文字やCSV形式を確認してください。", "ng");
@@ -436,6 +376,7 @@ ${JSON.stringify(preview, null, 2)}`;
       lastJsonText = "";
       outputEl.value = "";
       previewBox.textContent = "";
+      debugBox.textContent = "";
     }
   }
 
@@ -471,6 +412,7 @@ ${JSON.stringify(preview, null, 2)}`;
     inputEl.value = "";
     outputEl.value = "";
     previewBox.textContent = "";
+    debugBox.textContent = "";
     setMsg("");
     btnCopy.disabled = true;
     btnDownload.disabled = true;
@@ -482,14 +424,14 @@ ${JSON.stringify(preview, null, 2)}`;
 
   btnSample.addEventListener("click", () => {
     inputEl.value =
-`name,age,city
-Alice,30,Tokyo
-Bob,25,Osaka
-"Charlie, Jr.",28,"New
-York"`;
+`id,name,age,city
+1,Alice,30,Tokyo
+2,Bob,25,Osaka
+3,Charlie,28,Nagoya`;
     lastFileBase = "sample";
     outputEl.value = "";
     previewBox.textContent = "";
+    debugBox.textContent = "";
     setMsg("サンプルを入力しました。「JSONに変換」を押してください。");
     btnCopy.disabled = true;
     btnDownload.disabled = true;
@@ -502,42 +444,25 @@ York"`;
     lastFileBase = (f.name || "converted").replace(/\\.[^.]+$/, "");
 
     try{
-      const encSel = (fileEncodingEl?.value || "utf-8");
-      const enc = encSel === "utf-8-bom" ? "utf-8" : encSel;
-
-      // ★ここが文字化け対策：ArrayBufferを指定エンコーディングでデコード
       const ab = await f.arrayBuffer();
-      let text = decodeArrayBuffer(ab, enc);
-
-      // 念のためBOM除去
-      text = stripUtf8Bom(text);
+      const encSel = (fileEncodingEl?.value || "auto");
+      const { text, usedEncoding } = decodeArrayBufferAuto(ab, encSel);
 
       inputEl.value = text;
-      setMsg(`ファイルを読み込みました：${f.name}（${encSel}）`);
+      setMsg(`ファイルを読み込みました：${f.name}（指定=${encSel} / 使用=${usedEncoding}）`);
+
+      // 読み込み直後に診断が出るよう、軽くプレビュー更新（自動変換はしない）
+      previewBox.textContent = "";
+      debugBox.textContent = "";
+
     }catch(err){
       console.error(err);
       setMsg("ファイルの読み込みに失敗しました。", "ng");
     }
   });
 
-  $("year").textContent = String(new Date().getFullYear());
-
-  // FAQ JSON-LD（ページ固有に合わせて差し替え推奨）
-  (function injectFaqJsonLd(){
-    const faq = {
-      "@context":"https://schema.org",
-      "@type":"FAQPage",
-      "mainEntity":[
-        {"@type":"Question","name":"入力したCSVは保存されますか？","acceptedAnswer":{"@type":"Answer","text":"保存しません。ブラウザ内で処理し、サーバーへ送信しない設計です。"}},
-        {"@type":"Question","name":"Shift-JISのCSVが文字化けします","acceptedAnswer":{"@type":"Answer","text":"ファイル読み込み前に「ファイル文字コード」をShift-JISにしてから、ファイルを選択し直してください。"}},
-        {"@type":"Question","name":"ダブルクォートやカンマを含むCSVは対応していますか？","acceptedAnswer":{"@type":"Answer","text":"基本的なCSV（\"...\"で囲まれた値のカンマや改行）に対応しています。特殊なケースはうまく変換できない場合があります。"}}
-      ]
-    };
-    const s = document.createElement("script");
-    s.type = "application/ld+json";
-    s.textContent = JSON.stringify(faq);
-    document.head.appendChild(s);
-  })();
+  // 初期値
+  setMsg("まずはCSVを貼り付けるかファイルを選択してください。");
 </script>
 </body>
 </html>
