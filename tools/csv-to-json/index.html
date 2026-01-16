@@ -87,7 +87,7 @@
       <div class="hd">
         <div class="title">変換</div>
         <div class="row">
-          <span class="pill" id="toolStatus">v1.2.0</span>
+          <span class="pill" id="toolStatus">v1.2.1</span>
           <button class="btn" id="btnSample" type="button">サンプル入力</button>
           <button class="btn" id="btnClear" type="button">クリア</button>
         </div>
@@ -172,8 +172,9 @@
 
 <script>
   // ===== CSV -> JSON CORE =====
-  function normalizeNewlines(s){ return s.replace(/\\r\\n/g,"\\n").replace(/\\r/g,"\\n"); }
+  function normalizeNewlines(s){ return s.replace(/\r\n/g,"\n").replace(/\r/g,"\n"); }
 
+  // ★ここが重要：改行判定は "\n"（1文字）
   function parseCSV(text, delimiterChar) {
     const rows = [];
     const s = normalizeNewlines(text);
@@ -193,7 +194,10 @@
       } else {
         if (ch === '"') { inQuotes = true; i++; continue; }
         if (ch === delim) { row.push(field); field = ""; i++; continue; }
-        if (ch === "\\n") { row.push(field); rows.push(row); field = ""; row = []; i++; continue; }
+
+        // ✅ 正しい改行判定
+        if (ch === "\n") { row.push(field); rows.push(row); field = ""; row = []; i++; continue; }
+
         field += ch; i++; continue;
       }
     }
@@ -207,11 +211,11 @@
   function safeKey(s, idx){
     const t = (s ?? "").trim();
     if (!t) return `col${idx+1}`;
-    return t.replace(/\\s+/g,"_").replace(/[^\\w\\-ぁ-んァ-ン一-龥]/g,"_");
+    return t.replace(/\s+/g,"_").replace(/[^\w\-ぁ-んァ-ン一-龥]/g,"_");
   }
 
   function csvToJson(text, { delimiter, hasHeader, previewLines }) {
-    const delimChar = delimiter === "tab" ? "\\t" : delimiter;
+    const delimChar = delimiter === "tab" ? "\t" : delimiter;
     const rows = parseCSV(text, delimChar);
     if (!rows.length) return { all: [], preview: [], headers: [], rowsCount: 0, colsFirstRow: 0 };
 
@@ -243,21 +247,17 @@
   // ===== Encoding helpers (Auto / UTF-8 / Shift-JIS / UTF-16) =====
   function stripBomChars(s){
     if (!s) return s;
-    return s.startsWith("\\uFEFF") ? s.slice(1) : s;
+    return s.startsWith("\uFEFF") ? s.slice(1) : s;
   }
 
   function detectEncodingFromBOM(u8){
-    // UTF-8 BOM: EF BB BF
     if (u8.length >= 3 && u8[0]===0xEF && u8[1]===0xBB && u8[2]===0xBF) return "utf-8";
-    // UTF-16 LE BOM: FF FE
     if (u8.length >= 2 && u8[0]===0xFF && u8[1]===0xFE) return "utf-16le";
-    // UTF-16 BE BOM: FE FF
     if (u8.length >= 2 && u8[0]===0xFE && u8[1]===0xFF) return "utf-16be";
     return null;
   }
 
   function looksLikeUtf16WithoutBom(u8){
-    // 先頭数百バイトに NUL(0x00) が多ければ UTF-16 の可能性が高い
     const n = Math.min(u8.length, 400);
     let zeros = 0;
     for (let i=0;i<n;i++) if (u8[i]===0) zeros++;
@@ -266,15 +266,14 @@
 
   function decodeArrayBufferAuto(buf, encSel){
     const u8 = new Uint8Array(buf);
-
     let enc = encSel;
+
     if (encSel === "auto") {
       enc = detectEncodingFromBOM(u8) || (looksLikeUtf16WithoutBom(u8) ? "utf-16le" : "utf-8");
     } else if (encSel === "utf-8-bom") {
       enc = "utf-8";
     }
 
-    // TextDecoderが対応してないエンコーディングはUTF-8にフォールバック
     let text = "";
     try{
       text = new TextDecoder(enc, { fatal:false }).decode(buf);
@@ -284,10 +283,8 @@
       enc = "utf-8";
     }
 
-    // UTF-16をUTF-8として誤読すると NUL が混じることがあるので除去（安全側）
-    text = text.replace(/\\u0000/g, "");
+    text = text.replace(/\u0000/g, "");
     text = stripBomChars(text);
-
     return { text, usedEncoding: enc };
   }
 
@@ -348,8 +345,7 @@ JSON件数: ${all.length} 件
 --- プレビュー（先頭 ${preview.length} 件） ---
 ${JSON.stringify(preview, null, 2)}`;
 
-      // デバッグ表示（[]問題の自己診断）
-      const firstLine = normalizeNewlines(csv).split("\\n")[0] ?? "";
+      const firstLine = normalizeNewlines(csv).split("\n")[0] ?? "";
       debugBox.innerHTML =
         `<span class="small">診断：</span> ` +
         `<span class="small">1行目の長さ=${firstLine.length}</span> / ` +
@@ -441,7 +437,7 @@ ${JSON.stringify(preview, null, 2)}`;
     const f = e.target.files && e.target.files[0];
     if (!f) return;
 
-    lastFileBase = (f.name || "converted").replace(/\\.[^.]+$/, "");
+    lastFileBase = (f.name || "converted").replace(/\.[^.]+$/, "");
 
     try{
       const ab = await f.arrayBuffer();
@@ -450,8 +446,6 @@ ${JSON.stringify(preview, null, 2)}`;
 
       inputEl.value = text;
       setMsg(`ファイルを読み込みました：${f.name}（指定=${encSel} / 使用=${usedEncoding}）`);
-
-      // 読み込み直後に診断が出るよう、軽くプレビュー更新（自動変換はしない）
       previewBox.textContent = "";
       debugBox.textContent = "";
 
@@ -461,7 +455,6 @@ ${JSON.stringify(preview, null, 2)}`;
     }
   });
 
-  // 初期値
   setMsg("まずはCSVを貼り付けるかファイルを選択してください。");
 </script>
 </body>
