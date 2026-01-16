@@ -1,1 +1,501 @@
-<!doctype html><html><body><h1>CSV → JSON 変換ツール</h1><p>ここにツールHTMLを貼り付けてください。</p></body></html>
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index,follow" />
+
+  <!-- ===== SITE CONFIG（ここだけ差し替え） ===== -->
+  <title>CSV→JSON 変換ツール（無料・ブラウザ完結） | ToolBox</title>
+  <meta name="description" content="CSVをJSONに変換できます。貼り付け/ファイル選択に対応。データはブラウザ内で処理され、サーバーに送信しません。" />
+  <link rel="canonical" href="https://example.com/tools/csv-to-json/" />
+
+  <meta property="og:title" content="CSV→JSON 変換ツール（無料・ブラウザ完結）" />
+  <meta property="og:description" content="CSVを貼り付けて変換。ヘッダ行の有無、区切り文字、プレビュー、ダウンロードに対応。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://example.com/tools/csv-to-json/" />
+  <meta name="twitter:card" content="summary" />
+
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"SoftwareApplication",
+    "name":"CSV→JSON 変換ツール",
+    "applicationCategory":"UtilitiesApplication",
+    "operatingSystem":"All",
+    "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
+    "description":"CSVをJSONへ変換できる無料ツール。貼り付け/ファイル選択対応。ブラウザ内で処理します。",
+    "url":"https://example.com/tools/csv-to-json/"
+  }
+  </script>
+
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#111827; --muted:#6b7280; --border:#e5e7eb;
+      --shadow: 0 10px 25px rgba(0,0,0,.06);
+      --radius:14px; --accent:#2563eb; --danger:#dc2626; --ok:#16a34a;
+      --max: 980px; --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:var(--sans); color:var(--fg); background:linear-gradient(180deg,#fff,#fff 30%, #f7f8fb);}
+    a{color:var(--accent); text-decoration:none} a:hover{text-decoration:underline}
+    header{position:sticky; top:0; z-index:10; background:rgba(255,255,255,.86); backdrop-filter: blur(8px); border-bottom:1px solid var(--border);}
+    .wrap{max-width:var(--max); margin:0 auto; padding:14px 16px}
+    .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .brand{display:flex; align-items:center; gap:10px}
+    .logo{width:34px; height:34px; border-radius:10px; background: radial-gradient(circle at 30% 30%, #93c5fd, #2563eb); box-shadow: var(--shadow);}
+    .brand strong{font-size:15px}
+    .nav{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .nav a{font-size:13px; color:var(--muted)} .nav a:hover{color:var(--fg); text-decoration:none}
+    main{padding:18px 0 38px}
+    .hero{display:grid; gap:10px; padding:18px 16px 0}
+    h1{margin:0; font-size:26px; letter-spacing:-.02em}
+    .sub{color:var(--muted); line-height:1.7; margin:0}
+    .pill{font-size:12px; color:var(--muted); background:#f3f4f6; border:1px solid var(--border); padding:6px 10px; border-radius:999px; display:inline-block}
+    .grid{display:grid; grid-template-columns:1fr; gap:14px; margin-top:14px; padding:0 16px}
+    @media (min-width: 980px){ .grid{grid-template-columns: 2fr 1fr;} }
+    .card{background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); box-shadow: var(--shadow); overflow:hidden;}
+    .hd{padding:12px 14px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfbff); display:flex; align-items:center; justify-content:space-between; gap:10px;}
+    .hd .title{font-weight:700; font-size:14px}
+    .bd{padding:14px}
+    .ad{border:1px dashed var(--border); border-radius:12px; background:#fff; padding:10px; display:grid; place-items:center; min-height:110px; color:var(--muted); font-size:12px}
+    .ad .label{font-size:11px; color:var(--muted); margin-bottom:6px}
+    .ad.is-top{min-height:90px} .ad.is-side{min-height:250px} .ad.is-bottom{min-height:140px}
+    textarea{width:100%; min-height:180px; padding:12px; border-radius:12px; border:1px solid var(--border); background:#fff; resize:vertical; font-family:var(--mono); font-size:13px; line-height:1.6; outline:none;}
+    textarea:focus{border-color:#93c5fd; box-shadow: 0 0 0 4px rgba(59,130,246,.12);}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .btn{border:1px solid var(--border); background:#fff; padding:10px 12px; border-radius:12px; cursor:pointer; font-weight:600; font-size:13px}
+    .btn.primary{border-color:#2563eb; background:#2563eb; color:#fff}
+    .btn:disabled{opacity:.5; cursor:not-allowed}
+    .msg{font-size:13px; color:var(--muted); line-height:1.6}
+    .ok{color:var(--ok)} .ng{color:var(--danger)}
+    .small{font-size:12px; color:var(--muted); line-height:1.7}
+    select, input[type="number"]{border:1px solid var(--border); border-radius:10px; padding:8px 10px; background:#fff; font-size:13px}
+    input[type="file"]{font-size:13px}
+    details{border:1px solid var(--border); border-radius:12px; padding:10px 12px; background:#fff}
+    details + details{margin-top:10px}
+    summary{cursor:pointer; font-weight:700; font-size:13px}
+    footer{border-top:1px solid var(--border); background:#fff; padding:18px 0 30px}
+    .links{display:flex; gap:10px; flex-wrap:wrap}
+    .links a{font-size:13px; color:var(--muted)}
+  </style>
+
+  <!-- AdSense（審査通過後に有効化）
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+    crossorigin="anonymous"></script>
+  -->
+</head>
+
+<body>
+<header>
+  <div class="wrap topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <strong>ToolBox</strong><div class="small">1ページ完結の無料ツール集</div>
+      </div>
+    </div>
+    <nav class="nav" aria-label="サイト内リンク">
+      <a href="/">ホーム</a>
+      <a href="/tools/">ツール一覧</a>
+      <a href="/about/">このサイトについて</a>
+      <a href="/privacy/">プライバシー</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <h1>CSV→JSON 変換ツール（無料・ブラウザ完結）</h1>
+    <p class="sub">
+      CSVを貼り付けるか、ファイルを選択して変換できます。ヘッダ行の有無・区切り文字・プレビューに対応。<br/>
+      <span class="pill">このページ内で処理（サーバーに送信しません）</span>
+    </p>
+
+    <div class="ad is-top" role="complementary" aria-label="広告">
+      <div class="label">広告</div>
+      <!--
+      <ins class="adsbygoogle" style="display:block"
+        data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+        data-ad-slot="1234567890"
+        data-ad-format="auto" data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+      -->
+      <div>（ここに広告が表示されます）</div>
+    </div>
+  </section>
+
+  <section class="grid wrap">
+    <div class="card">
+      <div class="hd">
+        <div class="title">変換</div>
+        <div class="row">
+          <span class="pill" id="toolStatus">v1.0.0</span>
+          <button class="btn" id="btnSample" type="button">サンプル入力</button>
+          <button class="btn" id="btnClear" type="button">クリア</button>
+        </div>
+      </div>
+      <div class="bd">
+
+        <div class="row" style="justify-content:space-between">
+          <div class="row">
+            <label class="small">区切り文字：</label>
+            <select id="delimiter">
+              <option value=",">カンマ (,)</option>
+              <option value="tab">タブ (\\t)</option>
+              <option value=";">セミコロン (;)</option>
+            </select>
+
+            <label class="small" style="margin-left:8px">
+              <input type="checkbox" id="hasHeader" checked />
+              1行目はヘッダ
+            </label>
+
+            <label class="small" style="margin-left:8px">
+              プレビュー行数：
+              <input type="number" id="previewLines" min="1" max="200" value="20" style="width:90px" />
+            </label>
+          </div>
+
+          <div class="row">
+            <label class="small">
+              CSVファイル：
+              <input type="file" id="fileInput" accept=".csv,text/csv,.txt,text/plain" />
+            </label>
+          </div>
+        </div>
+
+        <label class="small" for="inputText" style="display:block; margin-top:10px">CSV入力（貼り付け）</label>
+        <textarea id="inputText" placeholder="例：&#10;name,age&#10;Alice,30&#10;Bob,25"></textarea>
+
+        <div class="row" style="margin-top:10px">
+          <button class="btn primary" id="btnRun" type="button">JSONに変換</button>
+          <button class="btn" id="btnCopy" type="button" disabled>JSONをコピー</button>
+          <button class="btn" id="btnDownload" type="button" disabled>JSONをダウンロード</button>
+          <span class="msg" id="msg"></span>
+        </div>
+
+        <div style="margin-top:14px">
+          <label class="small" for="outputText">JSON結果（プレビュー/全量）</label>
+          <textarea id="outputText" readonly placeholder="ここにJSONが表示されます"></textarea>
+        </div>
+
+        <p class="small" style="margin-top:12px">
+          使い方：①CSVを貼る（またはファイル選択）→ ②「JSONに変換」→ ③コピー/ダウンロード。
+        </p>
+      </div>
+    </div>
+
+    <aside class="card" aria-label="補助情報">
+      <div class="hd">
+        <div class="title">プレビュー</div>
+        <div class="pill">先頭N行</div>
+      </div>
+      <div class="bd">
+        <div class="ad is-side" role="complementary" aria-label="広告">
+          <div class="label">広告</div>
+          <div>（ここに広告が表示されます）</div>
+        </div>
+
+        <h2 style="font-size:14px; margin:14px 0 8px">変換プレビュー（先頭N行）</h2>
+        <pre id="previewBox" style="white-space:pre-wrap; font-family:var(--mono); font-size:12px; border:1px solid var(--border); border-radius:12px; padding:10px; background:#fff; min-height:120px;"></pre>
+
+        <p class="small" style="margin-top:12px">
+          ※このページはブラウザ内で処理します。機密情報の貼り付けは各自の判断でお願いします。
+        </p>
+      </div>
+    </aside>
+  </section>
+
+  <section class="wrap" style="padding:0 16px; margin-top:14px">
+    <div class="card">
+      <div class="hd"><div class="title">概要・用途</div></div>
+      <div class="bd">
+        <p class="msg">
+          CSVをJSONに変換します。ヘッダ行ありの場合は <strong>1行目の列名</strong> をキーにしてオブジェクト配列を作ります。
+          ヘッダなしの場合は <strong>col1, col2…</strong> のキーを自動生成します。
+        </p>
+        <ul class="small">
+          <li>API連携用にJSONが欲しいとき</li>
+          <li>ログやデータをWebで確認したいとき</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="hd"><div class="title">よくある質問（FAQ）</div></div>
+      <div class="bd">
+        <details>
+          <summary>入力したCSVは保存されますか？</summary>
+          <div class="small" style="margin-top:6px">保存しません。ブラウザ内で処理し、サーバーへ送信しない設計です。</div>
+        </details>
+        <details>
+          <summary>ダブルクォートやカンマを含むCSVは対応していますか？</summary>
+          <div class="small" style="margin-top:6px">基本的なCSV（"..."で囲まれた値のカンマや改行）に対応しています。特殊なケースはうまく変換できない場合があります。</div>
+        </details>
+        <details>
+          <summary>文字コードはどうなりますか？</summary>
+          <div class="small" style="margin-top:6px">貼り付け/ファイル読み込み後はブラウザ上でUnicodeとして扱います。JSON出力はUTF-8としてダウンロードします。</div>
+        </details>
+      </div>
+    </div>
+
+    <div class="ad is-bottom" style="margin-top:14px" role="complementary" aria-label="広告">
+      <div class="label">広告</div>
+      <div>（ここに広告が表示されます）</div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="links" style="margin-bottom:8px">
+      <a href="/about/">このサイトについて</a>
+      <a href="/privacy/">プライバシー</a>
+      <a href="/tools/">ツール一覧</a>
+    </div>
+    <div class="small">
+      © <span id="year"></span> ToolBox. 結果の正確性は保証しません（自己責任でご利用ください）。
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ===== CSV -> JSON CORE =====
+  function normalizeNewlines(s){ return s.replace(/\r\n/g,"\n").replace(/\r/g,"\n"); }
+
+  // RFC4180っぽい簡易CSVパーサ（"..."内のカンマ/改行対応）
+  function parseCSV(text, delimiterChar) {
+    const rows = [];
+    const s = normalizeNewlines(text);
+    let i = 0, field = "", row = [], inQuotes = false;
+
+    const delim = delimiterChar;
+    while (i < s.length) {
+      const ch = s[i];
+
+      if (inQuotes) {
+        if (ch === '"') {
+          // escaped quote
+          if (s[i+1] === '"') { field += '"'; i += 2; continue; }
+          inQuotes = false; i++; continue;
+        } else {
+          field += ch; i++; continue;
+        }
+      } else {
+        if (ch === '"') { inQuotes = true; i++; continue; }
+        if (ch === delim) { row.push(field); field = ""; i++; continue; }
+        if (ch === "\n") { row.push(field); rows.push(row); field = ""; row = []; i++; continue; }
+        field += ch; i++; continue;
+      }
+    }
+    row.push(field);
+    rows.push(row);
+
+    // 末尾の空行っぽいのを除去（必要なら）
+    while (rows.length && rows[rows.length-1].length === 1 && rows[rows.length-1][0].trim() === "") {
+      rows.pop();
+    }
+    return rows;
+  }
+
+  function safeKey(s, idx){
+    const t = (s ?? "").trim();
+    if (!t) return `col${idx+1}`;
+    // JSONキーとして扱いやすいよう、危険文字を軽く置換（ガチガチにはしない）
+    return t.replace(/\s+/g,"_").replace(/[^\w\-ぁ-んァ-ン一-龥]/g,"_");
+  }
+
+  function csvToJson(text, { delimiter, hasHeader, previewLines }) {
+    const delimChar = delimiter === "tab" ? "\t" : delimiter;
+    const rows = parseCSV(text, delimChar);
+    if (!rows.length) return { all: [], preview: [], headers: [] };
+
+    let headers = [];
+    let start = 0;
+
+    if (hasHeader) {
+      headers = rows[0].map((h, i) => safeKey(h, i));
+      start = 1;
+    } else {
+      const maxCols = Math.max(...rows.map(r => r.length));
+      headers = Array.from({length:maxCols}, (_,i)=>`col${i+1}`);
+    }
+
+    const toObj = (r) => {
+      const o = {};
+      for (let i=0; i<headers.length; i++){
+        o[headers[i]] = (r[i] ?? "");
+      }
+      return o;
+    };
+
+    const all = rows.slice(start).map(toObj);
+    const preview = all.slice(0, previewLines);
+    return { all, preview, headers };
+  }
+
+  // ===== UI WIRING =====
+  const $ = (id) => document.getElementById(id);
+  const inputEl = $("inputText");
+  const outputEl = $("outputText");
+  const msgEl = $("msg");
+  const previewBox = $("previewBox");
+
+  const delimiterEl = $("delimiter");
+  const hasHeaderEl = $("hasHeader");
+  const previewLinesEl = $("previewLines");
+  const fileInputEl = $("fileInput");
+
+  const btnRun = $("btnRun");
+  const btnCopy = $("btnCopy");
+  const btnDownload = $("btnDownload");
+  const btnClear = $("btnClear");
+  const btnSample = $("btnSample");
+
+  let lastJsonText = "";
+  let lastFileBase = "converted";
+
+  function setMsg(text, kind="info"){
+    msgEl.textContent = text || "";
+    msgEl.className = "msg " + (kind==="ok" ? "ok" : kind==="ng" ? "ng" : "");
+  }
+
+  function runConvert(){
+    const csv = inputEl.value ?? "";
+    if (!csv.trim()){
+      setMsg("CSVが空です。貼り付けるかファイルを選択してください。","ng");
+      outputEl.value = "";
+      previewBox.textContent = "";
+      btnCopy.disabled = true;
+      btnDownload.disabled = true;
+      lastJsonText = "";
+      return;
+    }
+    const previewLines = Math.max(1, Math.min(200, Number(previewLinesEl.value || 20)));
+    const opt = {
+      delimiter: delimiterEl.value,
+      hasHeader: !!hasHeaderEl.checked,
+      previewLines
+    };
+
+    try{
+      const { all, preview, headers } = csvToJson(csv, opt);
+
+      // 全量は重いので、表示は「全量 or プレビュー」を切り替えたい場合は後で拡張
+      // ここでは全量を出力（量産テンプレ向けにシンプル優先）
+      lastJsonText = JSON.stringify(all, null, 2);
+      outputEl.value = lastJsonText;
+
+      previewBox.textContent =
+`列: ${headers.join(", ")}
+件数: ${all.length} 行
+--- プレビュー（先頭 ${preview.length} 行） ---
+${JSON.stringify(preview, null, 2)}`;
+
+      btnCopy.disabled = !lastJsonText;
+      btnDownload.disabled = !lastJsonText;
+
+      setMsg(`変換しました（${all.length}行）。プレビューで確認してください。`, "ok");
+    }catch(e){
+      console.error(e);
+      setMsg("変換に失敗しました。区切り文字やCSV形式を確認してください。", "ng");
+      btnCopy.disabled = true;
+      btnDownload.disabled = true;
+      lastJsonText = "";
+      outputEl.value = "";
+      previewBox.textContent = "";
+    }
+  }
+
+  btnRun.addEventListener("click", runConvert);
+
+  btnCopy.addEventListener("click", async () => {
+    if (!lastJsonText) return;
+    try{
+      await navigator.clipboard.writeText(lastJsonText);
+      setMsg("JSONをコピーしました。", "ok");
+    }catch(e){
+      outputEl.focus(); outputEl.select();
+      const ok = document.execCommand("copy");
+      setMsg(ok ? "JSONをコピーしました。" : "コピーに失敗しました。手動で選択してコピーしてください。", ok ? "ok" : "ng");
+    }
+  });
+
+  btnDownload.addEventListener("click", () => {
+    if (!lastJsonText) return;
+    const blob = new Blob([lastJsonText], { type: "application/json;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${lastFileBase}.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    setMsg("JSONをダウンロードしました。", "ok");
+  });
+
+  btnClear.addEventListener("click", () => {
+    inputEl.value = "";
+    outputEl.value = "";
+    previewBox.textContent = "";
+    setMsg("");
+    btnCopy.disabled = true;
+    btnDownload.disabled = true;
+    lastJsonText = "";
+    lastFileBase = "converted";
+    fileInputEl.value = "";
+    inputEl.focus();
+  });
+
+  btnSample.addEventListener("click", () => {
+    inputEl.value =
+`name,age,city
+Alice,30,Tokyo
+Bob,25,Osaka
+"Charlie, Jr.",28,"New
+York"`;
+    lastFileBase = "sample";
+    outputEl.value = "";
+    previewBox.textContent = "";
+    setMsg("サンプルを入力しました。「JSONに変換」を押してください。");
+    btnCopy.disabled = true;
+    btnDownload.disabled = true;
+  });
+
+  fileInputEl.addEventListener("change", async (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    lastFileBase = (f.name || "converted").replace(/\.[^.]+$/, "");
+    try{
+      const text = await f.text(); // ブラウザに任せてデコード（文字コードが問題なら別ツールに分離）
+      inputEl.value = text;
+      setMsg(`ファイルを読み込みました：${f.name}（貼り付け欄に反映）`);
+    }catch(err){
+      console.error(err);
+      setMsg("ファイルの読み込みに失敗しました。", "ng");
+    }
+  });
+
+  $("year").textContent = String(new Date().getFullYear());
+
+  // FAQ JSON-LD（ページ固有に合わせて差し替え推奨）
+  (function injectFaqJsonLd(){
+    const faq = {
+      "@context":"https://schema.org",
+      "@type":"FAQPage",
+      "mainEntity":[
+        {"@type":"Question","name":"入力したCSVは保存されますか？","acceptedAnswer":{"@type":"Answer","text":"保存しません。ブラウザ内で処理し、サーバーへ送信しない設計です。"}},
+        {"@type":"Question","name":"ダブルクォートやカンマを含むCSVは対応していますか？","acceptedAnswer":{"@type":"Answer","text":"基本的なCSV（\"...\"で囲まれた値のカンマや改行）に対応しています。特殊なケースはうまく変換できない場合があります。"}}
+      ]
+    };
+    const s = document.createElement("script");
+    s.type = "application/ld+json";
+    s.textContent = JSON.stringify(faq);
+    document.head.appendChild(s);
+  })();
+</script>
+</body>
+</html>
