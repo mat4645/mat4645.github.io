@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="index,follow" />
 
-  <!-- ===== SITE CONFIG（ここだけ差し替え） ===== -->
-  <title>CSV→JSON 変換ツール（無料・ブラウザ完結） | ToolBox</title>
-  <meta name="description" content="CSVをJSONに変換できます。貼り付け/ファイル選択に対応。データはブラウザ内で処理され、サーバーに送信しません。" />
-  <link rel="canonical" href="https://example.com/tools/csv-to-json/" />
+  <!-- ===== SITE CONFIG（必要なら差し替え） ===== -->
+  <title>CSV→JSON 変換ツール（Shift-JIS対応・無料・ブラウザ完結） | ToolBox</title>
+  <meta name="description" content="CSVをJSONに変換できます。貼り付け/ファイル選択に対応。Shift-JIS/UTF-8の読み込み指定が可能。データはブラウザ内で処理され、サーバーに送信しません。" />
+  <link rel="canonical" href="https://mat4645.github.io/tools/csv-to-json/" />
 
-  <meta property="og:title" content="CSV→JSON 変換ツール（無料・ブラウザ完結）" />
-  <meta property="og:description" content="CSVを貼り付けて変換。ヘッダ行の有無、区切り文字、プレビュー、ダウンロードに対応。" />
+  <meta property="og:title" content="CSV→JSON 変換ツール（Shift-JIS対応・無料・ブラウザ完結）" />
+  <meta property="og:description" content="CSVを貼り付けて変換。ヘッダ行の有無、区切り文字、文字コード指定、プレビュー、ダウンロードに対応。" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://example.com/tools/csv-to-json/" />
+  <meta property="og:url" content="https://mat4645.github.io/tools/csv-to-json/" />
   <meta name="twitter:card" content="summary" />
 
   <script type="application/ld+json">
@@ -24,8 +24,8 @@
     "applicationCategory":"UtilitiesApplication",
     "operatingSystem":"All",
     "offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},
-    "description":"CSVをJSONへ変換できる無料ツール。貼り付け/ファイル選択対応。ブラウザ内で処理します。",
-    "url":"https://example.com/tools/csv-to-json/"
+    "description":"CSVをJSONへ変換できる無料ツール。Shift-JIS/UTF-8の読み込み指定、貼り付け/ファイル選択対応。ブラウザ内で処理します。",
+    "url":"https://mat4645.github.io/tools/csv-to-json/"
   }
   </script>
 
@@ -79,6 +79,8 @@
     footer{border-top:1px solid var(--border); background:#fff; padding:18px 0 30px}
     .links{display:flex; gap:10px; flex-wrap:wrap}
     .links a{font-size:13px; color:var(--muted)}
+    .hint{font-size:12px; color:var(--muted); margin-top:6px}
+    .kbd{font-family:var(--mono); font-size:12px; border:1px solid var(--border); border-bottom-width:2px; padding:1px 6px; border-radius:8px; background:#fff}
   </style>
 
   <!-- AdSense（審査通過後に有効化）
@@ -100,16 +102,16 @@
       <a href="/">ホーム</a>
       <a href="/tools/">ツール一覧</a>
       <a href="/about/">このサイトについて</a>
-      <a href="/privacy/">プライバシー</a>
+      <a href="/privacy/">プライバシーポリシー</a>
     </nav>
   </div>
 </header>
 
 <main>
   <section class="hero wrap">
-    <h1>CSV→JSON 変換ツール（無料・ブラウザ完結）</h1>
+    <h1>CSV→JSON 変換ツール（Shift-JIS対応・無料・ブラウザ完結）</h1>
     <p class="sub">
-      CSVを貼り付けるか、ファイルを選択して変換できます。ヘッダ行の有無・区切り文字・プレビューに対応。<br/>
+      CSVを貼り付けるか、ファイルを選択して変換できます。ヘッダ行の有無・区切り文字・<strong>ファイル文字コード指定</strong>・プレビューに対応。<br/>
       <span class="pill">このページ内で処理（サーバーに送信しません）</span>
     </p>
 
@@ -131,7 +133,7 @@
       <div class="hd">
         <div class="title">変換</div>
         <div class="row">
-          <span class="pill" id="toolStatus">v1.0.0</span>
+          <span class="pill" id="toolStatus">v1.1.0</span>
           <button class="btn" id="btnSample" type="button">サンプル入力</button>
           <button class="btn" id="btnClear" type="button">クリア</button>
         </div>
@@ -160,10 +162,23 @@
 
           <div class="row">
             <label class="small">
+              ファイル文字コード：
+              <select id="fileEncoding" title="ファイルを読み込むときの文字コード">
+                <option value="utf-8" selected>UTF-8</option>
+                <option value="utf-8-bom">UTF-8（BOM付き）</option>
+                <option value="shift_jis">Shift-JIS（CP932含む）</option>
+              </select>
+            </label>
+
+            <label class="small" style="margin-left:8px">
               CSVファイル：
               <input type="file" id="fileInput" accept=".csv,text/csv,.txt,text/plain" />
             </label>
           </div>
+        </div>
+
+        <div class="hint">
+          文字化けする場合：<span class="kbd">ファイル文字コード</span> を <strong>Shift-JIS</strong> にしてから選択し直してください。
         </div>
 
         <label class="small" for="inputText" style="display:block; margin-top:10px">CSV入力（貼り付け）</label>
@@ -177,7 +192,7 @@
         </div>
 
         <div style="margin-top:14px">
-          <label class="small" for="outputText">JSON結果（プレビュー/全量）</label>
+          <label class="small" for="outputText">JSON結果</label>
           <textarea id="outputText" readonly placeholder="ここにJSONが表示されます"></textarea>
         </div>
 
@@ -219,6 +234,7 @@
         <ul class="small">
           <li>API連携用にJSONが欲しいとき</li>
           <li>ログやデータをWebで確認したいとき</li>
+          <li>Shift-JISのCSVをWebで扱いたいとき（文字化け対策つき）</li>
         </ul>
       </div>
     </div>
@@ -231,12 +247,12 @@
           <div class="small" style="margin-top:6px">保存しません。ブラウザ内で処理し、サーバーへ送信しない設計です。</div>
         </details>
         <details>
-          <summary>ダブルクォートやカンマを含むCSVは対応していますか？</summary>
-          <div class="small" style="margin-top:6px">基本的なCSV（"..."で囲まれた値のカンマや改行）に対応しています。特殊なケースはうまく変換できない場合があります。</div>
+          <summary>Shift-JISで文字化けします</summary>
+          <div class="small" style="margin-top:6px">ファイル読み込み前に「ファイル文字コード」をShift-JISに変更してから、ファイルを選択し直してください。</div>
         </details>
         <details>
-          <summary>文字コードはどうなりますか？</summary>
-          <div class="small" style="margin-top:6px">貼り付け/ファイル読み込み後はブラウザ上でUnicodeとして扱います。JSON出力はUTF-8としてダウンロードします。</div>
+          <summary>ダブルクォートやカンマを含むCSVは対応していますか？</summary>
+          <div class="small" style="margin-top:6px">基本的なCSV（"..."で囲まれた値のカンマや改行）に対応しています。特殊なケースはうまく変換できない場合があります。</div>
         </details>
       </div>
     </div>
@@ -252,7 +268,7 @@
   <div class="wrap">
     <div class="links" style="margin-bottom:8px">
       <a href="/about/">このサイトについて</a>
-      <a href="/privacy/">プライバシー</a>
+      <a href="/privacy/">プライバシーポリシー</a>
       <a href="/tools/">ツール一覧</a>
     </div>
     <div class="small">
@@ -263,7 +279,7 @@
 
 <script>
   // ===== CSV -> JSON CORE =====
-  function normalizeNewlines(s){ return s.replace(/\r\n/g,"\n").replace(/\r/g,"\n"); }
+  function normalizeNewlines(s){ return s.replace(/\\r\\n/g,"\\n").replace(/\\r/g,"\\n"); }
 
   // RFC4180っぽい簡易CSVパーサ（"..."内のカンマ/改行対応）
   function parseCSV(text, delimiterChar) {
@@ -277,7 +293,6 @@
 
       if (inQuotes) {
         if (ch === '"') {
-          // escaped quote
           if (s[i+1] === '"') { field += '"'; i += 2; continue; }
           inQuotes = false; i++; continue;
         } else {
@@ -286,14 +301,13 @@
       } else {
         if (ch === '"') { inQuotes = true; i++; continue; }
         if (ch === delim) { row.push(field); field = ""; i++; continue; }
-        if (ch === "\n") { row.push(field); rows.push(row); field = ""; row = []; i++; continue; }
+        if (ch === "\\n") { row.push(field); rows.push(row); field = ""; row = []; i++; continue; }
         field += ch; i++; continue;
       }
     }
     row.push(field);
     rows.push(row);
 
-    // 末尾の空行っぽいのを除去（必要なら）
     while (rows.length && rows[rows.length-1].length === 1 && rows[rows.length-1][0].trim() === "") {
       rows.pop();
     }
@@ -303,12 +317,11 @@
   function safeKey(s, idx){
     const t = (s ?? "").trim();
     if (!t) return `col${idx+1}`;
-    // JSONキーとして扱いやすいよう、危険文字を軽く置換（ガチガチにはしない）
-    return t.replace(/\s+/g,"_").replace(/[^\w\-ぁ-んァ-ン一-龥]/g,"_");
+    return t.replace(/\\s+/g,"_").replace(/[^\\w\\-ぁ-んァ-ン一-龥]/g,"_");
   }
 
   function csvToJson(text, { delimiter, hasHeader, previewLines }) {
-    const delimChar = delimiter === "tab" ? "\t" : delimiter;
+    const delimChar = delimiter === "tab" ? "\\t" : delimiter;
     const rows = parseCSV(text, delimChar);
     if (!rows.length) return { all: [], preview: [], headers: [] };
 
@@ -336,6 +349,24 @@
     return { all, preview, headers };
   }
 
+  // ===== Encoding helpers (Shift-JIS / UTF-8) =====
+  function stripUtf8Bom(s){
+    return (s && s.charAt(0) === "\\uFEFF") ? s.slice(1) : s;
+  }
+
+  function decodeArrayBuffer(buf, enc){
+    // enc: "utf-8" / "shift_jis" など
+    // 対応していないブラウザでは例外になるのでUTF-8にフォールバック
+    try{
+      const td = new TextDecoder(enc, { fatal: false });
+      return td.decode(buf);
+    }catch(e){
+      console.warn("TextDecoder unsupported encoding:", enc, e);
+      const td = new TextDecoder("utf-8", { fatal: false });
+      return td.decode(buf);
+    }
+  }
+
   // ===== UI WIRING =====
   const $ = (id) => document.getElementById(id);
   const inputEl = $("inputText");
@@ -347,6 +378,7 @@
   const hasHeaderEl = $("hasHeader");
   const previewLinesEl = $("previewLines");
   const fileInputEl = $("fileInput");
+  const fileEncodingEl = $("fileEncoding");
 
   const btnRun = $("btnRun");
   const btnCopy = $("btnCopy");
@@ -383,8 +415,6 @@
     try{
       const { all, preview, headers } = csvToJson(csv, opt);
 
-      // 全量は重いので、表示は「全量 or プレビュー」を切り替えたい場合は後で拡張
-      // ここでは全量を出力（量産テンプレ向けにシンプル優先）
       lastJsonText = JSON.stringify(all, null, 2);
       outputEl.value = lastJsonText;
 
@@ -468,11 +498,22 @@ York"`;
   fileInputEl.addEventListener("change", async (e) => {
     const f = e.target.files && e.target.files[0];
     if (!f) return;
-    lastFileBase = (f.name || "converted").replace(/\.[^.]+$/, "");
+
+    lastFileBase = (f.name || "converted").replace(/\\.[^.]+$/, "");
+
     try{
-      const text = await f.text(); // ブラウザに任せてデコード（文字コードが問題なら別ツールに分離）
+      const encSel = (fileEncodingEl?.value || "utf-8");
+      const enc = encSel === "utf-8-bom" ? "utf-8" : encSel;
+
+      // ★ここが文字化け対策：ArrayBufferを指定エンコーディングでデコード
+      const ab = await f.arrayBuffer();
+      let text = decodeArrayBuffer(ab, enc);
+
+      // 念のためBOM除去
+      text = stripUtf8Bom(text);
+
       inputEl.value = text;
-      setMsg(`ファイルを読み込みました：${f.name}（貼り付け欄に反映）`);
+      setMsg(`ファイルを読み込みました：${f.name}（${encSel}）`);
     }catch(err){
       console.error(err);
       setMsg("ファイルの読み込みに失敗しました。", "ng");
@@ -488,6 +529,7 @@ York"`;
       "@type":"FAQPage",
       "mainEntity":[
         {"@type":"Question","name":"入力したCSVは保存されますか？","acceptedAnswer":{"@type":"Answer","text":"保存しません。ブラウザ内で処理し、サーバーへ送信しない設計です。"}},
+        {"@type":"Question","name":"Shift-JISのCSVが文字化けします","acceptedAnswer":{"@type":"Answer","text":"ファイル読み込み前に「ファイル文字コード」をShift-JISにしてから、ファイルを選択し直してください。"}},
         {"@type":"Question","name":"ダブルクォートやカンマを含むCSVは対応していますか？","acceptedAnswer":{"@type":"Answer","text":"基本的なCSV（\"...\"で囲まれた値のカンマや改行）に対応しています。特殊なケースはうまく変換できない場合があります。"}}
       ]
     };
