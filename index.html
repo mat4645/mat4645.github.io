@@ -1,20 +1,188 @@
 <!doctype html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <title>ToolBox｜無料Webツール集</title>
-  <meta name="description" content="CSV変換やテキスト整形など、ブラウザ完結で使える無料Webツール集です。">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>ToolBox｜無料・ブラウザ完結の変換/整形ツール集</title>
+  <meta name="description" content="ToolBoxはCSV/JSONなどの変換・整形を、インストール不要＆ブラウザ完結で使える無料Webツール集です。入力データはサーバーに送信しません。" />
+  <link rel="canonical" href="https://mat4645.github.io/" />
+
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#111827; --muted:#6b7280; --border:#e5e7eb;
+      --shadow: 0 10px 25px rgba(0,0,0,.06);
+      --radius:14px; --accent:#2563eb;
+      --max: 980px;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:var(--sans); color:var(--fg); background:linear-gradient(180deg,#fff,#fff 30%, #f7f8fb);}
+    a{color:var(--accent); text-decoration:none} a:hover{text-decoration:underline}
+    header{position:sticky; top:0; z-index:10; background:rgba(255,255,255,.9); backdrop-filter: blur(8px); border-bottom:1px solid var(--border);}
+    .wrap{max-width:var(--max); margin:0 auto; padding:14px 16px}
+    .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .brand{display:flex; align-items:center; gap:10px}
+    .logo{width:34px; height:34px; border-radius:10px; background: radial-gradient(circle at 30% 30%, #93c5fd, #2563eb); box-shadow: var(--shadow);}
+    .brand strong{font-size:15px}
+    .nav{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .nav a{font-size:13px; color:var(--muted)} .nav a:hover{color:var(--fg); text-decoration:none}
+
+    main{padding:18px 0 38px}
+    h1{margin:0; font-size:28px; letter-spacing:-.02em}
+    .sub{color:var(--muted); line-height:1.8; margin:10px 0 0}
+    .hero{display:grid; gap:10px}
+    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+    .btn{border:1px solid var(--border); background:#fff; padding:10px 12px; border-radius:12px; cursor:pointer; font-weight:800; font-size:13px; display:inline-block}
+    .btn.primary{border-color:#2563eb; background:#2563eb; color:#fff}
+    .pill{font-size:12px; color:var(--muted); background:#f3f4f6; border:1px solid var(--border); padding:6px 10px; border-radius:999px; display:inline-block}
+
+    .grid{display:grid; grid-template-columns:1fr; gap:12px; margin-top:14px}
+    @media (min-width: 860px){ .grid{grid-template-columns: 1fr 1fr;} }
+    .card{background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); box-shadow: var(--shadow); overflow:hidden;}
+    .hd{padding:12px 14px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfbff);}
+    .hd .t{font-weight:900; font-size:14px}
+    .bd{padding:14px}
+    .desc{color:var(--muted); font-size:13px; line-height:1.7; margin:6px 0 0}
+    .tagrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .tag{font-size:12px; color:var(--muted); background:#f3f4f6; border:1px solid var(--border); padding:4px 8px; border-radius:999px}
+    .sectionTitle{margin:18px 0 0; font-size:18px; letter-spacing:-.01em}
+    .bullets{margin:10px 0 0; padding-left:18px; color:var(--muted); line-height:1.9}
+    .faq{margin-top:12px}
+    details{background:#fff; border:1px solid var(--border); border-radius:12px; padding:10px 12px}
+    details + details{margin-top:8px}
+    summary{cursor:pointer; font-weight:800}
+    .ans{color:var(--muted); line-height:1.8; margin-top:6px; font-size:13px}
+
+    footer{border-top:1px solid var(--border); background:#fff; padding:18px 0 30px}
+    .links{display:flex; gap:10px; flex-wrap:wrap}
+    .links a{font-size:13px; color:var(--muted)}
+    .small{font-size:12px; color:var(--muted); line-height:1.7}
+  </style>
 </head>
+
 <body>
-  <h1>ToolBox</h1>
-  <p>ブラウザ完結・無料で使えるWebツール集</p>
-  <ul>
-    <li><a href="/tools/csv-to-json/">CSV → JSON 変換ツール</a></li>
+<header>
+  <div class="wrap topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <strong>ToolBox</strong><div class="small">無料・ブラウザ完結ツール集</div>
+      </div>
+    </div>
+    <nav class="nav" aria-label="サイト内リンク">
+      <a href="/">ホーム</a>
+      <a href="/tools/">ツール一覧</a>
+      <a href="/about/">このサイトについて</a>
+      <a href="/privacy/">プライバシーポリシー</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>無料・ブラウザ完結の変換/整形ツール集</h1>
+    <p class="sub">
+      ToolBoxは、CSV/JSONなどの変換・整形を「インストール不要」で使えるWebツール集です。<br/>
+      入力データはブラウザ内で処理され、サーバーに送信しません。
+      <span class="pill" style="margin-left:6px">サーバー送信なし</span>
+    </p>
+
+    <div class="ctaRow">
+      <a class="btn primary" href="/tools/">ツール一覧を見る</a>
+      <a class="btn" href="/tools/csv-to-json/">CSV→JSON を開く</a>
+      <a class="btn" href="/tools/json-to-csv/">JSON→CSV を開く</a>
+    </div>
+  </section>
+
+  <h2 class="sectionTitle">人気ツール（まずはここから）</h2>
+  <section class="grid" aria-label="人気ツール">
+    <article class="card">
+      <div class="hd">
+        <div class="t"><a href="/tools/csv-to-json/">CSV → JSON 変換（ファイル専用・自動変換）</a></div>
+        <div class="desc">CSVファイルを選ぶだけでJSONに変換。文字化け時は文字コードを切替。</div>
+      </div>
+      <div class="bd">
+        <div class="tagrow">
+          <span class="tag">CSV</span><span class="tag">JSON</span><span class="tag">Shift-JIS</span><span class="tag">ブラウザ完結</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="hd">
+        <div class="t"><a href="/tools/json-to-csv/">JSON → CSV 変換</a></div>
+        <div class="desc">配列/単一オブジェクトに対応。ヘッダ生成・区切り文字・フラット化対応。</div>
+      </div>
+      <div class="bd">
+        <div class="tagrow">
+          <span class="tag">JSON</span><span class="tag">CSV</span><span class="tag">フラット化</span><span class="tag">ブラウザ完結</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="hd">
+        <div class="t"><a href="/tools/json-formatter/">JSON 整形（Pretty / Minify）</a></div>
+        <div class="desc">JSONを読みやすく整形/1行に圧縮。エラー表示・コピー対応。</div>
+      </div>
+      <div class="bd">
+        <div class="tagrow">
+          <span class="tag">JSON</span><span class="tag">整形</span><span class="tag">Minify</span><span class="tag">ブラウザ完結</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="hd">
+        <div class="t"><a href="/tools/">ツール一覧へ（全ツール）</a></div>
+        <div class="desc">目的別に探したい場合はこちら。ツールを追加したら順次ここに並びます。</div>
+      </div>
+      <div class="bd">
+        <div class="tagrow">
+          <span class="tag">一覧</span><span class="tag">追加予定</span><span class="tag">カテゴリ</span><span class="tag">ブラウザ完結</span>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <h2 class="sectionTitle">ToolBoxの特徴</h2>
+  <ul class="bullets">
+    <li>インストール不要：ブラウザだけで完結</li>
+    <li>入力データは保存しません：基本的にローカル処理（※詳細はプライバシーポリシー）</li>
+    <li>業務で使いやすい：コピー/ダウンロードを用意（ツールによる）</li>
   </ul>
-  <footer>
-    <a href="/about/">このサイトについて</a> |
-    <a href="/privacy/">プライバシーポリシー</a>
-  </footer>
+
+  <h2 class="sectionTitle">よくある質問</h2>
+  <section class="faq" aria-label="FAQ">
+    <details>
+      <summary>入力したデータはサーバーに送られますか？</summary>
+      <div class="ans">各ツールはブラウザ内で処理する設計です。アクセス解析や広告等でCookieを利用する場合があります（詳細はプライバシーポリシーをご確認ください）。</div>
+    </details>
+    <details>
+      <summary>文字化けしたときは？</summary>
+      <div class="ans">CSV→JSONなどは、文字コード（Shift-JIS/UTF-8等）を切り替えて再変換してください。区切り文字（カンマ/タブ等）が違う場合もあります。</div>
+    </details>
+    <details>
+      <summary>変換結果の正確性は保証されますか？</summary>
+      <div class="ans">変換結果の正確性は保証しません。重要データは事前バックアップのうえ、自己責任でご利用ください。</div>
+    </details>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="links" style="margin-bottom:8px">
+      <a href="/tools/">ツール一覧</a>
+      <a href="/about/">このサイトについて</a>
+      <a href="/privacy/">プライバシーポリシー</a>
+    </div>
+    <div class="small">© <span id="year"></span> ToolBox. 変換結果の正確性は保証しません（自己責任でご利用ください）。</div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = String(new Date().getFullYear());
+</script>
 </body>
 </html>
