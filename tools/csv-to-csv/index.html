@@ -17,16 +17,15 @@
       --max: 980px;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Arial, sans-serif;
-      --resultMax: 860px;
     }
     *{box-sizing:border-box}
-    body{margin:0; font-family:var(--sans); color:var(--fg); background:linear-gradient(180deg,#fff,#fff 30%, #f7f8fb);}
+    body{margin:0; font-family:var(--sans); color:var(--fg); background:linear-gradient(180deg,#fff,#fff 30%, #f7f8fb);} 
     a{color:var(--accent); text-decoration:none} a:hover{text-decoration:underline}
-    header{position:sticky; top:0; z-index:10; background:rgba(255,255,255,.86); backdrop-filter: blur(8px); border-bottom:1px solid var(--border);}
+    header{position:sticky; top:0; z-index:10; background:rgba(255,255,255,.86); backdrop-filter: blur(8px); border-bottom:1px solid var(--border);} 
     .wrap{max-width:var(--max); margin:0 auto; padding:14px 16px}
     .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px}
     .brand{display:flex; align-items:center; gap:10px}
-    .logo{width:34px; height:34px; border-radius:10px; background: radial-gradient(circle at 30% 30%, #93c5fd, #2563eb); box-shadow: var(--shadow);}
+    .logo{width:34px; height:34px; border-radius:10px; background: radial-gradient(circle at 30% 30%, #93c5fd, #2563eb); box-shadow: var(--shadow);} 
     .brand strong{font-size:15px}
     .nav{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
     .nav a{font-size:13px; color:var(--muted)} .nav a:hover{color:var(--fg); text-decoration:none}
@@ -54,7 +53,6 @@
     .btn.primary{border-color:#2563eb; background:#2563eb; color:#fff}
     .btn:disabled{opacity:.5; cursor:not-allowed}
 
-    .resultBox{max-width: var(--resultMax); margin-left:auto; margin-right:auto;}
     textarea{
       width:100%;
       height:260px;
@@ -70,7 +68,12 @@
       outline:none;
       white-space:pre;
     }
-    textarea:focus{border-color:#93c5fd; box-shadow: 0 0 0 4px rgba(59,130,246,.12);}
+    textarea:focus{border-color:#93c5fd; box-shadow: 0 0 0 4px rgba(59,130,246,.12);} 
+
+    /* 2つのプレビューを並べる（PCでは2カラム） */
+    .grid2{display:grid; grid-template-columns:1fr; gap:12px;}
+    @media (min-width: 980px){ .grid2{grid-template-columns:1fr 1fr;} }
+    .panelHd{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px}
 
     .warnBox{
       border:1px solid #fde68a;
@@ -82,6 +85,7 @@
       line-height:1.7;
       margin-top:10px;
       display:none;
+      white-space:pre-wrap;
     }
 
     .badge{
@@ -195,8 +199,21 @@
       <div class="stat" id="countStat"></div>
     </div>
     <div class="bd">
-      <div class="resultBox">
-        <textarea id="preview" readonly placeholder="ここにプレビューが表示されます（ファイルを選択してください）"></textarea>
+      <div class="grid2">
+        <div>
+          <div class="panelHd">
+            <div class="msg">入力側（デコード結果）</div>
+            <div class="stat" id="inPreviewStat"></div>
+          </div>
+          <textarea id="previewIn" readonly placeholder="ここに入力プレビューが表示されます（ファイルを選択してください）"></textarea>
+        </div>
+        <div>
+          <div class="panelHd">
+            <div class="msg">出力側（BOM/改行反映）</div>
+            <div class="stat" id="outPreviewStat"></div>
+          </div>
+          <textarea id="previewOut" readonly placeholder="ここに出力プレビューが表示されます（ファイルを選択してください）"></textarea>
+        </div>
       </div>
       <div class="hint">※プレビューは先頭のみです。全体はダウンロードしたCSVで確認してください。</div>
     </div>
@@ -215,7 +232,10 @@
   const msgEl = $("msg");
   const statEl = $("stat");
   const countStatEl = $("countStat");
-  const previewEl = $("preview");
+  const previewInEl = $("previewIn");
+  const previewOutEl = $("previewOut");
+  const inPreviewStatEl = $("inPreviewStat");
+  const outPreviewStatEl = $("outPreviewStat");
   const warnBoxEl = $("warnBox");
 
   const outBadgeEl = $("outBadge");
@@ -288,12 +308,34 @@
     return new TextEncoder().encode(text);
   }
 
-  function buildOutputName(originalName, outEnc){
-    const base = (originalName || "converted").replace(/\.[^.]+$/, "");
-    const suffix = (outEnc === "shift_jis") ? "sjis"
-                 : (outEnc === "utf-8-bom") ? "utf8bom"
-                 : "utf8";
-    return `${base}.${suffix}.csv`;
+  function decodeBytes(bytes, enc){
+    if (enc === "shift_jis"){
+      if (!window.Encoding || !Encoding.convert || !Encoding.codeToString){
+        return "（Shift-JISプレビュー用ライブラリがありません）";
+      }
+      const codes = Array.from(bytes);
+      const unicodeCodes = Encoding.convert(codes, "UNICODE", "SJIS");
+      return Encoding.codeToString(unicodeCodes);
+    }
+    // utf-8 / utf-8-bom
+    let t = new TextDecoder("utf-8", { fatal:false }).decode(bytes);
+    if (t.startsWith("\uFEFF")) t = t.slice(1);
+    return t.replace(/\u0000/g, "");
+  }
+
+  function bytesToHex(bytes, n=16){
+    const head = bytes.slice(0, Math.min(n, bytes.length));
+    return Array.from(head).map(b => b.toString(16).padStart(2, "0")).join(" ");
+  }
+
+  function encShort(enc){
+    if (enc === "shift_jis") return "Shift-JIS";
+    if (enc === "utf-8-bom") return "UTF-8(BOM)";
+    return "UTF-8";
+  }
+
+  function bomLabel(enc){
+    return (enc === "utf-8-bom") ? "BOMあり" : "BOMなし";
   }
 
   function makePreview(text){
@@ -302,6 +344,26 @@
     const head = lines.slice(0, 50).join("\n");
     const more = lines.length > 50 ? `\n\n...（全${lines.length}行中、先頭50行を表示）` : "";
     return head + more;
+  }
+
+  function buildOutMeta(bytes, outEnc, eol){
+    const hex = bytesToHex(bytes, 16);
+    const eolLabel = (eol === "crlf") ? "CRLF" : "LF";
+    return [
+      "[出力情報]",
+      `enc=${encShort(outEnc)}`,
+      bomLabel(outEnc),
+      `EOL=${eolLabel}`,
+      `headBytes=${hex}${bytes.length > 16 ? " ..." : ""}`
+    ].join(" / ");
+  }
+
+  function buildOutputName(originalName, outEnc){
+    const base = (originalName || "converted").replace(/\.[^.]+$/, "");
+    const suffix = (outEnc === "shift_jis") ? "sjis"
+                 : (outEnc === "utf-8-bom") ? "utf8bom"
+                 : "utf8";
+    return `${base}.${suffix}.csv`;
   }
 
   function updateOutputHints(){
@@ -330,17 +392,29 @@
       const ab = await lastSelectedFile.arrayBuffer();
 
       // 1) 入力文字コードで decode（ここが確認ポイント）
-      let text = decodeArrayBuffer(ab, inEncEl.value);
+      const inText = decodeArrayBuffer(ab, inEncEl.value);
 
-      // 改行を整える（出力にも反映）
-      text = applyEol(text, eolEl.value);
+      // 入力プレビュー（decode結果そのまま）
+      previewInEl.value = makePreview(inText);
+      inPreviewStatEl.textContent = `in=${encShort(inEncEl.value)}`;
 
-      // preview
-      previewEl.value = makePreview(text);
+      // 2) 出力用：改行を整える（出力にも反映）
+      const outText = applyEol(inText, eolEl.value);
 
-      // 2) 出力文字コードで encode
+      // 3) 出力文字コードで encode
       updateOutputHints();
-      const outBytes = encodeToBytes(text, outEncEl.value);
+      const outBytes = encodeToBytes(outText, outEncEl.value);
+
+      // 出力プレビュー（BOM/改行反映）
+      const outTextForPreview = decodeBytes(outBytes, outEncEl.value);
+      const meta = buildOutMeta(outBytes, outEncEl.value, eolEl.value);
+      previewOutEl.value = makePreview(outTextForPreview) + "\n\n" + meta;
+      outPreviewStatEl.textContent = `${encShort(outEncEl.value)} / ${bomLabel(outEncEl.value)} / EOL=${(eolEl.value==="crlf"?"CRLF":"LF")}`;
+
+      // Shift-JIS置換の可能性（簡易チェック：出力を再デコードした結果が一致しない）
+      if (outEncEl.value === "shift_jis" && outTextForPreview !== outText){
+        showWarn("Shift-JISにない文字（例：絵文字など）は置換されることがあります。出力側プレビューで差分を確認してください。\n※置換が問題になる場合はUTF-8（BOM付き）も検討してください。");
+      }
 
       lastOutputBytes = outBytes;
       lastOutputName = buildOutputName(lastSelectedFile.name, outEncEl.value);
@@ -348,16 +422,21 @@
       btnDownload.disabled = false;
 
       const sizeKB = Math.round(lastSelectedFile.size / 1024);
-      setStat(`${lastSelectedFile.name}（${sizeKB}KB） / in=${inEncEl.value} / out=${outEncEl.value}`);
-      const lineCount = normalizeToLF(text).split("\n").length;
+      setStat(`${lastSelectedFile.name}（${sizeKB}KB） / in=${inEncEl.value} / out=${outEncEl.value} / eol=${eolEl.value}`);
+
+      const lineCount = normalizeToLF(outText).split("\n").length;
       setCountStat(`行数（概算）=${lineCount} / 出力=${lastOutputName}`);
 
       setMsg("プレビューを確認して、出力を選んでダウンロードしてください。", "ok");
+
     }catch(e){
       console.error(e);
       lastOutputBytes = null;
       btnDownload.disabled = true;
-      previewEl.value = "";
+      previewInEl.value = "";
+      previewOutEl.value = "";
+      inPreviewStatEl.textContent = "";
+      outPreviewStatEl.textContent = "";
       setCountStat("");
       setMsg("変換に失敗しました。読み込み/出力文字コードを変えて再試行してください。", "ng");
 
