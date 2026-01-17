@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index,follow" />
+
+  <title>CSV→CSV 文字コード変換ツール（Shift-JIS / UTF-8 / UTF-8 BOM）無料・ブラウザ完結 | ToolBox</title>
+  <meta name="description" content="CSVファイルの文字コードを変換して再ダウンロード。読み込み時/書き出し時の文字コード（Shift-JIS / UTF-8 / UTF-8 BOM）を指定可能。Excelで読めないUTF-8 BOM付きCSVをShift-JISに変換したい場合に便利。無料・ブラウザ完結でサーバー送信なし。" />
+  <link rel="canonical" href="https://mat4645.github.io/tools/csv-to-csv/" />
+
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#111827; --muted:#6b7280; --border:#e5e7eb;
+      --shadow: 0 10px 25px rgba(0,0,0,.06);
+      --radius:14px; --accent:#2563eb; --danger:#dc2626; --ok:#16a34a;
+      --max: 980px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Arial, sans-serif;
+      --resultMax: 860px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:var(--sans); color:var(--fg); background:linear-gradient(180deg,#fff,#fff 30%, #f7f8fb);}
+    a{color:var(--accent); text-decoration:none} a:hover{text-decoration:underline}
+    header{position:sticky; top:0; z-index:10; background:rgba(255,255,255,.86); backdrop-filter: blur(8px); border-bottom:1px solid var(--border);}
+    .wrap{max-width:var(--max); margin:0 auto; padding:14px 16px}
+    .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .brand{display:flex; align-items:center; gap:10px}
+    .logo{width:34px; height:34px; border-radius:10px; background: radial-gradient(circle at 30% 30%, #93c5fd, #2563eb); box-shadow: var(--shadow);}
+    .brand strong{font-size:15px}
+    .nav{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .nav a{font-size:13px; color:var(--muted)} .nav a:hover{color:var(--fg); text-decoration:none}
+
+    main{padding:18px 0 38px}
+    h1{margin:0; font-size:26px; letter-spacing:-.02em}
+    .sub{color:var(--muted); line-height:1.7; margin:8px 0 0}
+    .pill{font-size:12px; color:var(--muted); background:#f3f4f6; border:1px solid var(--border); padding:6px 10px; border-radius:999px; display:inline-block}
+
+    .card{background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); box-shadow: var(--shadow); overflow:hidden; margin-top:14px}
+    .hd{padding:12px 14px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfbff); display:flex; align-items:center; justify-content:space-between; gap:10px;}
+    .hd .t{font-weight:800; font-size:14px}
+    .bd{padding:14px}
+
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .msg{font-size:13px; color:var(--muted); line-height:1.6}
+    .ok{color:var(--ok)} .ng{color:var(--danger)}
+
+    select, input[type="number"]{border:1px solid var(--border); border-radius:10px; padding:8px 10px; background:#fff; font-size:13px}
+    input[type="file"]{font-size:13px}
+
+    .btn{border:1px solid var(--border); background:#fff; padding:10px 12px; border-radius:12px; cursor:pointer; font-weight:700; font-size:13px}
+    .btn.primary{border-color:#2563eb; background:#2563eb; color:#fff}
+    .btn:disabled{opacity:.5; cursor:not-allowed}
+
+    .hint{font-size:12px; color:var(--muted); margin-top:6px}
+    .stat{font-size:12px; color:var(--muted)}
+
+    .resultBox{max-width: var(--resultMax); margin-left:auto; margin-right:auto;}
+    textarea{
+      width:100%;
+      height:260px;
+      padding:12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#fff;
+      resize:none;
+      overflow:auto;
+      font-family:var(--mono);
+      font-size:13px;
+      line-height:1.6;
+      outline:none;
+      white-space:pre;
+    }
+    textarea:focus{border-color:#93c5fd; box-shadow: 0 0 0 4px rgba(59,130,246,.12);}
+    .warnBox{
+      border:1px solid #fde68a;
+      background:#fffbeb;
+      color:#92400e;
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:12px;
+      line-height:1.7;
+      margin-top:10px;
+    }
+  </style>
+
+  <!-- Shift-JIS書き出し用（静的サイトで確実に動く軽量ライブラリ） -->
+  <script src="https://cdn.jsdelivr.net/npm/encoding-japanese@2.2.0/encoding.min.js"></script>
+</head>
+
+<body>
+<header>
+  <div class="wrap topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <strong>ToolBox</strong><div class="stat">無料・ブラウザ完結ツール集</div>
+      </div>
+    </div>
+    <nav class="nav" aria-label="サイト内リンク">
+      <a href="/">ホーム</a>
+      <a href="/tools/">ツール一覧</a>
+      <a href="/about/">このサイトについて</a>
+      <a href="/privacy/">プライバシーポリシー</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>CSV→CSV 文字コード変換（ファイル専用・自動変換）</h1>
+  <p class="sub">
+    CSVファイルを選び、<strong>読み込み文字コード</strong>と<strong>出力文字コード</strong>を指定して再ダウンロードできます。<br/>
+    Excelで読めないUTF-8（BOM付き）CSVをShift-JISに変換したい場合に便利です。
+    <span class="pill" style="margin-left:6px">サーバー送信なし（ブラウザ内処理）</span>
+  </p>
+
+  <section class="card">
+    <div class="hd">
+      <div class="t">設定・ファイル選択</div>
+      <div class="stat" id="stat"></div>
+    </div>
+    <div class="bd">
+      <div class="row" style="justify-content:space-between">
+        <div class="row">
+          <label class="msg">読み込み文字コード：</label>
+          <select id="inEnc">
+            <option value="shift_jis" selected>Shift-JIS</option>
+            <option value="utf-8">UTF-8</option>
+            <option value="utf-8-bom">UTF-8（BOM付き）</option>
+            <option value="utf-16le">UTF-16LE</option>
+            <option value="utf-16be">UTF-16BE</option>
+          </select>
+
+          <label class="msg" style="margin-left:10px">出力文字コード：</label>
+          <select id="outEnc">
+            <option value="shift_jis" selected>Shift-JIS（Excel向け）</option>
+            <option value="utf-8">UTF-8</option>
+            <option value="utf-8-bom">UTF-8（BOM付き）</option>
+          </select>
+
+          <label class="msg" style="margin-left:10px">改行：</label>
+          <select id="eol">
+            <option value="crlf" selected>CRLF（Windows）</option>
+            <option value="lf">LF</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <button class="btn primary" id="btnDownload" type="button" disabled>変換CSVをダウンロード</button>
+          <span class="msg" id="msg"></span>
+        </div>
+      </div>
+
+      <div class="hint">
+        ファイルを選ぶと自動変換します。読み込み/出力/改行を変更すると自動で再変換します（内容は変えずに再エンコードします）。
+      </div>
+
+      <div class="row" style="margin-top:10px">
+        <label class="msg">
+          CSVファイル：
+          <input type="file" id="fileInput" accept=".csv,text/csv,.txt,text/plain" />
+        </label>
+      </div>
+
+      <div class="warnBox" id="warnBox" style="display:none"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="hd">
+      <div class="t">プレビュー（先頭）</div>
+      <div class="stat" id="countStat"></div>
+    </div>
+    <div class="bd">
+      <div class="resultBox">
+        <textarea id="preview" readonly placeholder="ここにプレビューが表示されます（ファイルを選択してください）"></textarea>
+      </div>
+      <div class="hint">
+        ※プレビューは先頭一部のみです。全体はダウンロードしたCSVで確認してください。
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  const inEncEl = $("inEnc");
+  const outEncEl = $("outEnc");
+  const eolEl = $("eol");
+  const fileInputEl = $("fileInput");
+
+  const btnDownload = $("btnDownload");
+  const msgEl = $("msg");
+  const statEl = $("stat");
+  const countStatEl = $("countStat");
+  const previewEl = $("preview");
+  const warnBoxEl = $("warnBox");
+
+  let lastSelectedFile = null;
+  let lastOutputBytes = null; // Uint8Array
+  let lastOutputName = "converted.csv";
+  let lastTextForPreview = "";
+
+  function setMsg(text, kind="info"){
+    msgEl.textContent = text || "";
+    msgEl.className = "msg " + (kind==="ok" ? "ok" : kind==="ng" ? "ng" : "");
+  }
+  function setStat(text){ statEl.textContent = text || ""; }
+  function setCountStat(text){ countStatEl.textContent = text || ""; }
+
+  function showWarn(text){
+    if (!text){
+      warnBoxEl.style.display = "none";
+      warnBoxEl.textContent = "";
+      return;
+    }
+    warnBoxEl.style.display = "block";
+    warnBoxEl.textContent = text;
+  }
+
+  function normalizeToLF(s){
+    return s.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+  }
+  function applyEol(s, eol){
+    const lf = normalizeToLF(s);
+    return (eol === "crlf") ? lf.replace(/\n/g, "\r\n") : lf;
+  }
+
+  function decodeArrayBuffer(buf, encSel){
+    // utf-8-bom は utf-8 として decode して先頭BOMを取り除く
+    const enc = (encSel === "utf-8-bom") ? "utf-8" : encSel;
+
+    let text = "";
+    try{
+      text = new TextDecoder(enc, { fatal:false }).decode(buf);
+    }catch(e){
+      // 最後の保険：utf-8で読む
+      text = new TextDecoder("utf-8", { fatal:false }).decode(buf);
+    }
+
+    if (text.startsWith("\uFEFF")) text = text.slice(1);
+    // まれにヌルが混入することがあるので除去
+    return text.replace(/\u0000/g, "");
+  }
+
+  function encodeToBytes(text, outEnc){
+    // UTF-8/UTF-8 BOM は TextEncoder でOK
+    if (outEnc === "utf-8" || outEnc === "utf-8-bom"){
+      const u8 = new TextEncoder().encode(text);
+      if (outEnc === "utf-8-bom"){
+        const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+        const merged = new Uint8Array(bom.length + u8.length);
+        merged.set(bom, 0);
+        merged.set(u8, bom.length);
+        return merged;
+      }
+      return u8;
+    }
+
+    // Shift-JIS は encoding-japanese を使用（なければエラー）
+    if (outEnc === "shift_jis"){
+      if (!window.Encoding || !Encoding.stringToCode){
+        throw new Error("Shift-JIS書き出し用ライブラリが読み込めませんでした。");
+      }
+      // 文字列 → Unicodeコード配列 → SJISバイト配列
+      const unicodeCodes = Encoding.stringToCode(text);
+      const sjisCodes = Encoding.convert(unicodeCodes, "SJIS", "UNICODE");
+      return new Uint8Array(sjisCodes);
+    }
+
+    // 想定外
+    return new TextEncoder().encode(text);
+  }
+
+  function buildOutputName(originalName, outEnc){
+    const base = (originalName || "converted").replace(/\.[^.]+$/, "");
+    const suffix = (outEnc === "shift_jis") ? "sjis"
+                 : (outEnc === "utf-8-bom") ? "utf8bom"
+                 : "utf8";
+    return `${base}.${suffix}.csv`;
+  }
+
+  function makePreview(text){
+    // 先頭50行まで表示
+    const lf = normalizeToLF(text);
+    const lines = lf.split("\n");
+    const head = lines.slice(0, 50).join("\n");
+    const more = lines.length > 50 ? `\n\n...（全${lines.length}行中、先頭50行を表示）` : "";
+    return head + more;
+  }
+
+  async function reloadAndConvert(){
+    if (!lastSelectedFile) return;
+
+    showWarn("");
+
+    try{
+      const ab = await lastSelectedFile.arrayBuffer();
+
+      // 1) decode
+      let text = decodeArrayBuffer(ab, inEncEl.value);
+
+      // 2) normalize EOL for output
+      text = applyEol(text, eolEl.value);
+
+      // 3) encode
+      const outBytes = encodeToBytes(text, outEncEl.value);
+
+      lastOutputBytes = outBytes;
+      lastOutputName = buildOutputName(lastSelectedFile.name, outEncEl.value);
+
+      // preview
+      lastTextForPreview = text;
+      previewEl.value = makePreview(text);
+
+      btnDownload.disabled = false;
+
+      // stats
+      const sizeKB = Math.round(lastSelectedFile.size / 1024);
+      setStat(`${lastSelectedFile.name}（${sizeKB}KB） / in=${inEncEl.value} / out=${outEncEl.value} / eol=${eolEl.value.toUpperCase()}`);
+
+      const lineCount = normalizeToLF(text).split("\n").length;
+      setCountStat(`行数（概算）=${lineCount} / 出力=${lastOutputName}`);
+
+      setMsg("変換しました。ダウンロードできます。", "ok");
+
+      // warn: Shift-JISで落ちやすい文字（絵文字など）
+      if (outEncEl.value === "shift_jis"){
+        // Encoding.convert は不可文字を ? 等に置換することがあるので注意喚起だけ出す
+        showWarn("注意：Shift-JISでは絵文字や一部記号が置換される場合があります（Excel互換優先）。");
+      }
+    }catch(e){
+      console.error(e);
+      lastOutputBytes = null;
+      btnDownload.disabled = true;
+      previewEl.value = "";
+      setCountStat("");
+      setMsg("変換に失敗しました。読み込み/出力文字コードを変えて再試行してください。", "ng");
+
+      // よくある原因をメッセージで補助
+      const hint = [
+        "原因の例：",
+        "・読み込み文字コードが違う（Shift-JIS/UTF-8/UTF-8 BOMなど）",
+        "・Shift-JIS書き出しライブラリの読み込み失敗（ネットワーク制限など）"
+      ].join("\n");
+      showWarn(hint);
+    }
+  }
+
+  // events
+  fileInputEl.addEventListener("change", async (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    lastSelectedFile = f;
+    await reloadAndConvert();
+  });
+  inEncEl.addEventListener("change", reloadAndConvert);
+  outEncEl.addEventListener("change", reloadAndConvert);
+  eolEl.addEventListener("change", reloadAndConvert);
+
+  btnDownload.addEventListener("click", () => {
+    if (!lastOutputBytes) return;
+
+    const blob = new Blob([lastOutputBytes], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = lastOutputName;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+
+    setMsg("ダウンロードしました。", "ok");
+  });
+
+  // init
+  setMsg("CSVファイルを選択してください。");
+</script>
+</body>
+</html>
