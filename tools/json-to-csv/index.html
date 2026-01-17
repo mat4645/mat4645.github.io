@@ -47,7 +47,7 @@
     select, input[type="checkbox"]{font-size:13px}
     select{border:1px solid var(--border); border-radius:10px; padding:8px 10px; background:#fff}
     .small{font-size:12px; color:var(--muted); line-height:1.7}
-    pre{white-space:pre-wrap; font-family:var(--mono); font-size:12px; border:1px solid var(--border); border-radius:12px; padding:10px; background:#fff; min-height:120px;}
+    /* 追加の独自ブロックを増やさない（統一感重視） */
   </style>
 </head>
 
@@ -118,13 +118,7 @@
     </div>
   </section>
 
-  <section class="card">
-    <div class="hd"><div class="t">プレビュー</div></div>
-    <div class="bd">
-      <pre id="preview"></pre>
-      <p class="small" style="margin-top:10px">※ 変換結果の正確性は保証しません（自己責任でご利用ください）。</p>
-    </div>
-  </section>
+  <p class="small" style="margin-top:10px">※ 変換結果の正確性は保証しません（自己責任でご利用ください）。</p>
 </main>
 
 <script>
@@ -132,7 +126,6 @@
 
   const inputEl = $("input");
   const outputEl = $("output");
-  const previewEl = $("preview");
   const msgEl = $("msg");
 
   const delimEl = $("delim");
@@ -236,7 +229,6 @@
     if (!text){
       setMsg("JSONが空です。貼り付けてください。","ng");
       outputEl.value = "";
-      previewEl.textContent = "";
       btnCopy.disabled = true;
       btnDownload.disabled = true;
       lastCsv = "";
@@ -254,21 +246,14 @@
       lastCsv = csv;
       outputEl.value = csv;
 
-      previewEl.textContent =
-`列: ${headers.join(", ")}
-件数: ${count} 行
---- プレビュー（先頭5行） ---
-${csv.split("\n").slice(0, 5).join("\n")}`;
-
       btnCopy.disabled = !lastCsv;
       btnDownload.disabled = !lastCsv;
-      setMsg(`変換しました（${count}行）。`, "ok");
+      setMsg(`変換しました（${count}行 / ${headers.length}列）。`, "ok");
       lastFileBase = "json_to_csv";
     }catch(e){
       console.error(e);
       setMsg("JSON形式が正しくありません。", "ng");
       outputEl.value = "";
-      previewEl.textContent = "";
       btnCopy.disabled = true;
       btnDownload.disabled = true;
       lastCsv = "";
@@ -306,7 +291,6 @@ ${csv.split("\n").slice(0, 5).join("\n")}`;
   btnClear.addEventListener("click", ()=>{
     inputEl.value = "";
     outputEl.value = "";
-    previewEl.textContent = "";
     btnCopy.disabled = true;
     btnDownload.disabled = true;
     lastCsv = "";

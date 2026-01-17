@@ -74,11 +74,7 @@
 
     .resultBox{max-width: var(--resultMax); margin-left:auto; margin-right:auto;}
 
-    /* FAQ（控えめ） */
-    details{border:1px solid var(--border); border-radius:12px; padding:10px 12px; background:#fff}
-    details + details{margin-top:10px}
-    summary{cursor:pointer; font-weight:800; font-size:13px}
-    .faqText{color:var(--muted); font-size:13px; line-height:1.7; margin:8px 0 0; white-space:pre-wrap}
+    /* 追加ブロックを増やさない（統一感重視） */
   </style>
 </head>
 
@@ -135,6 +131,7 @@
           <button class="btn" id="btnCopy" type="button" disabled>JSONをコピー</button>
           <button class="btn primary" id="btnDownload" type="button" disabled>JSONをダウンロード</button>
           <button class="btn" id="btnClear" type="button">クリア</button>
+          <span class="msg" id="msg"></span>
         </div>
       </div>
 
@@ -142,18 +139,12 @@
         CSVを貼り付けると自動変換します（入力/設定変更は数百ms後に反映）。文字化けしている場合は、元データ側の文字コードを見直してください（このページは貼り付けテキスト前提のため自動検出はしません）。
       </div>
 
-      <div class="grid2" style="margin-top:12px">
-        <div>
-          <div class="msg" style="margin-bottom:6px">CSV入力</div>
-          <textarea id="csvInput" placeholder="例：
+      <div style="margin-top:12px">
+        <div class="msg" style="margin-bottom:6px">CSV入力</div>
+        <textarea id="csvInput" placeholder="例：
 name,age
 Alice,30
 Bob,25"></textarea>
-        </div>
-        <div>
-          <div class="msg" style="margin-bottom:6px">変換ログ（軽量）</div>
-          <textarea id="log" readonly placeholder="ここに状況が表示されます"></textarea>
-        </div>
       </div>
     </div>
   </section>
@@ -170,33 +161,9 @@ Bob,25"></textarea>
     </div>
   </section>
 
-  <section class="card">
-    <div class="hd">
-      <div class="title">FAQ（よくある質問）</div>
-      <div class="stat"></div>
-    </div>
-    <div class="bd">
-      <details>
-        <summary>ファイル版との違いは？どっちを使うべき？</summary>
-        <div class="faqText">このページは「貼り付け版」です。会社ルールなどでファイル添付できない場合に向いています。
-ファイルを扱えるなら、変換の安定性が高い「ファイル専用版（CSV→JSON）」がおすすめです。</div>
-      </details>
-      <details>
-        <summary>区切り文字が合っているのに列が1つになります</summary>
-        <div class="faqText">区切り文字が違う可能性があります（カンマ / タブ / セミコロン）。
-また、CSVの引用符（"）や改行が混ざると見え方が変わることがあります。設定を切り替えて確認してください。</div>
-      </details>
-      <details>
-        <summary>文字化けします</summary>
-        <div class="faqText">貼り付け版は「貼り付けた文字列」を前提にしているため、文字コードの再解釈はしません。
-元データを正しい文字コードで開いてからコピー＆ペーストするか、ファイル専用版/文字コード変換ツールの利用を検討してください。</div>
-      </details>
-
-      <div class="hint" style="margin-top:10px">
-        関連：<a href="/tools/csv-to-csv/">CSV→CSV 文字コード変換</a>（Shift-JIS/UTF-8/BOM など）
-      </div>
-    </div>
-  </section>
+  <div class="hint" style="margin-top:10px">
+    関連：<a href="/tools/csv-to-csv/">CSV→CSV 文字コード変換</a>（Shift-JIS/UTF-8/BOM など）
+  </div>
 </main>
 
 <script>
@@ -205,11 +172,12 @@ Bob,25"></textarea>
   const delimiterEl = $("delimiter");
   const hasHeaderEl = $("hasHeader");
   const csvInputEl = $("csvInput");
-  const logEl = $("log");
 
   const outputEl = $("outputText");
   const statEl = $("stat");
   const countStatEl = $("countStat");
+
+  const msgEl = $("msg");
 
   const btnCopy = $("btnCopy");
   const btnDownload = $("btnDownload");
@@ -221,13 +189,9 @@ Bob,25"></textarea>
   function setStat(text){ statEl.textContent = text || ""; }
   function setCountStat(text){ countStatEl.textContent = text || ""; }
 
-  function logLine(s){
-    const t = new Date();
-    const hh = String(t.getHours()).padStart(2,"0");
-    const mm = String(t.getMinutes()).padStart(2,"0");
-    const ss = String(t.getSeconds()).padStart(2,"0");
-    const prefix = `[${hh}:${mm}:${ss}] `;
-    logEl.value = (prefix + s + "\n" + (logEl.value || "")).slice(0, 12000);
+  function setMsg(text, kind="info"){
+    msgEl.textContent = text || "";
+    msgEl.className = "msg " + (kind === "ok" ? "ok" : kind === "ng" ? "ng" : "");
   }
 
   function normalizeNewlines(s){
@@ -311,6 +275,7 @@ Bob,25"></textarea>
       btnDownload.disabled = true;
       setStat("");
       setCountStat("");
+      setMsg("");
       return;
     }
 
@@ -326,11 +291,11 @@ Bob,25"></textarea>
       setCountStat(`CSV行=${rowsCount} / JSON件数=${json.length} / 列=${headers.length}`);
 
       if (rowsCount <= 1 && hasHeaderEl.checked){
-        logLine("データ行が0件です。ヘッダ設定やCSV形式を確認してください。");
+        setMsg("データ行が0件です。ヘッダ設定やCSV形式を確認してください。", "ng");
       } else if (headers.length <= 1){
-        logLine("列数が1です。区切り文字が違う可能性があります（カンマ/タブ/セミコロン）。");
+        setMsg("列数が1です。区切り文字が違う可能性があります（カンマ/タブ/セミコロン）。", "ng");
       } else {
-        logLine(`変換OK（${json.length}件）`);
+        setMsg(`変換しました（${json.length}件）。`, "ok");
       }
     }catch(e){
       console.error(e);
@@ -339,7 +304,7 @@ Bob,25"></textarea>
       btnCopy.disabled = true;
       btnDownload.disabled = true;
       setCountStat("");
-      logLine("変換に失敗しました。CSVの形式（引用符/改行/区切り）を確認してください。");
+      setMsg("変換に失敗しました。CSVの形式（引用符/改行/区切り）を確認してください。", "ng");
     }
   }
 
@@ -355,20 +320,19 @@ Bob,25"></textarea>
 
   btnClear.addEventListener("click", () => {
     csvInputEl.value = "";
-    logEl.value = "";
     convertNow();
-    logLine("クリアしました。");
+    setMsg("クリアしました。", "ok");
   });
 
   btnCopy.addEventListener("click", async () => {
     if (!lastJsonText) return;
     try{
       await navigator.clipboard.writeText(lastJsonText);
-      logLine("JSONをコピーしました。");
+      setMsg("JSONをコピーしました。", "ok");
     }catch(e){
       outputEl.focus(); outputEl.select();
       document.execCommand("copy");
-      logLine("JSONをコピーしました。");
+      setMsg("JSONをコピーしました。", "ok");
     }
   });
 
@@ -391,11 +355,11 @@ Bob,25"></textarea>
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
-    logLine("JSONをダウンロードしました。");
+    setMsg("JSONをダウンロードしました。", "ok");
   });
 
   // init
-  logLine("CSVを貼り付けてください。");
+  setMsg("CSVを貼り付けてください。");
 </script>
 </body>
 </html>

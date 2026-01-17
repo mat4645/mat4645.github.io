@@ -347,14 +347,12 @@
   }
 
   function buildOutMeta(bytes, outEnc, eol){
-    const hex = bytesToHex(bytes, 16);
     const eolLabel = (eol === "crlf") ? "CRLF" : "LF";
     return [
-      "[出力情報]",
-      `enc=${encShort(outEnc)}`,
-      bomLabel(outEnc),
-      `EOL=${eolLabel}`,
-      `headBytes=${hex}${bytes.length > 16 ? " ..." : ""}`
+      "[出力概要]",
+      `文字コード=${encShort(outEnc)}`,
+      `BOM=${bomLabel(outEnc)}`,
+      `改行=${eolLabel}`
     ].join(" / ");
   }
 
