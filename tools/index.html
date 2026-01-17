@@ -69,11 +69,11 @@
   <p class="sub">よく使う変換・整形ツールを、ブラウザ完結で提供しています（入力データは保存しません）。</p>
 
   <section class="grid" aria-label="ツール一覧">
-    <!-- ✅ 既存：CSV→JSON -->
+    <!-- CSV→JSON（ファイル専用） -->
     <article class="card">
       <div class="hd">
-        <div class="t"><a href="/tools/csv-to-json/">CSV → JSON 変換</a></div>
-        <div class="desc">ファイル専用（選ぶだけで自動変換）。文字コード（Shift-JIS/UTF-8/UTF-8 BOM/UTF-16）対応。</div>
+        <div class="t"><a href="/tools/csv-to-json/">CSV → JSON 変換（ファイル専用）</a></div>
+        <div class="desc">ファイルを選ぶだけで自動変換。文字コード（Shift-JIS/UTF-8/UTF-8 BOM/UTF-16）対応。</div>
       </div>
       <div class="bd">
         <div class="tagrow">
@@ -85,7 +85,23 @@
       </div>
     </article>
 
-    <!-- ✅ 新規：CSV→CSV 文字コード変換 -->
+    <!-- ✅ 追加：CSV→JSON（貼り付け版） -->
+    <article class="card">
+      <div class="hd">
+        <div class="t"><a href="/tools/csv-to-json-paste/">CSV → JSON 変換（貼り付け版）</a></div>
+        <div class="desc">会社ルール等で添付できない環境向け。CSVを貼り付けるだけで自動変換（区切り/ヘッダ設定対応）。</div>
+      </div>
+      <div class="bd">
+        <div class="tagrow">
+          <span class="tag">CSV</span>
+          <span class="tag">JSON</span>
+          <span class="tag">貼り付け</span>
+          <span class="tag">ブラウザ完結</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- CSV→CSV 文字コード変換 -->
     <article class="card">
       <div class="hd">
         <div class="t"><a href="/tools/csv-to-csv/">CSV → CSV 文字コード変換</a></div>
@@ -101,35 +117,37 @@
       </div>
     </article>
 
+    <!-- JSON→CSV -->
     <article class="card">
-  <div class="hd">
-    <div class="t"><a href="/tools/json-to-csv/">JSON → CSV 変換</a></div>
-    <div class="desc">配列JSON/単一オブジェクト対応。ヘッダ自動生成・区切り文字・ネストのフラット化対応。</div>
-  </div>
-  <div class="bd">
-    <div class="tagrow">
-      <span class="tag">JSON</span>
-      <span class="tag">CSV</span>
-      <span class="tag">フラット化</span>
-      <span class="tag">ブラウザ完結</span>
-    </div>
-  </div>
-</article>
+      <div class="hd">
+        <div class="t"><a href="/tools/json-to-csv/">JSON → CSV 変換</a></div>
+        <div class="desc">配列JSON/単一オブジェクト対応。ヘッダ自動生成・区切り文字・ネストのフラット化対応。</div>
+      </div>
+      <div class="bd">
+        <div class="tagrow">
+          <span class="tag">JSON</span>
+          <span class="tag">CSV</span>
+          <span class="tag">フラット化</span>
+          <span class="tag">ブラウザ完結</span>
+        </div>
+      </div>
+    </article>
 
-<article class="card">
-  <div class="hd">
-    <div class="t"><a href="/tools/json-formatter/">JSON 整形（Pretty / Minify）</a></div>
-    <div class="desc">JSONを整形（読みやすく）／圧縮（1行）できます。エラー表示・コピー対応。</div>
-  </div>
-  <div class="bd">
-    <div class="tagrow">
-      <span class="tag">JSON</span>
-      <span class="tag">整形</span>
-      <span class="tag">Minify</span>
-      <span class="tag">ブラウザ完結</span>
-    </div>
-  </div>
-</article>
+    <!-- JSON formatter -->
+    <article class="card">
+      <div class="hd">
+        <div class="t"><a href="/tools/json-formatter/">JSON 整形（Pretty / Minify）</a></div>
+        <div class="desc">JSONを整形（読みやすく）／圧縮（1行）できます。エラー表示・コピー対応。</div>
+      </div>
+      <div class="bd">
+        <div class="tagrow">
+          <span class="tag">JSON</span>
+          <span class="tag">整形</span>
+          <span class="tag">Minify</span>
+          <span class="tag">ブラウザ完結</span>
+        </div>
+      </div>
+    </article>
   </section>
 </main>
 
