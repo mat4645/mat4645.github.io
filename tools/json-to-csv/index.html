@@ -153,7 +153,8 @@
   }
 
   function normalizeDelim(v){
-    return v === "tab" ? "\\t" : v;
+    // ✅ 実タブ文字にする（\\t という2文字にしない）
+    return v === "tab" ? "\t" : v;
   }
 
   function isPlainObject(x){
@@ -186,7 +187,7 @@
   function csvEscape(value, delimChar){
     // CSVセルとして安全にする（改行・区切り・ダブルクォート含む場合は "..."）
     const s = (value === null || value === undefined) ? "" : String(value);
-    const needs = s.includes('"') || s.includes("\\n") || s.includes("\\r") || s.includes(delimChar);
+    const needs = s.includes('"') || s.includes("\n") || s.includes("\r") || s.includes(delimChar);
     if (!needs) return s;
     return '"' + s.replace(/"/g,'""') + '"';
   }
@@ -227,7 +228,9 @@
       const line = headers.map(h => csvEscape(r[h], delimChar)).join(delimChar);
       lines.push(line);
     }
-    return { csv: lines.join("\\n"), headers, count: rows.length };
+
+    // ✅ 実改行にする（"\\n" ではない）
+    return { csv: lines.join("\n"), headers, count: rows.length };
   }
 
   function run(){
@@ -257,7 +260,7 @@
 `列: ${headers.join(", ")}
 件数: ${count} 行
 --- プレビュー（先頭5行） ---
-${csv.split("\\n").slice(0, 5).join("\\n")}`;
+${csv.split("\n").slice(0, 5).join("\n")}`;
 
       btnCopy.disabled = !lastCsv;
       btnDownload.disabled = !lastCsv;
