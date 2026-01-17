@@ -16,6 +16,7 @@
       --radius:14px; --accent:#2563eb; --danger:#dc2626; --ok:#16a34a;
       --max: 980px; --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Arial, sans-serif;
+      --resultMax: 860px; /* ← textareaの読みやすい幅（PC） */
     }
     *{box-sizing:border-box}
     body{margin:0; font-family:var(--sans); color:var(--fg); background:linear-gradient(180deg,#fff,#fff 30%, #f7f8fb);}
@@ -47,7 +48,29 @@
     select, input[type="number"]{border:1px solid var(--border); border-radius:10px; padding:8px 10px; background:#fff; font-size:13px}
     input[type="file"]{font-size:13px}
 
-    textarea{width:100%; min-height:260px; padding:12px; border-radius:12px; border:1px solid var(--border); background:#fff; resize:vertical; font-family:var(--mono); font-size:13px; line-height:1.6; outline:none;}
+    /* ✅ 読みやすい幅に制限（textareaだけ） */
+    .resultBox{
+      max-width: var(--resultMax);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    textarea{
+      width:100%;
+      min-height:260px;
+      height:260px;           /* ✅ 高さ固定 */
+      padding:12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:#fff;
+      resize:none;            /* ✅ サイズ変更させない */
+      overflow:auto;          /* ✅ 中でスクロール */
+      font-family:var(--mono);
+      font-size:13px;
+      line-height:1.6;
+      outline:none;
+      white-space:pre;        /* ✅ JSONの整形を崩さない */
+    }
     textarea:focus{border-color:#93c5fd; box-shadow: 0 0 0 4px rgba(59,130,246,.12);}
 
     .btn{border:1px solid var(--border); background:#fff; padding:10px 12px; border-radius:12px; cursor:pointer; font-weight:700; font-size:13px}
@@ -116,11 +139,6 @@
               <option value="utf-16be">UTF-16BE</option>
             </select>
           </label>
-
-          <label class="msg" style="margin-left:6px">
-            プレビュー件数：
-            <input type="number" id="previewLines" min="1" max="200" value="20" style="width:90px" />
-          </label>
         </div>
 
         <div class="row">
@@ -130,7 +148,7 @@
       </div>
 
       <div class="hint">
-        ファイルを選ぶと自動変換します。文字コードを変えると自動で再読み込みして変換し直します。
+        ファイルを選ぶと自動変換します。文字コード/区切り/ヘッダを変えると自動で再変換します。
       </div>
 
       <div class="row" style="margin-top:10px">
@@ -145,23 +163,23 @@
 
   <section class="card">
     <div class="hd">
-      <div class="title">JSON結果</div>
+      <div class="title">JSON結果（全件）</div>
       <div class="stat" id="countStat"></div>
     </div>
     <div class="bd">
-      <textarea id="outputText" readonly placeholder="ここにJSONが表示されます（ファイルを選択してください）"></textarea>
+      <div class="resultBox">
+        <textarea id="outputText" readonly placeholder="ここにJSONが表示されます（ファイルを選択してください）"></textarea>
+      </div>
     </div>
   </section>
 </main>
 
 <script>
-  // ===== Utils =====
   const $ = (id) => document.getElementById(id);
 
   const delimiterEl = $("delimiter");
   const hasHeaderEl = $("hasHeader");
   const fileEncodingEl = $("fileEncoding");
-  const previewLinesEl = $("previewLines");
   const fileInputEl = $("fileInput");
 
   const outputEl = $("outputText");
@@ -180,13 +198,8 @@
     msgEl.className = "msg " + (kind==="ok" ? "ok" : kind==="ng" ? "ng" : "");
   }
 
-  function setStat(text){
-    statEl.textContent = text || "";
-  }
-
-  function setCountStat(text){
-    countStatEl.textContent = text || "";
-  }
+  function setStat(text){ statEl.textContent = text || ""; }
+  function setCountStat(text){ countStatEl.textContent = text || ""; }
 
   function normalizeNewlines(s){
     return s.replace(/\r\n/g,"\n").replace(/\r/g,"\n");
@@ -198,7 +211,6 @@
     try{
       text = new TextDecoder(enc, { fatal:false }).decode(buf);
     }catch(e){
-      // 万一環境で対応していない場合のフォールバック
       text = new TextDecoder("utf-8", { fatal:false }).decode(buf);
     }
     if (text.startsWith("\uFEFF")) text = text.slice(1);
@@ -232,7 +244,6 @@
     row.push(field);
     rows.push(row);
 
-    // 末尾の空行を落とす
     while (rows.length && rows[rows.length-1].length === 1 && rows[rows.length-1][0].trim() === "") rows.pop();
     return rows;
   }
@@ -269,7 +280,6 @@
     return { json, headers, rowsCount: rows.length };
   }
 
-  // ===== Main: load file -> convert -> show =====
   async function reloadAndConvert(){
     if (!lastSelectedFile) return;
 
@@ -278,14 +288,9 @@
       const text = decodeArrayBuffer(ab, fileEncodingEl.value);
 
       const { json, headers, rowsCount } = csvToJson(text);
-      const previewLines = Math.max(1, Math.min(200, Number(previewLinesEl.value || 20)));
-      const shown = json.slice(0, previewLines);
 
       lastJsonText = JSON.stringify(json, null, 2);
-      outputEl.value =
-`/* プレビュー（先頭 ${shown.length} 件） */\n` +
-JSON.stringify(shown, null, 2) +
-`\n\n/* 全件はコピー/ダウンロードで取得できます（${json.length} 件） */`;
+      outputEl.value = lastJsonText;
 
       btnCopy.disabled = (json.length === 0);
       btnDownload.disabled = (json.length === 0);
@@ -296,6 +301,9 @@ JSON.stringify(shown, null, 2) +
 
       if (rowsCount <= 1 && hasHeaderEl.checked) {
         setMsg("データ行が0件です。ヘッダ設定やCSV形式を確認してください。", "ng");
+      }
+      if (headers.length <= 1) {
+        setMsg("列数が1です。区切り文字が違う可能性があります（カンマ/タブ/セミコロン）。", "ng");
       }
 
     }catch(e){
@@ -309,7 +317,7 @@ JSON.stringify(shown, null, 2) +
     }
   }
 
-  // ===== Events =====
+  // Events
   fileInputEl.addEventListener("change", async (e) => {
     const f = e.target.files && e.target.files[0];
     if (!f) return;
@@ -317,13 +325,10 @@ JSON.stringify(shown, null, 2) +
     await reloadAndConvert();
   });
 
-  // 設定変更で自動再変換（ファイル選択済みのときだけ）
   delimiterEl.addEventListener("change", reloadAndConvert);
   hasHeaderEl.addEventListener("change", reloadAndConvert);
   fileEncodingEl.addEventListener("change", reloadAndConvert);
-  previewLinesEl.addEventListener("change", reloadAndConvert);
 
-  // Copy/Download
   btnCopy.addEventListener("click", async () => {
     if (!lastJsonText) return;
     try{
