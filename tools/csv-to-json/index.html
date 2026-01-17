@@ -30,13 +30,15 @@
     .nav{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
     .nav a{font-size:13px; color:var(--muted)} .nav a:hover{color:var(--fg); text-decoration:none}
 
+    /* ✅ mainをwrap内に収める（JSON→CSVと同じ） */
     main{padding:18px 0 38px}
-    .hero{display:grid; gap:10px; padding:18px 16px 0}
+    .hero{display:grid; gap:10px; padding:18px 0 0} /* ← wrap内前提に調整 */
     h1{margin:0; font-size:26px; letter-spacing:-.02em}
     .sub{color:var(--muted); line-height:1.7; margin:0}
     .pill{font-size:12px; color:var(--muted); background:#f3f4f6; border:1px solid var(--border); padding:6px 10px; border-radius:999px; display:inline-block}
 
-    .card{background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); box-shadow: var(--shadow); overflow:hidden; margin:14px 16px 0;}
+    /* ✅ cardの横幅はwrapに任せる（左右marginを撤廃） */
+    .card{background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); box-shadow: var(--shadow); overflow:hidden; margin:14px 0 0;}
     .hd{padding:12px 14px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfbff); display:flex; align-items:center; justify-content:space-between; gap:10px;}
     .hd .title{font-weight:800; font-size:14px}
     .bd{padding:14px}
@@ -100,8 +102,9 @@
   </div>
 </header>
 
-<main>
-  <section class="hero wrap">
+<!-- ✅ JSON→CSVと同じく main を wrap に入れる -->
+<main class="wrap">
+  <section class="hero">
     <h1>CSV→JSON 変換（ファイル専用・自動変換）</h1>
     <p class="sub">
       CSVファイルを選ぶだけでJSONに自動変換します。文字化けする場合は文字コードを切り替えてください。<br/>
