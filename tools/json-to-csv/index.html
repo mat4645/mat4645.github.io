@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index,follow" />
 
   <title>JSON→CSV 変換ツール（配列JSON対応・無料・ブラウザ完結） | ToolBox</title>
-  <meta name="description" content="JSON（配列/オブジェクト）をCSVに変換できます。ヘッダ自動生成・区切り文字指定・ダウンロード対応。ブラウザ内で処理しサーバーへ送信しません。" />
+  <meta name="description" content="JSON（配列/オブジェクト）をCSVに変換。ヘッダ自動生成・区切り文字指定・ネストのフラット化・ダウンロード対応。無料・ブラウザ完結でインストール不要。入力データはサーバーに送信しません。" />
   <link rel="canonical" href="https://mat4645.github.io/tools/json-to-csv/" />
 
   <style>
@@ -86,7 +87,7 @@
           <label class="small">区切り文字：</label>
           <select id="delim">
             <option value="," selected>カンマ (,)</option>
-            <option value="tab">タブ (\\t)</option>
+            <option value="tab">タブ (\t)</option>
             <option value=";">セミコロン (;)</option>
           </select>
 
@@ -153,7 +154,6 @@
   }
 
   function normalizeDelim(v){
-    // ✅ 実タブ文字にする（\\t という2文字にしない）
     return v === "tab" ? "\t" : v;
   }
 
@@ -228,8 +228,6 @@
       const line = headers.map(h => csvEscape(r[h], delimChar)).join(delimChar);
       lines.push(line);
     }
-
-    // ✅ 実改行にする（"\\n" ではない）
     return { csv: lines.join("\n"), headers, count: rows.length };
   }
 
