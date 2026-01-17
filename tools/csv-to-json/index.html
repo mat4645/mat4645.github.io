@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="index,follow" />
 
-  <title>CSV→JSON 変換ツール（ファイル専用・自動変換・Shift-JIS対応） | ToolBox</title>
-  <meta name="description" content="CSVファイルを選ぶだけでJSONに自動変換。Shift-JIS/UTF-8/UTF-16対応。ブラウザ内で処理し、サーバーに送信しません。" />
+  <title>CSV→JSON 変換ツール（ファイル専用・自動変換・Shift-JIS対応・無料・ブラウザ完結） | ToolBox</title>
+  <meta name="description" content="CSVファイルを選ぶだけでJSONに自動変換（ファイル専用）。Shift-JIS/UTF-8/UTF-16対応。無料・ブラウザ完結でインストール不要。入力データはサーバーに送信しません。" />
   <link rel="canonical" href="https://mat4645.github.io/tools/csv-to-json/" />
 
   <style>
@@ -30,15 +30,13 @@
     .nav{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
     .nav a{font-size:13px; color:var(--muted)} .nav a:hover{color:var(--fg); text-decoration:none}
 
-    /* ✅ mainをwrap内に収める（JSON→CSVと同じ） */
     main{padding:18px 0 38px}
-    .hero{display:grid; gap:10px; padding:18px 0 0} /* ← wrap内前提に調整 */
+    .hero{display:grid; gap:10px; padding:18px 16px 0}
     h1{margin:0; font-size:26px; letter-spacing:-.02em}
     .sub{color:var(--muted); line-height:1.7; margin:0}
     .pill{font-size:12px; color:var(--muted); background:#f3f4f6; border:1px solid var(--border); padding:6px 10px; border-radius:999px; display:inline-block}
 
-    /* ✅ cardの横幅はwrapに任せる（左右marginを撤廃） */
-    .card{background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); box-shadow: var(--shadow); overflow:hidden; margin:14px 0 0;}
+    .card{background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); box-shadow: var(--shadow); overflow:hidden; margin:14px 16px 0;}
     .hd{padding:12px 14px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfbff); display:flex; align-items:center; justify-content:space-between; gap:10px;}
     .hd .title{font-weight:800; font-size:14px}
     .bd{padding:14px}
@@ -102,9 +100,8 @@
   </div>
 </header>
 
-<!-- ✅ JSON→CSVと同じく main を wrap に入れる -->
-<main class="wrap">
-  <section class="hero">
+<main>
+  <section class="hero wrap">
     <h1>CSV→JSON 変換（ファイル専用・自動変換）</h1>
     <p class="sub">
       CSVファイルを選ぶだけでJSONに自動変換します。文字化けする場合は文字コードを切り替えてください。<br/>
@@ -123,7 +120,7 @@
           <label class="msg">区切り文字：</label>
           <select id="delimiter">
             <option value="," selected>カンマ (,)</option>
-            <option value="tab">タブ (\\t)</option>
+            <option value="tab">タブ (\t)</option>
             <option value=";">セミコロン (;)</option>
           </select>
 
