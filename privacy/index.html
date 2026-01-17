@@ -1,10 +1,119 @@
 <!doctype html>
 <html lang="ja">
-<head><meta charset="utf-8"><title>プライバシーポリシー | ToolBox</title></head>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>プライバシーポリシー | ToolBox</title>
+  <meta name="description" content="ToolBoxのプライバシーポリシーです。入力データの取り扱い、Cookie、広告（Google AdSense）等について記載します。" />
+  <link rel="canonical" href="https://mat4645.github.io/privacy/" />
+
+  <style>
+    :root{
+      --bg:#ffffff; --fg:#111827; --muted:#6b7280; --border:#e5e7eb;
+      --shadow: 0 10px 25px rgba(0,0,0,.06);
+      --radius:14px; --accent:#2563eb;
+      --max: 980px;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:var(--sans); color:var(--fg); background:linear-gradient(180deg,#fff,#fff 30%, #f7f8fb);}
+    a{color:var(--accent); text-decoration:none} a:hover{text-decoration:underline}
+    header{position:sticky; top:0; z-index:10; background:rgba(255,255,255,.9); backdrop-filter: blur(8px); border-bottom:1px solid var(--border);}
+    .wrap{max-width:var(--max); margin:0 auto; padding:14px 16px}
+    .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .brand{display:flex; align-items:center; gap:10px}
+    .logo{width:34px; height:34px; border-radius:10px; background: radial-gradient(circle at 30% 30%, #93c5fd, #2563eb); box-shadow: var(--shadow);}
+    .brand strong{font-size:15px}
+    .nav{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
+    .nav a{font-size:13px; color:var(--muted)} .nav a:hover{color:var(--fg); text-decoration:none}
+    main{padding:18px 0 38px}
+    h1{margin:0; font-size:26px; letter-spacing:-.02em}
+    .sub{color:var(--muted); line-height:1.8; margin:10px 0 0}
+    .card{background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); box-shadow: var(--shadow); overflow:hidden; margin-top:14px}
+    .hd{padding:12px 14px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfbff);}
+    .hd .t{font-weight:900; font-size:14px}
+    .bd{padding:14px}
+    .p{color:var(--muted); line-height:1.9; margin:0; font-size:13px}
+    .p + .p{margin-top:10px}
+    ul{margin:10px 0 0; padding-left:18px; color:var(--muted); line-height:1.9; font-size:13px}
+    footer{border-top:1px solid var(--border); background:#fff; padding:18px 0 30px}
+    .links{display:flex; gap:10px; flex-wrap:wrap}
+    .links a{font-size:13px; color:var(--muted)}
+    .small{font-size:12px; color:var(--muted); line-height:1.7}
+  </style>
+</head>
+
 <body>
-<h1>プライバシーポリシー</h1>
-<p>当サイトでは、入力されたデータをサーバーに保存することはありません。</p>
-<p>Google AdSenseを利用する場合、Cookieを使用することがあります。</p>
-<a href="/">トップへ戻る</a>
+<header>
+  <div class="wrap topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <strong>ToolBox</strong><div class="small">無料・ブラウザ完結ツール集</div>
+      </div>
+    </div>
+    <nav class="nav" aria-label="サイト内リンク">
+      <a href="/">ホーム</a>
+      <a href="/tools/">ツール一覧</a>
+      <a href="/about/">このサイトについて</a>
+      <a href="/privacy/">プライバシーポリシー</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <h1>プライバシーポリシー</h1>
+  <p class="sub">当サイト（ToolBox）における、入力データ・Cookie・広告等の取り扱いについて説明します。</p>
+
+  <section class="card">
+    <div class="hd"><div class="t">入力データについて</div></div>
+    <div class="bd">
+      <p class="p">各ツールの入力データ（CSV/JSON等）は、基本的にブラウザ内で処理される設計です。当サイトが入力データをサーバーに保存することはありません。</p>
+      <p class="p">ただし、ブラウザや端末・ネットワーク環境により動作が異なる場合があります。重要データはバックアップのうえご利用ください。</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="hd"><div class="t">Cookie等の利用について</div></div>
+    <div class="bd">
+      <p class="p">当サイトは、利便性向上や広告配信のためにCookie等を使用する場合があります。</p>
+      <ul>
+        <li>Cookieの無効化は、ブラウザ設定から行えます。</li>
+        <li>Cookieを無効化すると、一部機能や表示が正しく動作しない場合があります。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="hd"><div class="t">広告（Google AdSense）について</div></div>
+    <div class="bd">
+      <p class="p">当サイトでは、第三者配信の広告サービス（Google AdSense）を利用する場合があります。広告配信事業者はCookie等を使用し、ユーザーの興味に応じた広告を表示することがあります。</p>
+      <p class="p">収集される情報や無効化手段等は、Googleのポリシー/設定をご確認ください。</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="hd"><div class="t">免責</div></div>
+    <div class="bd">
+      <p class="p">当サイトのツールは、変換結果の正確性や特定用途への適合性を保証しません。自己責任でご利用ください。</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="links" style="margin-bottom:8px">
+      <a href="/about/">このサイトについて</a>
+      <a href="/tools/">ツール一覧</a>
+      <a href="/">ホーム</a>
+    </div>
+    <div class="small">© <span id="year"></span> ToolBox</div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = String(new Date().getFullYear());
+</script>
 </body>
 </html>
