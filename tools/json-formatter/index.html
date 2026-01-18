@@ -36,7 +36,7 @@
     .hd{padding:12px 14px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfbff);}
     .hd .t{font-weight:800; font-size:14px}
     .bd{padding:14px}
-    textarea{width:100%; min-height:260px; padding:12px; border-radius:12px; border:1px solid var(--border); background:#fff; resize:vertical; font-family:var(--mono); font-size:13px; line-height:1.6; outline:none;}
+    textarea{width:100%; height:260px; padding:12px; border-radius:12px; border:1px solid var(--border); background:#fff; resize:none; overflow:auto; font-family:var(--mono); font-size:13px; line-height:1.6; outline:none; white-space:pre;}
     textarea:focus{border-color:#93c5fd; box-shadow: 0 0 0 4px rgba(59,130,246,.12);}
     .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
     .btn{border:1px solid var(--border); background:#fff; padding:10px 12px; border-radius:12px; cursor:pointer; font-weight:700; font-size:13px}
@@ -44,9 +44,6 @@
     .btn:disabled{opacity:.5; cursor:not-allowed}
     .msg{font-size:13px; color:var(--muted); line-height:1.6}
     .ok{color:#16a34a} .ng{color:#dc2626}
-    footer{border-top:1px solid var(--border); background:#fff; padding:18px 0 30px}
-    .links{display:flex; gap:10px; flex-wrap:wrap}
-    .links a{font-size:13px; color:var(--muted)}
     .small{font-size:12px; color:var(--muted); line-height:1.7}
   </style>
 </head>
@@ -87,29 +84,11 @@
       <textarea id="ta" placeholder='{"name":"Alice","age":30,"tags":["a","b"]}'></textarea>
 
       <p class="small" style="margin-top:10px">
-        ヒント：エラーが出る場合は JSON 形式（カンマ/カッコ/ダブルクォート）を確認してください。
+        ヒント：エラーが出る場合は JSON 形式（カンマ/カッコ/ダブルクォート）を確認してください。入力したJSONは保存しません。変換結果の正確性は保証しません（自己責任でご利用ください）。
       </p>
     </div>
   </section>
-
-  <section class="card">
-    <div class="hd"><div class="t">FAQ</div></div>
-    <div class="bd">
-      <p class="msg" style="margin:0">入力したJSONは保存しません。変換結果の正確性は保証しません（自己責任でご利用ください）。</p>
-    </div>
-  </section>
 </main>
-
-<footer>
-  <div class="wrap">
-    <div class="links" style="margin-bottom:8px">
-      <a href="/tools/">ツール一覧</a>
-      <a href="/about/">このサイトについて</a>
-      <a href="/privacy/">プライバシーポリシー</a>
-    </div>
-    <div class="small">© <span id="year"></span> ToolBox</div>
-  </div>
-</footer>
 
 <script>
   const $ = (id) => document.getElementById(id);
@@ -174,7 +153,6 @@
     setMsg("");
   });
 
-  document.getElementById("year").textContent = String(new Date().getFullYear());
   setMsg("JSONを貼り付けて、整形/圧縮してください。");
 </script>
 </body>
