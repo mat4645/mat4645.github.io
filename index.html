@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index,follow" />
 
   <title>ToolBox｜CSV/JSON 変換・整形ツール集（無料・ブラウザ完結）</title>
   <meta name="description" content="ToolBoxはCSV→JSON、JSON→CSV、JSON整形（フォーマッター）などを無料で使えるブラウザ完結ツール集です。インストール不要。入力データは基本的にサーバーへ送信しません。" />
@@ -48,11 +49,7 @@
     .tag{font-size:12px; color:var(--muted); background:#f3f4f6; border:1px solid var(--border); padding:4px 8px; border-radius:999px}
     .sectionTitle{margin:18px 0 0; font-size:18px; letter-spacing:-.01em}
     .bullets{margin:10px 0 0; padding-left:18px; color:var(--muted); line-height:1.9}
-    .faq{margin-top:12px}
-    details{background:#fff; border:1px solid var(--border); border-radius:12px; padding:10px 12px}
-    details + details{margin-top:8px}
-    summary{cursor:pointer; font-weight:800}
-    .ans{color:var(--muted); line-height:1.8; margin-top:6px; font-size:13px}
+    .hint{margin-top:10px; color:var(--muted); font-size:12px; line-height:1.8}
 
     footer{border-top:1px solid var(--border); background:#fff; padding:18px 0 30px}
     .links{display:flex; gap:10px; flex-wrap:wrap}
@@ -83,15 +80,12 @@
   <section class="hero">
     <h1>CSV/JSON 変換・整形ツール集（無料・ブラウザ完結）</h1>
     <p class="sub">
-      ToolBoxは <strong>CSV→JSON</strong> / <strong>JSON→CSV</strong> / <strong>JSON整形（フォーマッター）</strong> などを、
-      <strong>インストール不要</strong>で使える無料Webツール集です。<br/>
-      入力データは基本的にブラウザ内で処理し、サーバーに送信しない設計です。
-      <span class="pill" style="margin-left:6px">サーバー送信なし（基本）</span>
+      ToolBoxは <strong>CSV→JSON</strong> / <strong>JSON→CSV</strong> / <strong>JSON整形</strong> などを、<strong>インストール不要</strong>で使える無料Webツール集です。<br/>
+      入力データは基本的にブラウザ内で処理し、サーバーに送信しない設計です。<span class="pill" style="margin-left:6px">サーバー送信なし（基本）</span>
     </p>
 
     <div class="ctaRow">
       <a class="btn primary" href="/tools/">ツール一覧を見る</a>
-      <a class="btn" href="/tools/csv-to-json/">CSV→JSON を開く</a>
       <a class="btn" href="/tools/json-to-csv/">JSON→CSV を開く</a>
     </div>
   </section>
@@ -133,18 +127,6 @@
         </div>
       </div>
     </article>
-
-    <article class="card">
-      <div class="hd">
-        <div class="t"><a href="/tools/">ツール一覧へ（目的別に探す）</a></div>
-        <div class="desc">CSV/JSON以外も順次追加予定。目的に合うツールを一覧から探せます。</div>
-      </div>
-      <div class="bd">
-        <div class="tagrow">
-          <span class="tag">ツール一覧</span><span class="tag">カテゴリ</span><span class="tag">追加予定</span><span class="tag">無料</span>
-        </div>
-      </div>
-    </article>
   </section>
 
   <h2 class="sectionTitle">ToolBoxの特徴（無料・安全・簡単）</h2>
@@ -152,32 +134,11 @@
     <li><strong>無料</strong>：登録不要で使えます</li>
     <li><strong>ブラウザ完結</strong>：インストール不要、PCの権限が厳しい環境でも使いやすい</li>
     <li><strong>入力データを送信しない設計（基本）</strong>：CSV/JSONはローカル処理（詳細はプライバシーポリシー）</li>
-    <li><strong>業務向け</strong>：コピー/ダウンロードを用意（ツールによる）</li>
   </ul>
 
-  <h2 class="sectionTitle">よくある質問</h2>
-  <section class="faq" aria-label="FAQ">
-    <details>
-      <summary>入力したCSV/JSONはサーバーに送られますか？</summary>
-      <div class="ans">
-        各ツールは基本的にブラウザ内で処理する設計です。当サイトが入力データを保存することはありません。
-        ただし、アクセス解析や広告表示などでCookie等を利用する場合があります（詳細はプライバシーポリシーをご確認ください）。
-      </div>
-    </details>
-    <details>
-      <summary>CSV→JSONで文字化けしたときは？</summary>
-      <div class="ans">
-        文字コード（Shift-JIS/UTF-8/UTF-16等）を切り替えて再変換してください。
-        列が1つに見える場合は、区切り文字（カンマ/タブ/セミコロン）の指定が違う可能性があります。
-      </div>
-    </details>
-    <details>
-      <summary>変換結果は保証されますか？</summary>
-      <div class="ans">
-        変換結果の正確性や特定用途への適合性は保証しません。重要データは事前にバックアップのうえ、自己責任でご利用ください。
-      </div>
-    </details>
-  </section>
+  <p class="hint">
+    ヒント：文字化けした場合は、ツール側の文字コード/区切り設定を切り替えて再変換してください。変換結果の正確性は保証しません（自己責任でご利用ください）。
+  </p>
 </main>
 
 <footer>

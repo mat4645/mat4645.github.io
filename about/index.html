@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index,follow" />
 
-  <title>このサイトについて（ToolBox：CSV/JSON 変換・整形ツール集）</title>
+  <title>このサイトについて | ToolBox</title>
   <meta name="description" content="ToolBoxはCSV→JSON、JSON→CSV、JSON整形（フォーマッター）などを無料で使えるブラウザ完結ツール集です。インストール不要。入力データは基本的にブラウザ内で処理します。" />
   <link rel="canonical" href="https://mat4645.github.io/about/" />
 
@@ -27,16 +28,19 @@
     .brand strong{font-size:15px}
     .nav{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
     .nav a{font-size:13px; color:var(--muted)} .nav a:hover{color:var(--fg); text-decoration:none}
+
     main{padding:18px 0 38px}
     h1{margin:0; font-size:26px; letter-spacing:-.02em}
     .sub{color:var(--muted); line-height:1.8; margin:10px 0 0}
+
     .card{background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); box-shadow: var(--shadow); overflow:hidden; margin-top:14px}
     .hd{padding:12px 14px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfbff);}
     .hd .t{font-weight:900; font-size:14px}
     .bd{padding:14px}
-    .p{color:var(--muted); line-height:1.9; margin:0}
+    .p{color:var(--muted); line-height:1.9; margin:0; font-size:13px}
     .p + .p{margin-top:10px}
-    ul{margin:10px 0 0; padding-left:18px; color:var(--muted); line-height:1.9}
+    ul{margin:10px 0 0; padding-left:18px; color:var(--muted); line-height:1.9; font-size:13px}
+
     footer{border-top:1px solid var(--border); background:#fff; padding:18px 0 30px}
     .links{display:flex; gap:10px; flex-wrap:wrap}
     .links a{font-size:13px; color:var(--muted)}
@@ -74,7 +78,7 @@
     <div class="bd">
       <p class="p">
         CSV→JSON、JSON→CSV、JSON整形（フォーマッター）など、日常業務や個人作業で発生しやすい作業を、
-        ブラウザだけで安全に完結できる形にまとめています。
+        ブラウザだけで完結できる形にまとめています。
       </p>
       <ul>
         <li><strong>インストール不要</strong>（ブラウザだけでOK）</li>
@@ -85,27 +89,15 @@
   </section>
 
   <section class="card">
-    <div class="hd"><div class="t">入力データの取り扱い</div></div>
+    <div class="hd"><div class="t">入力データの取り扱い・免責</div></div>
     <div class="bd">
       <p class="p">
         当サイトのツールは、できる限りローカル（ブラウザ内）で処理する設計です。
-        ただし、ブラウザや端末・ネットワーク環境により挙動が異なる場合があります。
+        ただし、ブラウザや端末・ネットワーク環境により挙動が異なる場合があります。重要データはバックアップのうえご利用ください。
       </p>
       <p class="p">
-        重要データはバックアップのうえご利用ください。Cookieや広告等の扱いはプライバシーポリシーに記載します。
-      </p>
-    </div>
-  </section>
-
-  <section class="card">
-    <div class="hd"><div class="t">免責事項</div></div>
-    <div class="bd">
-      <p class="p">
-        当サイトのツールは、変換結果の正確性や特定用途への適合性を保証しません。
-        重要データはバックアップのうえ、自己責任でご利用ください。
-      </p>
-      <p class="p">
-        ツールの仕様は、改善のため予告なく変更される場合があります。
+        当サイトのツールは、変換結果の正確性や特定用途への適合性を保証しません。自己責任でご利用ください。
+        Cookieや広告等の扱いはプライバシーポリシーに記載します。
       </p>
     </div>
   </section>
@@ -118,7 +110,7 @@
       <a href="/privacy/">プライバシーポリシー</a>
       <a href="/">ホーム</a>
     </div>
-    <div class="small">© <span id="year"></span> ToolBox</div>
+    <div class="small">© <span id="year"></span> ToolBox. 変換結果の正確性は保証しません（自己責任でご利用ください）。</div>
   </div>
 </footer>
 

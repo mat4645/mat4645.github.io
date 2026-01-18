@@ -323,11 +323,6 @@
     return t.replace(/\u0000/g, "");
   }
 
-  function bytesToHex(bytes, n=16){
-    const head = bytes.slice(0, Math.min(n, bytes.length));
-    return Array.from(head).map(b => b.toString(16).padStart(2, "0")).join(" ");
-  }
-
   function encShort(enc){
     if (enc === "shift_jis") return "Shift-JIS";
     if (enc === "utf-8-bom") return "UTF-8(BOM)";
@@ -346,15 +341,6 @@
     return head + more;
   }
 
-  function buildOutMeta(bytes, outEnc, eol){
-    const eolLabel = (eol === "crlf") ? "CRLF" : "LF";
-    return [
-      "[出力概要]",
-      `文字コード=${encShort(outEnc)}`,
-      `BOM=${bomLabel(outEnc)}`,
-      `改行=${eolLabel}`
-    ].join(" / ");
-  }
 
   function buildOutputName(originalName, outEnc){
     const base = (originalName || "converted").replace(/\.[^.]+$/, "");
@@ -405,8 +391,8 @@
 
       // 出力プレビュー（BOM/改行反映）
       const outTextForPreview = decodeBytes(outBytes, outEncEl.value);
-      const meta = buildOutMeta(outBytes, outEncEl.value, eolEl.value);
-      previewOutEl.value = makePreview(outTextForPreview) + "\n\n" + meta;
+      // 出力側は「内容のプレビュー」に集中（概要は右上のstatに集約）
+      previewOutEl.value = makePreview(outTextForPreview);
       outPreviewStatEl.textContent = `${encShort(outEncEl.value)} / ${bomLabel(outEncEl.value)} / EOL=${(eolEl.value==="crlf"?"CRLF":"LF")}`;
 
       // Shift-JIS置換の可能性（簡易チェック：出力を再デコードした結果が一致しない）
