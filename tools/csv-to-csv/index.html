@@ -108,6 +108,23 @@
       </div>
     </div>
 
+    <!-- Security Block -->
+    <div class="panel mb-8">
+      <h2 class="text-lg font-bold mb-4">🔒 セキュリティについて</h2>
+      <p class="mb-4 font-bold">入力データはサーバーに送信されません。処理はすべてブラウザ内で完結します。</p>
+      <ul class="list-disc list-inside text-sm text-muted mb-6 pl-4">
+        <li>ファイルはアップロードされません（外部サーバーへ送信しません）</li>
+        <li>入力内容はサーバー側で保存・解析しません</li>
+        <li>会社・業務用のCSV/JSONでも安心してご利用いただけます</li>
+      </ul>
+      <div class="flex flex-wrap gap-2">
+        <span class="tag">サーバー送信なし</span>
+        <span class="tag">ブラウザ内で完結</span>
+        <span class="tag">ログ保存なし</span>
+        <span class="tag">インストール不要</span>
+      </div>
+    </div>
+
     <label class="file-drop-area" id="dropArea">
       <input type="file" id="fileInput" class="file-input" accept=".csv,text/csv,.txt,text/plain" />
       <div style="font-size: 2rem; color: var(--text-light); margin-bottom: 0.5rem;">📂</div>
@@ -181,6 +198,7 @@
     <div class="flex justify-center mt-4 text-xs text-muted">
       ※プレビューは先頭50行のみ表示されます。
     </div>
+
   </main>
 
   <footer class="site-footer">
