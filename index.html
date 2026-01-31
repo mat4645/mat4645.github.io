@@ -1,171 +1,227 @@
 <!doctype html>
 <html lang="ja">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="robots" content="index,follow" />
 
   <title>ConvertFileBox｜CSV/JSON 変換・整形ツール集（無料・ブラウザ完結）</title>
-  <meta name="description" content="ConvertFileBoxはCSV→JSON、JSON→CSV、JSON整形（フォーマッター）などを無料で使えるブラウザ完結ツール集です。インストール不要。入力データは基本的にサーバーへ送信しません。" />
+  <meta name="description"
+    content="ConvertFileBoxはCSV→JSON、JSON→CSV、JSON整形（フォーマッター）などを無料で使えるブラウザ完結ツール集です。インストール不要。入力データは基本的にサーバーへ送信しません。" />
   <link rel="canonical" href="https://www.convertfilebox.net/" />
 
-  <style>
-    :root{
-      --bg:#ffffff; --fg:#111827; --muted:#6b7280; --border:#e5e7eb;
-      --shadow: 0 10px 25px rgba(0,0,0,.06);
-      --radius:14px; --accent:#2563eb;
-      --max: 980px;
-      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", Arial, sans-serif;
-    }
-    *{box-sizing:border-box}
-    body{margin:0; font-family:var(--sans); color:var(--fg); background:linear-gradient(180deg,#fff,#fff 30%, #f7f8fb);}
-    a{color:var(--accent); text-decoration:none} a:hover{text-decoration:underline}
-    header{position:sticky; top:0; z-index:10; background:rgba(255,255,255,.9); backdrop-filter: blur(8px); border-bottom:1px solid var(--border);}
-    .wrap{max-width:var(--max); margin:0 auto; padding:14px 16px}
-    .topbar{display:flex; align-items:center; justify-content:space-between; gap:12px}
-    .brand{display:flex; align-items:center; gap:10px}
-    .logo{width:34px; height:34px; border-radius:10px; background: radial-gradient(circle at 30% 30%, #93c5fd, #2563eb); box-shadow: var(--shadow);}
-    .brand strong{font-size:15px}
-    .nav{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
-    .nav a{font-size:13px; color:var(--muted)} .nav a:hover{color:var(--fg); text-decoration:none}
+  <!-- Styles -->
+  <link rel="stylesheet" href="/assets/css/style.css">
 
-    main{padding:18px 0 38px}
-    h1{margin:0; font-size:28px; letter-spacing:-.02em}
-    .sub{color:var(--muted); line-height:1.8; margin:10px 0 0}
-    .hero{display:grid; gap:10px}
-    .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
-    .btn{border:1px solid var(--border); background:#fff; padding:10px 12px; border-radius:12px; cursor:pointer; font-weight:800; font-size:13px; display:inline-block}
-    .btn.primary{border-color:#2563eb; background:#2563eb; color:#fff}
-    .pill{font-size:12px; color:var(--muted); background:#f3f4f6; border:1px solid var(--border); padding:6px 10px; border-radius:999px; display:inline-block}
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
 
-    .grid{display:grid; grid-template-columns:1fr; gap:12px; margin-top:14px}
-    @media (min-width: 860px){ .grid{grid-template-columns: 1fr 1fr;} }
-    .card{background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); box-shadow: var(--shadow); overflow:hidden;}
-    .hd{padding:12px 14px; border-bottom:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfbff);}
-    .hd .t{font-weight:900; font-size:14px}
-    .bd{padding:14px}
-    .desc{color:var(--muted); font-size:13px; line-height:1.7; margin:6px 0 0}
-    .tagrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
-    .tag{font-size:12px; color:var(--muted); background:#f3f4f6; border:1px solid var(--border); padding:4px 8px; border-radius:999px}
-    .sectionTitle{margin:18px 0 0; font-size:18px; letter-spacing:-.01em}
-    .bullets{margin:10px 0 0; padding-left:18px; color:var(--muted); line-height:1.9}
-    .hint{margin-top:10px; color:var(--muted); font-size:12px; line-height:1.8}
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
+    crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2M7JXDP7J8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
-    footer{border-top:1px solid var(--border); background:#fff; padding:18px 0 30px}
-    .links{display:flex; gap:10px; flex-wrap:wrap}
-    .links a{font-size:13px; color:var(--muted)}
-    .small{font-size:12px; color:var(--muted); line-height:1.7}
-  </style>
-
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909" crossorigin="anonymous"></script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-2M7JXDP7J8"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-2M7JXDP7J8');
-</script>
-
+    gtag('config', 'G-2M7JXDP7J8');
+  </script>
 </head>
 
 <body>
-<header>
-  <div class="wrap topbar">
-    <div class="brand">
-      <div class="logo" aria-hidden="true"></div>
-      <div>
-        <strong>ConvertFileBox</strong><div class="small">無料・ブラウザ完結ツール集</div>
-      </div>
+
+  <header class="site-header">
+    <div class="container flex items-center justify-between" style="height: 100%;">
+      <a href="/" class="brand">
+        <div class="brand-logo" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+            <polyline points="14 2 14 8 20 8" />
+            <path d="M8 13h8" />
+            <path d="M8 17h8" />
+            <path d="M10 9h4" />
+          </svg>
+        </div>
+        <div>
+          ConvertFileBox
+          <span class="text-xs text-muted" style="display:block; font-weight:400; line-height:1;">無料ツール集</span>
+        </div>
+      </a>
+
+      <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="メニューを開く">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <nav id="nav-links" class="nav-links">
+        <a href="/" class="nav-link active">ホーム</a>
+        <a href="/tools/" class="nav-link">ツール一覧</a>
+        <a href="/about/" class="nav-link">このサイトについて</a>
+        <a href="/privacy/" class="nav-link">プライバシーポリシー</a>
+      </nav>
     </div>
-    <nav class="nav" aria-label="サイト内リンク">
-      <a href="/">ホーム</a>
-      <a href="/tools/">ツール一覧</a>
-      <a href="/about/">このサイトについて</a>
-      <a href="/privacy/">プライバシーポリシー</a>
-    </nav>
-  </div>
-</header>
+  </header>
 
-<main class="wrap">
-  <section class="hero">
-    <h1>CSV/JSON 変換・整形ツール集（無料・ブラウザ完結）</h1>
-    <p class="sub">
-      ConvertFileBoxは <strong>CSV→JSON</strong> / <strong>JSON→CSV</strong> / <strong>JSON整形</strong> などを、<strong>インストール不要</strong>で使える無料Webツール集です。<br/>
-      入力データは基本的にブラウザ内で処理し、サーバーに送信しない設計です。<span class="pill" style="margin-left:6px">サーバー送信なし（基本）</span>
-    </p>
-
-    <div class="ctaRow">
-      <a class="btn primary" href="/tools/">ツール一覧を見る</a>
-      <a class="btn" href="/tools/json-to-csv/">JSON→CSV を開く</a>
-    </div>
-  </section>
-
-  <h2 class="sectionTitle">人気ツール（よく使われる変換/整形）</h2>
-  <section class="grid" aria-label="人気ツール">
-    <article class="card">
-      <div class="hd">
-        <div class="t"><a href="/tools/csv-to-json/">CSV → JSON 変換（ファイル専用・自動変換）</a></div>
-        <div class="desc">CSVファイルを選ぶだけでJSONに変換。Shift-JIS/UTF-8など文字コード切替に対応。</div>
-      </div>
-      <div class="bd">
-        <div class="tagrow">
-          <span class="tag">CSV</span><span class="tag">JSON</span><span class="tag">変換</span><span class="tag">Shift-JIS</span><span class="tag">ブラウザ完結</span>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>CSV/JSON 変換・整形ツール集</h1>
+        <p>
+          <strong>CSV→JSON</strong> / <strong>JSON→CSV</strong> / <strong>JSON整形</strong> をブラウザだけで完了。<br>
+          インストール不要、サーバー送信なしの安全設計。
+        </p>
+        <div class="flex justify-center gap-4 flex-wrap">
+          <a href="/tools/" class="btn btn-primary">ツール一覧を見る</a>
+          <a href="/tools/json-to-csv/" class="btn btn-secondary">JSON→CSV を開く</a>
         </div>
       </div>
-    </article>
+    </section>
 
-    <article class="card">
-      <div class="hd">
-        <div class="t"><a href="/tools/json-to-csv/">JSON → CSV 変換（配列/オブジェクト対応）</a></div>
-        <div class="desc">配列JSONや単一オブジェクトからCSVへ変換。ヘッダ生成・区切り文字・フラット化に対応。</div>
+    <section class="container mt-8 mb-4">
+      <h2 class="text-center mb-4">人気ツール</h2>
+
+      <div class="grid grid-2">
+        <!-- Card 1 -->
+        <article class="card">
+          <div class="card-header">
+            <a href="/tools/csv-to-json/" class="card-title">CSV → JSON 変換</a>
+            <p class="text-sm text-muted mt-2">CSVファイルを選ぶだけでJSONに変換。Shift-JIS/UTF-8など文字コード切替に対応。</p>
+          </div>
+          <div class="card-body">
+            <div class="flex flex-wrap gap-2">
+              <span class="tag">CSV</span>
+              <span class="tag">JSON</span>
+              <span class="tag">自動変換</span>
+            </div>
+            <div class="mt-4">
+              <a href="/tools/csv-to-json/" class="btn btn-secondary btn-sm" style="width:100%">使ってみる →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card">
+          <div class="card-header">
+            <a href="/tools/json-to-csv/" class="card-title">JSON → CSV 変換</a>
+            <p class="text-sm text-muted mt-2">配列JSONや単一オブジェクトからCSVへ変換。ヘッダ生成・区切り文字・フラット化に対応。</p>
+          </div>
+          <div class="card-body">
+            <div class="flex flex-wrap gap-2">
+              <span class="tag">JSON</span>
+              <span class="tag">CSV</span>
+              <span class="tag">フラット化</span>
+            </div>
+            <div class="mt-4">
+              <a href="/tools/json-to-csv/" class="btn btn-secondary btn-sm" style="width:100%">使ってみる →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card">
+          <div class="card-header">
+            <a href="/tools/json-formatter/" class="card-title">JSON 整形 (Pretty / Minify)</a>
+            <p class="text-sm text-muted mt-2">JSONを読みやすく整形（Pretty）または1行に圧縮（Minify）。エラー表示・コピー対応。</p>
+          </div>
+          <div class="card-body">
+            <div class="flex flex-wrap gap-2">
+              <span class="tag">JSON</span>
+              <span class="tag">Formatter</span>
+              <span class="tag">Minify</span>
+            </div>
+            <div class="mt-4">
+              <a href="/tools/json-formatter/" class="btn btn-secondary btn-sm" style="width:100%">使ってみる →</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4 (Link to all) -->
+        <article class="card"
+          style="border-style: dashed; background: transparent; justify-content: center; align-items: center;">
+          <div class="card-body flex flex-col items-center justify-center">
+            <h3 class="text-muted">その他のツール</h3>
+            <p class="text-sm text-muted text-center mb-4">Paste版 CSV変換 や CSV整形など</p>
+            <a href="/tools/" class="btn btn-secondary">全てのツールを見る</a>
+          </div>
+        </article>
       </div>
-      <div class="bd">
-        <div class="tagrow">
-          <span class="tag">JSON</span><span class="tag">CSV</span><span class="tag">変換</span><span class="tag">フラット化</span><span class="tag">ブラウザ完結</span>
+    </section>
+
+    <section class="container mt-8">
+      <div class="panel" style="background:#f8fafc; border:none;">
+        <h2 class="text-center" style="font-size:1.5rem">ConvertFileBoxの特徴</h2>
+        <div class="grid grid-2 mt-4">
+          <div class="flex gap-4">
+            <div class="text-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold">完全無料・登録不要</h3>
+              <p class="text-sm text-muted">ユーザー登録なしで、すぐにすべての機能を利用できます。</p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="text-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                <line x1="8" y1="21" x2="16" y2="21" />
+                <line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold">ブラウザ完結</h3>
+              <p class="text-sm text-muted">特別なソフトのインストールは不要。会社のPCでも安心して使えます。</p>
+            </div>
+          </div>
+          <div class="flex gap-4">
+            <div class="text-primary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </div>
+            <div>
+              <h3 class="text-sm font-bold">セキュアな設計</h3>
+              <p class="text-sm text-muted">処理はすべてローカル（あなたのブラウザ内）で行われ、サーバーにデータは送信されません。</p>
+            </div>
+          </div>
         </div>
       </div>
-    </article>
+    </section>
 
-    <article class="card">
-      <div class="hd">
-        <div class="t"><a href="/tools/json-formatter/">JSON 整形（Pretty / Minify）</a></div>
-        <div class="desc">JSONを読みやすく整形（Pretty）/ 1行に圧縮（Minify）。エラー表示・コピー対応。</div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container text-center">
+      <div class="flex justify-center gap-4 mb-4 text-sm text-muted">
+        <a href="/tools/">ツール一覧</a>
+        <a href="/about/">このサイトについて</a>
+        <a href="/privacy/">プライバシーポリシー</a>
       </div>
-      <div class="bd">
-        <div class="tagrow">
-          <span class="tag">JSON</span><span class="tag">整形</span><span class="tag">フォーマッター</span><span class="tag">Minify</span><span class="tag">ブラウザ完結</span>
-        </div>
+      <div class="text-xs text-muted">
+        &copy; <span id="year">2026</span> ConvertFileBox. <br>
+        変換結果の正確性は保証しません（自己責任でご利用ください）。
       </div>
-    </article>
-  </section>
-
-  <h2 class="sectionTitle">ConvertFileBoxの特徴（無料・安全・簡単）</h2>
-  <ul class="bullets">
-    <li><strong>無料</strong>：登録不要で使えます</li>
-    <li><strong>ブラウザ完結</strong>：インストール不要、PCの権限が厳しい環境でも使いやすい</li>
-    <li><strong>入力データを送信しない設計（基本）</strong>：CSV/JSONはローカル処理（詳細はプライバシーポリシー）</li>
-  </ul>
-
-  <p class="hint">
-    ヒント：文字化けした場合は、ツール側の文字コード/区切り設定を切り替えて再変換してください。変換結果の正確性は保証しません（自己責任でご利用ください）。
-  </p>
-</main>
-
-<footer>
-  <div class="wrap">
-    <div class="links" style="margin-bottom:8px">
-      <a href="/tools/">ツール一覧</a>
-      <a href="/about/">このサイトについて</a>
-      <a href="/privacy/">プライバシーポリシー</a>
     </div>
-    <div class="small">© <span id="year"></span> ConvertFileBox. 変換結果の正確性は保証しません（自己責任でご利用ください）。</div>
-  </div>
-</footer>
+  </footer>
 
-<script>
-  document.getElementById("year").textContent = String(new Date().getFullYear());
-</script>
+  <script src="/assets/js/ui.js"></script>
+
 </body>
+
 </html>
