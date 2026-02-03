@@ -268,9 +268,63 @@ svg {
   border-color: var(--text-muted);
 }
 
-.btn-sm {
-  padding: 0.375rem 0.75rem;
-  font-size: 0.8125rem;
+/* Button Variants */
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text-muted);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.btn-ghost:hover {
+  background-color: var(--bg-surface-alt);
+  color: var(--text-main);
+  border-color: var(--border);
+}
+
+.btn-danger-ghost {
+  background-color: transparent;
+  color: var(--danger);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.btn-danger-ghost:hover {
+  background-color: #fef2f2;
+  /* Red-50 */
+  color: #dc2626;
+  /* Red-600 */
+}
+
+/* Form Layouts & Utilities */
+.tool-config-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem;
+  background: var(--bg-surface-alt);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
 }
 
 /* Cards */
@@ -294,7 +348,7 @@ svg {
 
 .card-header {
   padding: 1.25rem;
-  border-bottom: 1px solid var(--bg-surface-alt);
+  border-bottom: 1px solid var(--border);
   background: linear-gradient(to bottom, #fff, #f8fafc);
 }
 

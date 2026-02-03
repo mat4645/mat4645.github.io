@@ -115,9 +115,9 @@
         <div class="split-pane">
             <!-- Input Column -->
             <div class="flex flex-col gap-2">
-                <div class="flex justify-between items-center">
+                <div class="toolbar">
                     <h2 class="text-lg font-bold">入力 (JSON)</h2>
-                    <button id="btnClear" class="text-sm text-muted hover:text-danger">クリア</button>
+                    <button id="btnClear" class="btn btn-danger-ghost btn-sm">クリア</button>
                 </div>
                 <textarea id="ta" class="code-editor" style="height: 500px;" placeholder='ここにJSONを貼り付けてください...
 例:
@@ -127,7 +127,7 @@
 
             <!-- Output Column -->
             <div class="flex flex-col gap-2">
-                <div class="flex justify-between items-center">
+                <div class="toolbar">
                     <div class="flex items-center gap-4">
                         <h2 class="text-lg font-bold">結果 (JSON Schema)</h2>
                     </div>

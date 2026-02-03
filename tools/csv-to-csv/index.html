@@ -136,47 +136,45 @@
       </div>
     </label>
 
-    <div class="panel mb-6">
-      <div class="flex flex-wrap items-end gap-6">
-        <div style="min-width: 150px;">
-          <label class="text-xs font-bold text-muted mb-1 block">1. 読み込み文字コード</label>
-          <select id="inEnc" class="form-select" disabled>
-            <option value="shift_jis" selected>Shift-JIS</option>
-            <option value="utf-8">UTF-8</option>
-            <option value="utf-8-bom">UTF-8（BOM付き）</option>
-            <option value="utf-16le">UTF-16LE</option>
-            <option value="utf-16be">UTF-16BE</option>
-          </select>
-        </div>
-
-        <div style="min-width: 150px;">
-          <label class="text-xs font-bold text-muted mb-1 block">2. 出力文字コード</label>
-          <select id="outEnc" class="form-select" disabled>
-            <option value="shift_jis" selected>Shift-JIS (Excel推奨)</option>
-            <option value="utf-8">UTF-8</option>
-            <option value="utf-8-bom">UTF-8（BOM付き）</option>
-          </select>
-        </div>
-
-        <div style="min-width: 120px;">
-          <label class="text-xs font-bold text-muted mb-1 block">出力改行コード</label>
-          <select id="eol" class="form-select" disabled>
-            <option value="crlf" selected>CRLF (Windows)</option>
-            <option value="lf">LF (Unix/Mac)</option>
-          </select>
-        </div>
-
-        <div style="margin-left: auto;">
-          <button class="btn btn-primary" id="btnDownload" disabled>変換してダウンロード</button>
-        </div>
+    <div class="tool-config-bar mb-6">
+      <div class="form-group">
+        <label class="text-xs font-bold text-muted">1. 読み込み文字コード</label>
+        <select id="inEnc" class="form-select" disabled>
+          <option value="shift_jis" selected>Shift-JIS</option>
+          <option value="utf-8">UTF-8</option>
+          <option value="utf-8-bom">UTF-8（BOM付き）</option>
+          <option value="utf-16le">UTF-16LE</option>
+          <option value="utf-16be">UTF-16BE</option>
+        </select>
       </div>
-      <div id="warnBadge" class="alert alert-warning mt-4 text-xs" style="display:none"></div>
+
+      <div class="form-group">
+        <label class="text-xs font-bold text-muted">2. 出力文字コード</label>
+        <select id="outEnc" class="form-select" disabled>
+          <option value="shift_jis" selected>Shift-JIS (Excel推奨)</option>
+          <option value="utf-8">UTF-8</option>
+          <option value="utf-8-bom">UTF-8（BOM付き）</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="text-xs font-bold text-muted">出力改行コード</label>
+        <select id="eol" class="form-select" disabled>
+          <option value="crlf" selected>CRLF (Windows)</option>
+          <option value="lf">LF (Unix/Mac)</option>
+        </select>
+      </div>
+
+      <div style="margin-left: auto;">
+        <button class="btn btn-primary" id="btnDownload" disabled>変換してダウンロード</button>
+      </div>
     </div>
+    <div id="warnBadge" class="alert alert-warning mt-4 text-xs" style="display:none"></div>
 
     <div class="split-pane">
       <!-- Preview Input -->
       <div class="flex flex-col gap-2">
-        <div class="flex justify-between items-center">
+        <div class="toolbar">
           <h2 class="text-lg font-bold">入力プレビュー (decode結果)</h2>
           <span id="inPreviewStat" class="text-xs text-muted"></span>
         </div>
@@ -186,7 +184,7 @@
 
       <!-- Preview Output -->
       <div class="flex flex-col gap-2">
-        <div class="flex justify-between items-center">
+        <div class="toolbar">
           <h2 class="text-lg font-bold">出力プレビュー</h2>
           <span id="outPreviewStat" class="text-xs text-muted"></span>
         </div>
