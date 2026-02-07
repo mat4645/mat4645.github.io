@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="ja-jp">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="index,follow" />
+
+    <title>JSON Schema 生成ツール（オンライン・Draft-07準拠・無料）| ConvertFileBox</title>
+    <meta name="description"
+        content="JSONからJSON Schemaを自動生成。API設計やバリデーション定義の工数を大幅に削減します。ブラウザ内処理でセキュア。Draft-07準拠。エンジニア向けのセキュアな開発支援ツール。" />
+    <link rel="canonical" href="https://www.convertfilebox.net/ja-jp/tools/json-to-json-schema/" />
+    <link rel="alternate" hreflang="ja-jp" href="https://www.convertfilebox.net/ja-jp/tools/json-to-json-schema/" />
+    <link rel="alternate" hreflang="en-us" href="https://www.convertfilebox.net/en-us/tools/json-to-json-schema/" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
+        crossorigin="anonymous"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2M7JXDP7J8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-2M7JXDP7J8');
+    </script>
+
+    <style>
+        .split-pane {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 960px) {
+            .split-pane {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* 技術解説 */
+        .technical-content {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            line-height: 1.8;
+        }
+
+        .technical-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+
+<body>
+
+    <site-header></site-header>
+
+    <main class="container mt-8 mb-8" style="max-width: 1280px;">
+        <div class="text-center mb-8">
+            <h1>JSON Schema 生成ツール</h1>
+            <p class="text-muted mt-2">JSONからJSON Schema (Draft-07) を自動推論。仕様書作成やバリデーション定義を効率化します。</p>
+            <div class="flex justify-center gap-4 mt-4">
+                <span class="tag">サーバー送信なし</span>
+                <button id="btnSample" class="text-sm text-primary"
+                    style="background:none; border:none; text-decoration:underline; cursor:pointer;">サンプルを入力する</button>
+            </div>
+        </div>
+
+        <!-- Standard Security Block -->
+        <section class="panel-security mb-8">
+            <h2 class="text-lg font-bold mb-4">🛡️ セキュリティに関するお約束</h2>
+            <p class="mb-4 font-bold">当サイトでは、入力されたデータが一瞬たりとも外部サーバーへ送信されることはありません。</p>
+            <ul class="list-disc list-inside text-sm text-muted pl-4">
+                <li>すべての解析・変換ロジックはあなたのブラウザ（JavaScript）内で実行されます。</li>
+                <li>機密性の高いログデータや個人情報を含むJSONなども、安心して処理いただけます。</li>
+                <li>入力された内容はページを閉じた瞬間にメモリから消去され、記録も残りません。</li>
+            </ul>
+        </section>
+
+        <div class="split-pane">
+            <!-- Input -->
+            <div class="flex flex-col gap-2">
+                <div class="toolbar">
+                    <h2 class="text-lg font-bold">入力 (JSON)</h2>
+                    <button id="btnClear" class="btn btn-danger-ghost btn-sm">クリア</button>
+                </div>
+                <textarea id="ta" class="code-editor" style="height: 500px;" placeholder='ここにJSONをペースト...'></textarea>
+                <div id="errorMsg" class="alert alert-warning mt-2" style="display:none"></div>
+            </div>
+
+            <!-- Output -->
+            <div class="flex flex-col gap-2">
+                <div class="toolbar">
+                    <h2 class="text-lg font-bold">生成結果 (JSON Schema)</h2>
+                    <button class="btn btn-secondary btn-sm" id="btnCopy" disabled>結果をコピー</button>
+                </div>
+                <textarea id="output" class="code-editor" readonly style="height: 500px;"
+                    placeholder="JSON Schemaがここに生成されます。"></textarea>
+            </div>
+        </div>
+
+        <article class="technical-content">
+            <h2>技術解説：JSON Schemaの役割と自動生成の効率性</h2>
+            <p>
+                モダンなAPI設計において、JSONはデータの物理的な形式に過ぎません。そのデータがどのような構造を持ち、どのフィールドが必須（Required）であるかを定義するのが「JSON Schema」の役割です。
+            </p>
+
+            <h3>Draft-07 準拠の自動推論エンジン</h3>
+            <p>
+                当ツールは、入力されたJSONデータを再帰的にスキャンし、各ノードのデータ型を自動的に判定します。数値、文字列、ブーリアンといった基本型から、複雑なネストを持つオブジェクトや配列までを解析し、標準的な「JSON
+                Schema Draft-07」仕様に基づいたスキーマを即座に書き出します。
+            </p>
+
+            <h3>APIドキュメントとバリデーションの基盤</h3>
+            <p>
+                Swagger（OpenAPI）の定義ファイルを作成する際、既存のレスポンスJSONからスキーマを手動で書き起こすのは苦行です。このツールを使えば、たたき台となるスキーマを数秒で手に入れ、あとはビジネスロジックに合わせた微調整（required属性の追加など）を行うだけで済み、開発スピードを劇的に向上させます。
+            </p>
+
+            <h3>「型」の安全性とプライバシー</h3>
+            <p>
+                スキーマ設計時には、時に本番環境に近い秘匿性の高いデータを用いることもあります。ConvertFileBoxはブラウザ内で動作を完結させるため、解析中のデータがインターネットを経由して外部へ漏れることはありません。セキュアな設計室のように、安心して設計に集中できます。
+            </p>
+        </article>
+    </main>
+
+    <site-footer></site-footer>
+
+    <script src="/assets/js/ui.js"></script>
+    <script>
+        const $ = (id) => document.getElementById(id);
+        const ta = $("ta");
+        const output = $("output");
+        const errorMsgEl = $("errorMsg");
+        const btnCopy = $("btnCopy");
+
+        function setError(text) {
+            if (!text) { errorMsgEl.style.display = "none"; return; }
+            errorMsgEl.textContent = text;
+            errorMsgEl.style.display = "block";
+        }
+
+        function getType(v) {
+            if (v === null) return "null";
+            if (Array.isArray(v)) return "array";
+            return typeof v;
+        }
+
+        function generateSchema(data) {
+            const type = getType(data);
+            if (type === "object") {
+                const properties = {};
+                for (const key in data) {
+                    properties[key] = generateSchema(data[key]);
+                }
+                return { type: "object", properties: properties };
+            } else if (type === "array") {
+                let itemsSchema = {};
+                if (data.length > 0) itemsSchema = generateSchema(data[0]);
+                return { type: "array", items: itemsSchema };
+            } else {
+                return { type: type };
+            }
+        }
+
+        function process() {
+            setError("");
+            const t = ta.value.trim();
+            if (!t) { output.value = ""; btnCopy.disabled = true; return; }
+            try {
+                const obj = JSON.parse(t);
+                const schema = {
+                    "$schema": "http://json-schema.org/draft-07/schema#",
+                    ...generateSchema(obj)
+                };
+                output.value = JSON.stringify(schema, null, 2);
+                btnCopy.disabled = false;
+            } catch (e) {
+                output.value = ""; btnCopy.disabled = true;
+                setError("JSON構文エラー: 形式を確認してください");
+            }
+        }
+
+        let timer = null;
+        ta.addEventListener("input", () => {
+            if (timer) clearTimeout(timer);
+            timer = setTimeout(process, 300);
+        });
+
+        btnCopy.addEventListener("click", () => {
+            navigator.clipboard.writeText(output.value);
+            const old = btnCopy.textContent; btnCopy.textContent = "コピー完了";
+            setTimeout(() => btnCopy.textContent = old, 1500);
+        });
+
+        $("btnClear").addEventListener("click", () => { ta.value = ""; process(); });
+        $("btnSample").addEventListener("click", () => {
+            ta.value = JSON.stringify({ id: 1, name: "Alice", tags: ["engineer", "designer"], address: { city: "Tokyo" } }, null, 2);
+            process();
+        });
+    </script>
+</body>
+
+</html>

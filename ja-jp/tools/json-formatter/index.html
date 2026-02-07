@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ja-jp">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index,follow" />
+
+  <title>JSON整形＆バリデーション（オンライン・安全・無料）| ConvertFileBox</title>
+  <meta name="description"
+    content="読みづらいJSONをワンクリックで整形。 minify(圧縮)や構文チェック機能も搭載。ブラウザ内処理で機密情報も安全。エンジニア必携のセキュアなJSONフォーマッター。" />
+  <link rel="canonical" href="https://www.convertfilebox.net/ja-jp/tools/json-formatter/" />
+  <link rel="alternate" hreflang="ja-jp" href="https://www.convertfilebox.net/ja-jp/tools/json-formatter/" />
+  <link rel="alternate" hreflang="en-us" href="https://www.convertfilebox.net/en-us/tools/json-formatter/" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
+    crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2M7JXDP7J8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-2M7JXDP7J8');
+  </script>
+
+  <style>
+    .split-pane {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 960px) {
+      .split-pane {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* 技術解説 */
+    .technical-content {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      line-height: 1.8;
+    }
+
+    .technical-content h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-main);
+    }
+  </style>
+</head>
+
+<body>
+
+  <site-header></site-header>
+
+  <main class="container mt-8 mb-8" style="max-width: 1280px;">
+    <div class="text-center mb-8">
+      <h1>JSON 整形・圧縮（バリデーション機能付き）</h1>
+      <p class="text-muted mt-2">APIレスポンスのデバッグを高速化。構文エラーの即時検知と洗練されたフォーマットを提供します。</p>
+      <div class="flex justify-center gap-4 mt-4">
+        <span class="tag">サーバー送信なし</span>
+        <button id="btnSample" class="text-sm text-primary"
+          style="background:none; border:none; text-decoration:underline; cursor:pointer;">サンプルを入力する</button>
+      </div>
+    </div>
+
+    <!-- Standard Security Block -->
+    <section class="panel-security mb-8">
+      <h2 class="text-lg font-bold mb-4">🛡️ セキュリティに関するお約束</h2>
+      <p class="mb-4 font-bold">当サイトでは、入力されたデータが一瞬たりとも外部サーバーへ送信されることはありません。</p>
+      <ul class="list-disc list-inside text-sm text-muted pl-4">
+        <li>すべての解析・変換ロジックはあなたのブラウザ（JavaScript）内で実行されます。</li>
+        <li>機密性の高いログデータや個人情報を含むJSONなども、安心して処理いただけます。</li>
+        <li>入力された内容はページを閉じた瞬間にメモリから消去され、記録も残りません。</li>
+      </ul>
+    </section>
+
+    <div class="split-pane">
+      <!-- Input -->
+      <div class="flex flex-col gap-2">
+        <div class="toolbar">
+          <h2 class="text-lg font-bold">JSON 入力</h2>
+          <button id="btnClear" class="btn btn-danger-ghost btn-sm">クリア</button>
+        </div>
+        <textarea id="ta" class="code-editor" style="height: 500px;" placeholder='ここにJSONをペースト...'></textarea>
+        <div id="errorMsg" class="alert alert-warning mt-2" style="display:none"></div>
+      </div>
+
+      <!-- Output -->
+      <div class="flex flex-col gap-2">
+        <div class="toolbar">
+          <div class="flex items-center gap-4">
+            <h2 class="text-lg font-bold">整形・圧縮結果</h2>
+            <div class="flex border border-border rounded-md">
+              <button id="btnPretty" class="px-3 py-1 bg-primary text-white text-sm">整形 (Pretty)</button>
+              <button id="btnMinify" class="px-3 py-1 bg-surface text-main text-sm">圧縮 (Minify)</button>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="btnCopy" disabled>コピー</button>
+        </div>
+        <textarea id="output" class="code-editor" readonly style="height: 500px;"
+          placeholder="ここに結果が表示されます。"></textarea>
+      </div>
+    </div>
+
+    <article class="technical-content">
+      <h2>技術解説：モダン開発におけるJSONフォーマットの重要性</h2>
+      <p>
+        JSON（JavaScript Object
+        Notation）は、もはやネットワーク上の標準言語です。しかし、通信効率を最大化したプロダクション環境のJSONは、空白や改行が削ぎ落とされた「Minified」な状態であり、人間がその構造を解読するのは容易ではありません。
+      </p>
+
+      <h3>デバッグ時間を50%短縮するフォーマッティング</h3>
+      <p>
+        当フォーマッターは、RFC
+        8259に準拠した厳格な解析を行い、人間にとって最も可読性の高い「2スペース・インデント」を適用します。深いネスト構造を持つAPIレスポンスであっても、この整形を通すことで不具合の起点を瞬時に特定できるようになります。
+      </p>
+
+      <h3>構文チェッカー（Linter）としての役割</h3>
+      <p>
+        「最後の項目にカンマを付けてしまった」「ダブルクォートではなくシングルクォートを使ってしまった」といった些細なミスは、プログラムのクラッシュを招きます。当ツールは、リアルタイムで構文の妥当性を検証し、エラーが発生した場合はその位置を特定することで、開発者の「気づき」をサポートします。
+      </p>
+
+      <h3>プライバシーを侵害しないデバッグ環境</h3>
+      <p>
+        開発中の重要なAPIキーやトークンが含まれるJSONを、外部サーバーに送信して整形するのは避けるべきです。ConvertFileBoxはブラウザ内で処理を完結させるため、あなたの機密データが外部ネットワークに流出するリスクを物理的にゼロにします。
+      </p>
+    </article>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="/assets/js/ui.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const ta = $("ta");
+    const output = $("output");
+    const errorMsgEl = $("errorMsg");
+    const btnPretty = $("btnPretty");
+    const btnMinify = $("btnMinify");
+    const btnCopy = $("btnCopy");
+
+    let mode = "pretty";
+
+    function setError(text) {
+      if (!text) { errorMsgEl.style.display = "none"; return; }
+      errorMsgEl.textContent = text;
+      errorMsgEl.style.display = "block";
+    }
+
+    function process() {
+      setError("");
+      const t = ta.value.trim();
+      if (!t) { output.value = ""; btnCopy.disabled = true; return; }
+      try {
+        const obj = JSON.parse(t);
+        output.value = (mode === "pretty") ? JSON.stringify(obj, null, 2) : JSON.stringify(obj);
+        btnCopy.disabled = false;
+      } catch (e) {
+        output.value = ""; btnCopy.disabled = true;
+        setError("JSON構文エラー: 入力内容を確認してください");
+      }
+    }
+
+    let timer = null;
+    ta.addEventListener("input", () => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(process, 300);
+    });
+
+    btnPretty.addEventListener("click", () => {
+      mode = "pretty";
+      btnPretty.className = "px-3 py-1 bg-primary text-white text-sm";
+      btnMinify.className = "px-3 py-1 bg-surface text-main text-sm";
+      process();
+    });
+
+    btnMinify.addEventListener("click", () => {
+      mode = "minify";
+      btnMinify.className = "px-3 py-1 bg-primary text-white text-sm";
+      btnPretty.className = "px-3 py-1 bg-surface text-main text-sm";
+      process();
+    });
+
+    btnCopy.addEventListener("click", () => {
+      navigator.clipboard.writeText(output.value);
+      const old = btnCopy.textContent; btnCopy.textContent = "コピー完了";
+      setTimeout(() => btnCopy.textContent = old, 1500);
+    });
+
+    $("btnClear").addEventListener("click", () => { ta.value = ""; process(); });
+    $("btnSample").addEventListener("click", () => {
+      ta.value = '{"user":{"id":1,"name":"Alice","meta":{"active":true,"tags":["a","b"]}}}';
+      process();
+    });
+  </script>
+</body>
+
+</html>

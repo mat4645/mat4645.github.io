@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="index,follow" />
+
+    <title>CSV to JSON Converter | Secure, High-Performance Browser-Based Tool | ConvertFileBox</title>
+    <meta name="description"
+        content="Convert CSV to JSON instantly in your browser. Supports Shift-JIS, UTF-8, and large files. Zero data sent to server. Free, secure, and professional tool for developers." />
+    <link rel="canonical" href="https://www.convertfilebox.net/en-us/tools/csv-to-json/" />
+    <link rel="alternate" hreflang="ja-jp" href="https://www.convertfilebox.net/ja-jp/tools/csv-to-json/" />
+    <link rel="alternate" hreflang="en" href="https://www.convertfilebox.net/en-us/tools/csv-to-json/" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
+        crossorigin="anonymous"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2M7JXDP7J8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-2M7JXDP7J8');
+    </script>
+
+    <style>
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+            cursor: pointer;
+        }
+
+        /* Technical content styles */
+        .technical-content {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            line-height: 1.8;
+        }
+
+        .technical-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .technical-content h3 {
+            font-size: 1.125rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            border-left: 4px solid var(--primary);
+            padding-left: 1rem;
+        }
+
+        .technical-content p {
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        .technical-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .technical-content li {
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .technical-content blockquote {
+            background: var(--bg-surface);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <site-header></site-header>
+
+    <main class="container mt-8 mb-8" style="max-width: 960px;">
+        <div class="text-center mb-8">
+            <h1>CSV to JSON Converter</h1>
+            <p class="text-muted mt-2">Convert CSV files to JSON instantly and securely within your browser. Supports
+                multiple encodings and large datasets without compromising privacy.</p>
+            <div class="flex justify-center gap-4 mt-4">
+                <span class="tag">Zero Server Latency</span>
+                <button id="btnSample" class="text-sm text-primary"
+                    style="background:none; border:none; text-decoration:underline; cursor:pointer;">Load Sample
+                    CSV</button>
+                <a href="/en-us/tools/csv-to-json-paste/" class="text-sm text-primary"
+                    style="text-decoration:underline">Need Paste Mode?</a>
+            </div>
+        </div>
+
+        <!-- Standard Security Block -->
+        <section class="panel-security mb-8">
+            <h2 class="text-lg font-bold mb-4">🛡️ Security & Privacy Guaranteed</h2>
+            <p class="mb-4 font-bold">Your data never leaves your browser. We prioritize your privacy above all else.
+            </p>
+            <ul class="list-disc list-inside text-sm text-muted pl-4">
+                <li>All conversion logic is executed locally in your browser using JavaScript.</li>
+                <li>Sensitive data, such as corporate logs or PII, can be processed safely without any risk of exposure.
+                </li>
+                <li>No data is sent to our servers, and nothing is stored or logged.</li>
+            </ul>
+        </section>
+
+        <!-- Tool Section -->
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+
+            <!-- Left Column: Settings & Input -->
+            <div class="flex flex-col gap-4">
+                <div class="panel">
+                    <h2 class="text-lg font-bold mb-4">1. Configuration</h2>
+                    <div class="flex flex-col gap-4">
+                        <div class="form-group">
+                            <label class="text-xs font-bold text-muted" for="delimiter">Delimiter</label>
+                            <select id="delimiter" class="form-select">
+                                <option value="," selected>Comma (,)</option>
+                                <option value="tab">Tab (\t)</option>
+                                <option value=";">Semicolon (;)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-xs font-bold text-muted" for="fileEncoding">Encoding</label>
+                            <select id="fileEncoding" class="form-select">
+                                <option value="utf-8" selected>UTF-8 (Standard)</option>
+                                <option value="shift_jis">Shift-JIS (Legacy Windows)</option>
+                                <option value="utf-8-bom">UTF-8 with BOM</option>
+                                <option value="utf-16le">UTF-16LE</option>
+                                <option value="utf-16be">UTF-16BE</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="hasHeader" checked />
+                            <span>Use first row as headers</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <h2 class="text-lg font-bold mb-4">2. Select File</h2>
+                    <label class="file-drop-area" id="dropArea" for="fileInput">
+                        <input type="file" id="fileInput" class="file-input" accept=".csv,text/csv,.txt,text/plain" />
+                        <div style="font-size: 2rem; color: var(--text-light); margin-bottom: 0.5rem;">📁</div>
+                        <p class="font-bold text-main">Click or Drag & Drop File</p>
+                        <p class="text-sm text-muted mt-2">.csv, .txt (Recommended under 1GB)</p>
+                    </label>
+                    <div id="fileInfo" class="alert alert-info mt-4" style="display:none">
+                        <span id="fileName">files.csv</span> <span class="text-xs opacity-75" id="fileSize"></span>
+                    </div>
+                    <div id="errorMsg" class="alert alert-warning mt-4 hide" style="display:none"></div>
+                </div>
+            </div>
+
+            <!-- Right Column: Output -->
+            <div class="flex flex-col gap-4">
+                <div class="panel" style="height: 100%; display: flex; flex-direction: column;">
+                    <div class="toolbar">
+                        <h2 class="text-lg font-bold">3. Result</h2>
+                        <div class="flex gap-2">
+                            <button class="btn btn-secondary btn-sm" id="btnCopy" disabled>Copy</button>
+                            <button class="btn btn-primary btn-sm" id="btnDownload" disabled>Download</button>
+                        </div>
+                    </div>
+
+                    <div id="statInfo" class="text-xs text-muted mb-2 min-h-[1.5em]"></div>
+
+                    <textarea id="outputText" class="code-editor" readonly placeholder="Parsed JSON will appear here"
+                        style="flex:1; min-height: 400px;"></textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Enhanced Technical Content for AdSense Compliance -->
+        <article class="technical-content">
+            <h2>Technical Deep Dive: The Logic Behind CSV to JSON Conversion</h2>
+            <p>
+                CSV (Comma-Separated Values) remains one of the most ubiquitous data formats due to its simplicity.
+                However, for modern web development, API integrations, and mobile applications, JSON (JavaScript Object
+                Notation) is the undisputed standard. This tool provides a seamless bridge between these formats with a
+                relentless focus on <strong>security</strong> and <strong>precision</strong>.
+            </p>
+
+            <h3>Why 100% Client-Side Matters</h3>
+            <p>
+                A significant number of online "CSV to JSON converters" require you to upload your files to their
+                servers. This presents a massive security risk, especially when dealing with proprietary business data,
+                customer lists, or sensitive personal information.
+            </p>
+            <p>
+                ConvertFileBox utilizes the HTML5 <code>FileReader API</code> to process your data entirely within your
+                browser's memory. Your data never leaves your computer. No logs are kept on our servers, and your
+                confidential information remains truly private. For engineers working under strict NDAs or corporate
+                compliance, this is the only responsible way to handle data conversion.
+            </p>
+
+            <h3>The Challenge of Character Encodings</h3>
+            <p>
+                Developers frequently struggle with "Garbage in, Garbage out" (mojibake) due to encoding mismatches.
+                While the web runs on <code>UTF-8</code>, many legacy systems and Microsoft Excel exports in certain
+                regions still default to 1-byte or 2-byte encodings like <code>Shift-JIS</code>.
+            </p>
+            <p>
+                Our engine integrates the <code>TextDecoder API</code>, supporting a wide array of encodings beyond
+                standard UTF-8. If your converted data looks scrambled, simply toggle the encoding settings to find the
+                correct match— without having to re-upload your file.
+            </p>
+
+            <h3>Robust Parsing Logic (RFC 4180)</h3>
+            <p>
+                A simple <code>string.split(',')</code> is often insufficient for professional-grade CSV parsing.
+                Real-world CSVs often contain quoted fields, escaped characters, and multi-line strings within a single
+                cell.
+            </p>
+            <p>
+                We've implemented a state-machine-based parser that adheres to RFC 4180 standards. Our parser correctly
+                handles double-quotes within fields (e.g., <code>"This is ""quoted"" text"</code>) and preserves line
+                breaks within cells, ensuring that your structured JSON perfectly mirrors the original data's intent.
+            </p>
+            <blockquote>
+                "Great data architecture starts with clean, reliable data ingestion. We built this tool to ensure your
+                ingestion pipeline starts on solid ground."
+            </blockquote>
+
+            <h3>Frequently Asked Questions (FAQ)</h3>
+            <div class="mt-4">
+                <h4 class="font-bold">Q. Is there a file size limit?</h4>
+                <p class="text-sm">A. The limit is determined by your browser's available RAM. Most modern browsers can
+                    handle files up to 100MB-500MB without significant latency. For files over 1GB, we recommend using
+                    local command-line tools to avoid browser timeouts.</p>
+
+                <h4 class="font-bold">Q. Can I use the converted JSON in production?</h4>
+                <p class="text-sm">A. Absolutely. Our tool generates valid, minified, or pretty-printed JSON objects
+                    that are ready for implementation in any JavaScript, Python, or Ruby environment.</p>
+
+                <h4 class="font-bold">Q. What happens to the headers?</h4>
+                <p class="text-sm">A. If "Use first row as headers" is enabled, we sanitize column names to be valid
+                    JSON keys (removing spaces and special characters) while preserving the data mapping. If disabled,
+                    keys are automatically generated as <code>col1</code>, <code>col2</code>, etc.</p>
+            </div>
+
+            <h3 class="mt-8">Our Commitment to Quality</h3>
+            <p>
+                As developers, we know that tools should just work. ConvertFileBox is funded via minimal advertising to
+                remain free for everyone, but we treat our codebase with the same rigor as paid professional software.
+                Thank you for trusting us with your development workflow.
+            </p>
+        </article>
+
+    </main>
+
+    <site-footer></site-footer>
+
+    <!-- Reuse the same logic from the Japanese version -->
+    <script src="/assets/js/ui.js"></script>
+    <script>
+        const $ = (id) => document.getElementById(id);
+
+        const delimiterEl = $("delimiter");
+        const hasHeaderEl = $("hasHeader");
+        const fileEncodingEl = $("fileEncoding");
+        const fileInputEl = $("fileInput");
+        const dropArea = $("dropArea");
+
+        const outputEl = $("outputText");
+        const errorMsgEl = $("errorMsg");
+        const fileInfoEl = $("fileInfo");
+        const fileNameEl = $("fileName");
+        const statInfoEl = $("statInfo");
+
+        const btnCopy = $("btnCopy");
+        const btnDownload = $("btnDownload");
+        const btnSample = $("btnSample");
+
+        let lastSelectedFile = null;
+        let lastJsonText = "";
+
+        function setError(text) {
+            if (!text) {
+                errorMsgEl.style.display = "none";
+                return;
+            }
+            errorMsgEl.textContent = text;
+            errorMsgEl.style.display = "block";
+        }
+
+        function setStat(text) { statInfoEl.textContent = text || ""; }
+
+        function normalizeNewlines(s) {
+            return s.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+        }
+
+        function decodeArrayBuffer(buf, encSel) {
+            const enc = (encSel === "utf-8-bom") ? "utf-8" : encSel;
+            let text = "";
+            try {
+                text = new TextDecoder(enc, { fatal: false }).decode(buf);
+            } catch (e) {
+                text = new TextDecoder("utf-8", { fatal: false }).decode(buf);
+            }
+            if (text.startsWith("\uFEFF")) text = text.slice(1);
+            return text.replace(/\u0000/g, "");
+        }
+
+        function parseCSV(text, delimiterChar) {
+            const delim = delimiterChar === "tab" ? "\t" : delimiterChar;
+            const s = normalizeNewlines(text);
+
+            const rows = [];
+            let i = 0, field = "", row = [], inQuotes = false;
+
+            while (i < s.length) {
+                const ch = s[i];
+
+                if (inQuotes) {
+                    if (ch === '"') {
+                        if (s[i + 1] === '"') { field += '"'; i += 2; continue; }
+                        inQuotes = false; i++; continue;
+                    } else {
+                        field += ch; i++; continue;
+                    }
+                } else {
+                    if (ch === '"') { inQuotes = true; i++; continue; }
+                    if (ch === delim) { row.push(field); field = ""; i++; continue; }
+                    if (ch === "\n") { row.push(field); rows.push(row); field = ""; row = []; i++; continue; }
+                    field += ch; i++; continue;
+                }
+            }
+            row.push(field);
+            rows.push(row);
+
+            while (rows.length && rows[rows.length - 1].length === 1 && rows[rows.length - 1][0].trim() === "") rows.pop();
+            return rows;
+        }
+
+        function safeKey(s, idx) {
+            const t = (s ?? "").trim();
+            if (!t) return `col${idx + 1}`;
+            return t.replace(/\s+/g, "_").replace(/[^\w\-]/g, "_");
+        }
+
+        function csvToJson(text) {
+            const rows = parseCSV(text, delimiterEl.value);
+            if (!rows.length) return { json: [], headers: [], rowsCount: 0 };
+
+            let headers = [];
+            let start = 0;
+
+            if (hasHeaderEl.checked) {
+                headers = rows[0].map((h, i) => safeKey(h, i));
+                start = 1;
+            } else {
+                const maxCols = Math.max(...rows.map(r => r.length));
+                headers = Array.from({ length: maxCols }, (_, i) => `col${i + 1}`);
+            }
+
+            const json = rows.slice(start).map(r => {
+                const o = {};
+                for (let i = 0; i < headers.length; i++) {
+                    o[headers[i]] = (r[i] ?? "");
+                }
+                return o;
+            });
+
+            return { json, headers, rowsCount: rows.length };
+        }
+
+        async function reloadAndConvert() {
+            if (!lastSelectedFile) return;
+
+            fileInfoEl.style.display = "block";
+            fileNameEl.textContent = lastSelectedFile.name;
+            setError("");
+
+            try {
+                const ab = await lastSelectedFile.arrayBuffer();
+                const text = decodeArrayBuffer(ab, fileEncodingEl.value);
+
+                const { json, headers, rowsCount } = csvToJson(text);
+
+                lastJsonText = JSON.stringify(json, null, 2);
+                outputEl.value = lastJsonText;
+
+                btnCopy.disabled = (json.length === 0);
+                btnDownload.disabled = (json.length === 0);
+
+                setStat(`Convertion Successful: Rows=${rowsCount} / JSON items=${json.length} / Columns=${headers.length}`);
+
+                if (rowsCount <= 1 && hasHeaderEl.checked) {
+                    setError("Warning: 0 data rows found. Please check header settings.");
+                }
+                if (headers.length <= 1) {
+                    setError("Warning: Only 1 column detected. Check your delimiter settings.");
+                }
+
+            } catch (e) {
+                console.error(e);
+                lastJsonText = "";
+                outputEl.value = "";
+                btnCopy.disabled = true;
+                btnDownload.disabled = true;
+                setError("Conversion failed. Please check file format and encoding.");
+            }
+        }
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.add('dragover'), false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.remove('dragover'), false);
+        });
+
+        dropArea.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files && files[0]) {
+                fileInputEl.files = files;
+                lastSelectedFile = files[0];
+                reloadAndConvert();
+            }
+        });
+
+        fileInputEl.addEventListener("change", async (e) => {
+            const f = e.target.files && e.target.files[0];
+            if (!f) return;
+            lastSelectedFile = f;
+            await reloadAndConvert();
+        });
+
+        delimiterEl.addEventListener("change", reloadAndConvert);
+        hasHeaderEl.addEventListener("change", reloadAndConvert);
+        fileEncodingEl.addEventListener("change", reloadAndConvert);
+
+        btnCopy.addEventListener("click", () => {
+            if (!lastJsonText) return;
+            copyToClipboard(lastJsonText, btnCopy);
+        });
+
+        btnDownload.addEventListener("click", () => {
+            if (!lastJsonText) return;
+            const base = (lastSelectedFile?.name || "converted").replace(/\.[^.]+$/, "");
+            const blob = new Blob([lastJsonText], { type: "application/json;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `${base}.json`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        });
+
+        btnSample.addEventListener("click", () => {
+            const csv = "id,name,role,department\n1,Alice,Engineer,Development\n2,Bob,Designer,UI/UX\n3,Charlie,Manager,Marketing";
+            const blob = new Blob([csv], { type: "text/csv" });
+            const file = new File([blob], "sample.csv", { type: "text/csv" });
+
+            lastSelectedFile = file;
+            reloadAndConvert();
+        });
+    </script>
+</body>
+
+</html>

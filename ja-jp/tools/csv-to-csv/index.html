@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="ja-jp">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index,follow" />
+
+  <title>CSV 文字コード変換（Shift-JIS ⇔ UTF-8）| Excel の文字化けを解消 | ConvertFileBox</title>
+  <meta name="description"
+    content="CSV の文字コード（Shift-JIS、UTF-8、UTF-8 BOM付き）をブラウザ内で安全に変換。Excel での文字化けを即座に修正。サーバー送信なし、1GB以上の大容量ファイル対応、完全無料。" />
+  <link rel="canonical" href="https://www.convertfilebox.net/ja-jp/tools/csv-to-csv/" />
+  <link rel="alternate" hreflang="ja-jp" href="https://www.convertfilebox.net/ja-jp/tools/csv-to-csv/" />
+  <link rel="alternate" hreflang="en-us" href="https://www.convertfilebox.net/en-us/tools/csv-to-csv/" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <!-- Shift-JIS support (encoding-japanese) -->
+  <script src="https://cdn.jsdelivr.net/npm/encoding-japanese@2.2.0/encoding.min.js"></script>
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
+    crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2M7JXDP7J8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-2M7JXDP7J8');
+  </script>
+
+  <style>
+    .form-select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.9375rem;
+      background-color: white;
+    }
+
+    .split-pane {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 960px) {
+      .split-pane {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* 技術解説コンテンツ */
+    .technical-content {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      line-height: 1.8;
+    }
+
+    .technical-content h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-main);
+    }
+
+    .technical-content h3 {
+      font-size: 1.125rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+      border-left: 4px solid var(--primary);
+      padding-left: 1rem;
+    }
+
+    .technical-content p {
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+
+<body>
+
+  <site-header></site-header>
+
+  <main class="container mt-8 mb-8" style="max-width: 1280px;">
+    <div class="text-center mb-8">
+      <h1>CSV 文字コード変換</h1>
+      <p class="text-muted mt-2">
+        Excel で発生する CSV の文字化け（Mojibake）を即座に解消します。<br>
+        Shift-JIS、UTF-8、UTF-8 BOM付き、UTF-16 などの文字コードをブラウザ内で安全に相互変換。
+      </p>
+      <div class="flex justify-center gap-4 mt-4">
+        <span class="tag">サーバー送信なし</span>
+        <span class="tag">1GB 以上の大容量対応</span>
+      </div>
+    </div>
+
+    <!-- Standard Security Block -->
+    <section class="panel-security mb-8">
+      <h2 class="text-lg font-bold mb-4">🛡️ セキュリティに関するお約束</h2>
+      <p class="mb-4 font-bold">当サイトでは、入力されたデータが一瞬たりとも外部サーバーへ送信されることはありません。</p>
+      <ul class="list-disc list-inside text-sm text-muted pl-4">
+        <li>すべての解析・変換ロジックはあなたのブラウザ（JavaScript）内で実行されます。</li>
+        <li>機密性の高いログデータや個人情報を含むCSVなども、安心して処理いただけます。</li>
+        <li>入力された内容はページを閉じた瞬間にメモリから消去され、記録も残りません。</li>
+      </ul>
+    </section>
+
+    <!-- ツール本体 -->
+    <label class="file-drop-area" id="dropArea" for="fileInput">
+      <input type="file" id="fileInput" class="file-input" accept=".csv,text/csv,.txt,text/plain" />
+      <div style="font-size: 2rem; color: var(--text-light); margin-bottom: 0.5rem;">📁</div>
+      <p class="font-bold text-main">ファイルを選択 または ドラッグ&ドロップ</p>
+      <p class="text-sm text-muted mt-2">.csv, .txt (1GB以下のファイルを推奨)</p>
+      <div id="fileInfo" class="alert alert-info inline-flex items-center gap-2 mt-4"
+        style="display:none; text-align:left; margin-left:auto; margin-right:auto;">
+        <span id="fileName"></span> <span class="text-xs opacity-75" id="fileSize"></span>
+      </div>
+    </label>
+
+    <div class="tool-config-bar mb-6">
+      <div class="form-group">
+        <label class="text-xs font-bold text-muted" for="inEnc">1. 入力の文字コード</label>
+        <select id="inEnc" class="form-select" disabled>
+          <option value="shift_jis" selected>Shift-JIS (日本の Excel 標準)</option>
+          <option value="utf-8">UTF-8 (標準)</option>
+          <option value="utf-8-bom">UTF-8 (BOMあり)</option>
+          <option value="utf-16le">UTF-16LE</option>
+          <option value="utf-16be">UTF-16BE</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="text-xs font-bold text-muted" for="outEnc">2. 出力の文字コード</label>
+        <select id="outEnc" class="form-select" disabled>
+          <option value="utf-8" selected>UTF-8 (Web標準・推奨)</option>
+          <option value="utf-8-bom">UTF-8 (BOM付き・Excel用)</option>
+          <option value="shift_jis">Shift-JIS (古い Windows 用)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="text-xs font-bold text-muted" for="eol">改行コード</label>
+        <select id="eol" class="form-select" disabled>
+          <option value="crlf" selected>CRLF (Windows 版 Excel)</option>
+          <option value="lf">LF (Unix / Mac)</option>
+        </select>
+      </div>
+
+      <div style="margin-left: auto;">
+        <button class="btn btn-primary" id="btnDownload" disabled>変換して保存 →</button>
+      </div>
+    </div>
+    <div id="warnBadge" class="alert alert-warning mt-4 text-sm" style="display:none"></div>
+
+    <div class="split-pane">
+      <!-- Preview Input -->
+      <div class="flex flex-col gap-2">
+        <div class="toolbar">
+          <h2 class="text-lg font-bold">入力プレビュー</h2>
+          <span id="inPreviewStat" class="text-xs text-muted"></span>
+        </div>
+        <textarea id="previewIn" class="code-editor" readonly style="height: 300px;"
+          placeholder="ファイルを選択するとここに内容が表示されます。"></textarea>
+      </div>
+
+      <!-- Preview Output -->
+      <div class="flex flex-col gap-2">
+        <div class="toolbar">
+          <h2 class="text-lg font-bold">出力プレビュー</h2>
+          <span id="outPreviewStat" class="text-xs text-muted"></span>
+        </div>
+        <textarea id="previewOut" class="code-editor" readonly style="height: 300px;"
+          placeholder="変換後のイメージが表示されます。"></textarea>
+      </div>
+    </div>
+
+    <div class="flex justify-center mt-4 text-xs text-muted">
+      ※ プレビューはパフォーマンス向上のため、最初の50行のみを表示しています。
+    </div>
+
+    <article class="technical-content">
+      <h2>技術解説：CSV の文字化け問題とエンコーディング変換</h2>
+      <p>
+        CSV（Comma-Separated Values）ファイルは、単なるプレーンテキストですが、その「文字の読み取り方（文字コード /
+        Encoding）」が提供側と利用側で異なると、意味不明な記号が表示される「文字化け」が発生します。
+      </p>
+
+      <h3>Excel と Shift-JIS の根深い関係</h3>
+      <p>
+        特に日本国内において、Windows 版 Microsoft Excel は伝統的に <strong>Shift-JIS (CP932)</strong>
+        という文字コードを基準としています。一方で、現代のシステムやクラウドサービス（Google Sheets、各種 SaaS など）の多くは世界標準である <strong>UTF-8</strong> を使用しています。
+      </p>
+      <p>
+        「UTF-8 でダウンロードした CSV を Excel で開くと文字化けする」という問題は、この標準の違いから生まれます。本ツールは、そのギャップを埋めるための専門ツールです。
+      </p>
+
+      <h3>UTF-8 BOM (Byte Order Mark) の活用</h3>
+      <p>
+        最近の Excel では、UTF-8 のファイルの先頭に <strong>BOM (Byte Order Mark)</strong> と呼ばれる数バイトの識別子を付加することで、Shift-JIS ではなく UTF-8
+        として正しく認識させることが可能です。当ツールで「UTF-8（BOM付き）」を選択して変換すれば、Shift-JIS の制限（一部の漢字や絵文字が扱えない）を回避しつつ、Excel でスムーズに開けるようになります。
+      </p>
+
+      <h3>なぜブラウザ完結が重要なのか</h3>
+      <p>
+        CSV
+        ファイルには、顧客リスト、売上データ、機密ログなど、外部に漏らしてはならない情報が含まれていることがほとんどです。多くのオンライン変換サイトは一度ファイルを「サーバーにアップロード」して処理しますが、これには常に漏洩やデータ二次利用のリスクが伴います。
+      </p>
+      <p>
+        ConvertFileBox は、<strong>すべての変換処理をあなたの PC のブラウザ上の JavaScript だけで完結させます。</strong> ネットワークを介したデータ送信は 1
+        バイトも行われません。企業のコンプライアンスを遵守しつつ、安全に文字化けを解消できるのが最大の強みです。
+      </p>
+    </article>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="/assets/js/ui.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const fileInputEl = $("fileInput");
+    const dropArea = $("dropArea");
+    const fileInfoEl = $("fileInfo");
+    const fileNameEl = $("fileName");
+    const fileSizeEl = $("fileSize");
+
+    const inEncEl = $("inEnc");
+    const outEncEl = $("outEnc");
+    const eolEl = $("eol");
+    const btnDownload = $("btnDownload");
+
+    const previewInEl = $("previewIn");
+    const previewOutEl = $("previewOut");
+    const inPreviewStatEl = $("inPreviewStat");
+    const outPreviewStatEl = $("outPreviewStat");
+    const warnBadgeEl = $("warnBadge");
+
+    let lastSelectedFile = null;
+    let lastOutputBytes = null;
+    let lastOutputName = "converted.csv";
+
+    function showWarn(text) {
+      if (!text) { warnBadgeEl.style.display = "none"; return; }
+      warnBadgeEl.style.display = "block";
+      warnBadgeEl.textContent = text;
+    }
+
+    function normalizeToLF(s) {
+      return s.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+    }
+    function applyEol(s, eol) {
+      const lf = normalizeToLF(s);
+      return (eol === "crlf") ? lf.replace(/\n/g, "\r\n") : lf;
+    }
+
+    function decodeArrayBuffer(buf, encSel) {
+      const enc = (encSel === "utf-8-bom") ? "utf-8" : encSel;
+      let text = "";
+      try {
+        text = new TextDecoder(enc, { fatal: false }).decode(buf);
+      } catch (e) {
+        text = new TextDecoder("utf-8", { fatal: false }).decode(buf);
+      }
+      if (text.startsWith("\uFEFF")) text = text.slice(1);
+      return text.replace(/\u0000/g, "");
+    }
+
+    function encodeToBytes(text, outEnc) {
+      if (outEnc === "utf-8" || outEnc === "utf-8-bom") {
+        const u8 = new TextEncoder().encode(text);
+        if (outEnc === "utf-8-bom") {
+          const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+          const merged = new Uint8Array(bom.length + u8.length);
+          merged.set(bom, 0);
+          merged.set(u8, bom.length);
+          return merged;
+        }
+        return u8;
+      }
+      if (outEnc === "shift_jis") {
+        if (!window.Encoding) return new TextEncoder().encode(text);
+        const unicodeCodes = Encoding.stringToCode(text);
+        const sjisCodes = Encoding.convert(unicodeCodes, "SJIS", "UNICODE");
+        return new Uint8Array(sjisCodes);
+      }
+      return new TextEncoder().encode(text);
+    }
+
+    function decodeBytes(bytes, enc) {
+      if (enc === "shift_jis") {
+        if (!window.Encoding) return "(Encoding library missing)";
+        const codes = Array.from(bytes);
+        const unicodeCodes = Encoding.convert(codes, "UNICODE", "SJIS");
+        return Encoding.codeToString(unicodeCodes);
+      }
+      let t = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
+      if (t.startsWith("\uFEFF")) t = t.slice(1);
+      return t;
+    }
+
+    function makePreview(text) {
+      const lf = normalizeToLF(text);
+      const lines = lf.split("\n");
+      const head = lines.slice(0, 50).join("\n");
+      const more = lines.length > 50 ? `\n\n... (プレビュー用に省略)` : "";
+      return head + more;
+    }
+
+    function buildOutputName(originalName, outEnc) {
+      const base = (originalName || "converted").replace(/\.[^.]+$/, "");
+      const suffix = (outEnc === "shift_jis") ? "sjis" : (outEnc === "utf-8-bom") ? "utf8bom" : "utf8";
+      return `${base}.${suffix}.csv`;
+    }
+
+    async function reloadAndConvert() {
+      if (!lastSelectedFile) return;
+      fileInfoEl.style.display = "inline-flex";
+      fileNameEl.textContent = lastSelectedFile.name;
+      fileSizeEl.textContent = `(${Math.round(lastSelectedFile.size / 1024)}KB)`;
+      showWarn("");
+
+      try {
+        const ab = await lastSelectedFile.arrayBuffer();
+        const inText = decodeArrayBuffer(ab, inEncEl.value);
+        previewInEl.value = makePreview(inText);
+        inPreviewStatEl.textContent = `読込元: ${inEncEl.options[inEncEl.selectedIndex].text}`;
+
+        const outText = applyEol(inText, eolEl.value);
+        const outBytes = encodeToBytes(outText, outEncEl.value);
+        const outTextForPreview = decodeBytes(outBytes, outEncEl.value);
+        previewOutEl.value = makePreview(outTextForPreview);
+        outPreviewStatEl.textContent = `出力先: ${outEncEl.options[outEncEl.selectedIndex].text}`;
+
+        if (outEncEl.value === "shift_jis" && outTextForPreview !== outText) {
+          showWarn("警告: Shift-JIS で表現できない文字（絵文字や特殊漢字等）が変換先で欠損している可能性があります。");
+        }
+        lastOutputBytes = outBytes;
+        lastOutputName = buildOutputName(lastSelectedFile.name, outEncEl.value);
+        btnDownload.disabled = false;
+      } catch (e) {
+        btnDownload.disabled = true;
+        previewInEl.value = "変換中にエラーが発生しました。";
+        showWarn("エラー: 変換に失敗しました。ファイル形式を確認してください。");
+      }
+    }
+
+    fileInputEl.addEventListener("change", (e) => {
+      const f = e.target.files && e.target.files[0];
+      if (f) {
+        lastSelectedFile = f;
+        inEncEl.disabled = false;
+        outEncEl.disabled = false;
+        eolEl.disabled = false;
+        reloadAndConvert();
+      }
+    });
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }, false);
+    });
+    dropArea.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      if (files && files[0]) {
+        fileInputEl.files = files;
+        lastSelectedFile = files[0];
+        inEncEl.disabled = false;
+        outEncEl.disabled = false;
+        eolEl.disabled = false;
+        reloadAndConvert();
+      }
+    });
+
+    inEncEl.addEventListener("change", reloadAndConvert);
+    eolEl.addEventListener("change", reloadAndConvert);
+    outEncEl.addEventListener("change", reloadAndConvert);
+
+    btnDownload.addEventListener("click", () => {
+      if (!lastOutputBytes) return;
+      const blob = new Blob([lastOutputBytes], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = lastOutputName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+
+</html>

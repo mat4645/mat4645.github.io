@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ja-jp">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index,follow" />
+
+  <title>CSV→JSON 変換（貼り付け版）| インストール不要・無料・セキュア | ConvertFileBox</title>
+  <meta name="description"
+    content="CSVを貼り付けるだけで即座にJSONへ変換。システム制約でファイルをアップロードできない環境に最適です。ブラウザ内処理でサーバー送信なし。カンマ・タブ区切り対応。エンジニア向けのセキュアなツール。" />
+  <link rel="canonical" href="https://www.convertfilebox.net/ja-jp/tools/csv-to-json-paste/" />
+  <link rel="alternate" hreflang="ja-jp" href="https://www.convertfilebox.net/ja-jp/tools/csv-to-json-paste/" />
+  <link rel="alternate" hreflang="en-us" href="https://www.convertfilebox.net/en-us/tools/csv-to-json-paste/" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
+    crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2M7JXDP7J8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-2M7JXDP7J8');
+  </script>
+
+  <style>
+    .form-select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.9375rem;
+      background-color: white;
+    }
+
+    .checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9375rem;
+      cursor: pointer;
+    }
+
+    .split-pane {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 960px) {
+      .split-pane {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* 技術解説用スタイル */
+    .technical-content {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      line-height: 1.8;
+    }
+
+    .technical-content h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-main);
+    }
+
+    .technical-content h3 {
+      font-size: 1.125rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+      border-left: 4px solid var(--primary);
+      padding-left: 1rem;
+    }
+
+    .technical-content p {
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+
+<body>
+
+  <site-header></site-header>
+
+  <main class="container mt-8 mb-8" style="max-width: 1280px;">
+    <div class="text-center mb-8">
+      <h1>CSV → JSON 変換（貼り付け版）</h1>
+      <p class="text-muted mt-2">テキストを貼り付けるだけで即座に構造化されたJSONへ。ファイル出力できない環境やデバッグに最適です。</p>
+      <div class="flex justify-center gap-4 mt-4">
+        <span class="tag">サーバー送信なし</span>
+        <button id="btnSample" class="text-sm text-primary"
+          style="background:none; border:none; text-decoration:underline; cursor:pointer;">サンプルを入力する</button>
+        <a href="/ja-jp/tools/csv-to-json/" class="text-sm text-primary"
+          style="text-decoration:underline">ファイル読み込み版はこちら</a>
+      </div>
+    </div>
+
+    <!-- Standard Security Block -->
+    <section class="panel-security mb-8">
+      <h2 class="text-lg font-bold mb-4">🛡️ セキュリティに関するお約束</h2>
+      <p class="mb-4 font-bold">当サイトでは、入力されたデータが一瞬たりとも外部サーバーへ送信されることはありません。</p>
+      <ul class="list-disc list-inside text-sm text-muted pl-4">
+        <li>すべての解析・変換ロジックはあなたのブラウザ（JavaScript）内で実行されます。</li>
+        <li>機密性の高いログデータや個人情報を含むCSVなども、安心して処理いただけます。</li>
+        <li>入力された内容はページを閉じた瞬間にメモリから消去され、記録も残りません。</li>
+      </ul>
+    </section>
+
+    <div class="tool-config-bar mb-6">
+      <div class="form-group">
+        <label class="text-xs font-bold text-muted">区切り文字</label>
+        <select id="delimiter" class="form-select">
+          <option value="," selected>カンマ (,)</option>
+          <option value="tab">タブ (\t)</option>
+          <option value=";">セミコロン (;)</option>
+        </select>
+      </div>
+      <div>
+        <label class="text-xs font-bold text-muted block">&nbsp;</label>
+        <label class="checkbox-wrapper">
+          <input type="checkbox" id="hasHeader" checked />
+          <span>1行目はヘッダー行</span>
+        </label>
+      </div>
+      <div class="text-sm text-muted" style="margin-left: auto;">
+        <span id="statusMsg" class="font-bold"></span>
+      </div>
+    </div>
+
+    <div class="split-pane">
+      <!-- Input Column -->
+      <div class="flex flex-col gap-2">
+        <div class="toolbar">
+          <h2 class="text-lg font-bold">CSV 入力</h2>
+          <button id="btnClear" class="btn btn-danger-ghost btn-sm">クリア</button>
+        </div>
+        <textarea id="csvInput" class="code-editor" style="height: 500px;"
+          placeholder="ここにCSVをペーストしてください..."></textarea>
+      </div>
+
+      <!-- Output Column -->
+      <div class="flex flex-col gap-2">
+        <div class="toolbar">
+          <h2 class="text-lg font-bold">JSON 変換結果</h2>
+          <div class="flex gap-2">
+            <button class="btn btn-secondary btn-sm" id="btnCopy" disabled>コピー</button>
+            <button class="btn btn-primary btn-sm" id="btnDownload" disabled>ダウンロード</button>
+          </div>
+        </div>
+        <textarea id="outputText" class="code-editor" readonly style="height: 500px;"
+          placeholder="変換されたJSONがここに表示されます。"></textarea>
+
+        <div id="errorMsg" class="alert alert-warning mt-2" style="display:none"></div>
+      </div>
+    </div>
+
+    <!-- 技術解説コンテンツ -->
+    <article class="technical-content">
+      <h2>「貼り付け版」ツールの活用シーンと技術的メリット</h2>
+      <p>
+        エンジニアリングやデータ解析の現場では、必ずしも「ファイル」としてデータが存在しているわけではありません。ブラウザのデベロッパーツール、クラウド上の管理画面、あるいは共有されたドキュメントの一部。これらの断片的なデータを素早く構造化するために、この「貼り付け版」ツールは設計されました。
+      </p>
+
+      <h3>VDI（仮想デスクトップ）や制限環境での有用性</h3>
+      <p>
+        セキュリティの厳しいVDI環境や、特定のクラウドストレージ以外へのファイル書き出しが制限されているプロジェクト等、物理的な「ファイル」をアップロードすることが困難な場合があります。本ツールはクリップボードを経由したデータの直接投入を可能にすることで、環境の制約を回避し、ワークフローを阻害しません。
+      </p>
+
+      <h3>リアルタイム・フィードバックの重要性</h3>
+      <p>
+        当ツールは、1文字入力されるごとに内部でパース処理を行う「ストリーム指向」の設計を採用しています。一般的な変換サイトのように「変換ボタン」を押してから結果を待つ必要はありません。これにより、区切り文字の設定ミスや、データの欠損をその場でリアルタイムに修正できます。
+      </p>
+
+      <h3>RFC 4180への厳格な準拠</h3>
+      <p>
+        貼り付けられたテキストであっても、私たちのパースエンジンはRFC
+        4180の仕様を厳格に遵守します。クォートで囲まれたフィールド内の改行、クォート自体のエスケープ（""）を正確に処理し、ビジネスユースに耐えうる高品質なJSONオブジェクトを生成します。
+      </p>
+    </article>
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="/assets/js/ui.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const delimiterEl = $("delimiter");
+    const hasHeaderEl = $("hasHeader");
+    const csvInputEl = $("csvInput");
+    const outputEl = $("outputText");
+    const errorMsgEl = $("errorMsg");
+    const statusEl = $("statusMsg");
+
+    const btnCopy = $("btnCopy");
+    const btnDownload = $("btnDownload");
+    const btnClear = $("btnClear");
+    const btnSample = $("btnSample");
+
+    let lastJsonText = "";
+    let debounceTimer = null;
+
+    function setError(text) {
+      if (!text) { errorMsgEl.style.display = "none"; return; }
+      errorMsgEl.textContent = text;
+      errorMsgEl.style.display = "block";
+    }
+
+    function parseCSV(text, delimiterChar) {
+      const delim = delimiterChar === "tab" ? "\t" : delimiterChar;
+      const s = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+      const rows = [];
+      let i = 0, field = "", row = [], inQuotes = false;
+
+      while (i < s.length) {
+        const ch = s[i];
+        if (inQuotes) {
+          if (ch === '"') {
+            if (s[i + 1] === '"') { field += '"'; i += 2; }
+            else { inQuotes = false; i++; }
+          } else { field += ch; i++; }
+        } else {
+          if (ch === '"') { inQuotes = true; i++; }
+          else if (ch === delim) { row.push(field); field = ""; i++; }
+          else if (ch === "\n") { row.push(field); rows.push(row); field = ""; row = []; i++; }
+          else { field += ch; i++; }
+        }
+      }
+      row.push(field);
+      rows.push(row);
+      return rows.filter(r => r.length > 1 || r[0].trim() !== "");
+    }
+
+    function safeKey(s, idx) {
+      const t = (s ?? "").trim();
+      return t ? t.replace(/\s+/g, "_") : `col${idx + 1}`;
+    }
+
+    function convertNow() {
+      const text = csvInputEl.value.trim();
+      setError("");
+      if (!text) {
+        lastJsonText = ""; outputEl.value = "";
+        btnCopy.disabled = true; btnDownload.disabled = true;
+        statusEl.textContent = ""; return;
+      }
+
+      try {
+        const rows = parseCSV(text, delimiterEl.value);
+        if (!rows.length) throw new Error("No data");
+
+        let headers = [];
+        let start = 0;
+        if (hasHeaderEl.checked) {
+          headers = rows[0].map((h, i) => safeKey(h, i));
+          start = 1;
+        } else {
+          const max = Math.max(...rows.map(r => r.length));
+          headers = Array.from({ length: max }, (_, i) => `col${i + 1}`);
+        }
+
+        const json = rows.slice(start).map(r => {
+          const o = {};
+          headers.forEach((h, i) => o[h] = r[i] ?? "");
+          return o;
+        });
+
+        lastJsonText = JSON.stringify(json, null, 2);
+        outputEl.value = lastJsonText;
+        btnCopy.disabled = false;
+        btnDownload.disabled = false;
+        statusEl.textContent = `${json.length}件 変換完了`;
+      } catch (e) {
+        setError("パース失敗: 形式を確認してください");
+      }
+    }
+
+    csvInputEl.addEventListener("input", () => {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(convertNow, 300);
+    });
+    delimiterEl.addEventListener("change", convertNow);
+    hasHeaderEl.addEventListener("change", convertNow);
+
+    btnClear.addEventListener("click", () => { csvInputEl.value = ""; convertNow(); });
+    btnSample.addEventListener("click", () => {
+      csvInputEl.value = "id,name,role\n1,山田,エンジニア\n2,田中,デザイナー\n3,佐藤,マネージャー";
+      convertNow();
+    });
+
+    btnCopy.addEventListener("click", () => {
+      navigator.clipboard.writeText(lastJsonText);
+      const old = btnCopy.textContent;
+      btnCopy.textContent = "コピー完了";
+      setTimeout(() => btnCopy.textContent = old, 1500);
+    });
+
+    btnDownload.addEventListener("click", () => {
+      const blob = new Blob([lastJsonText], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = "data.json"; a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+
+</html>

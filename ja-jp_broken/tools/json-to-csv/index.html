@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index,follow" />
+
+  <title>JSON竊辰SV 螟画鋤繝・・繝ｫ・磯・蛻憂SON蟇ｾ蠢懊・辟｡譁吶・繝悶Λ繧ｦ繧ｶ螳檎ｵ撰ｼ・| ConvertFileBox</title>
+  <meta name="description"
+    content="JSON・磯・蛻・繧ｪ繝悶ず繧ｧ繧ｯ繝茨ｼ峨ｒCSV縺ｫ螟画鋤縲ゅ・繝・ム閾ｪ蜍慕函謌舌・蛹ｺ蛻・ｊ譁・ｭ玲欠螳壹・繝阪せ繝医・繝輔Λ繝・ヨ蛹悶・繝繧ｦ繝ｳ繝ｭ繝ｼ繝牙ｯｾ蠢懊ら┌譁吶・繝悶Λ繧ｦ繧ｶ螳檎ｵ舌〒繧､繝ｳ繧ｹ繝医・繝ｫ荳崎ｦ√ょ・蜉帙ョ繝ｼ繧ｿ縺ｯ繧ｵ繝ｼ繝舌・縺ｫ騾∽ｿ｡縺励∪縺帙ｓ縲・ />
+  <link rel="canonical" href="https://www.convertfilebox.net/ja-jp/tools/json-to-csv/" />
+  <link rel="alternate" hreflang="ja-jp" href="https://www.convertfilebox.net/ja-jp/ja-jp/tools/json-to-csv/" />
+  <link rel="alternate" hreflang="en-us" href="https://www.convertfilebox.net/en-us/tools/json-to-csv/" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
+    crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2M7JXDP7J8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-2M7JXDP7J8');
+  </script>
+
+  <style>
+    .form-select {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 0.9375rem;
+      background-color: white;
+    }
+
+    .checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9375rem;
+      cursor: pointer;
+    }
+
+    .split-pane {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 960px) {
+      .split-pane {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* 謚陦楢ｧ｣隱ｬ逕ｨ繧ｹ繧ｿ繧､繝ｫ */
+    .technical-content {
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      line-height: 1.8;
+    }
+
+    .technical-content h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      color: var(--text-main);
+    }
+
+    .technical-content h3 {
+      font-size: 1.125rem;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+      border-left: 4px solid var(--primary);
+      padding-left: 1rem;
+    }
+
+    .technical-content p {
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+    }
+
+    .technical-content ul {
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .technical-content li {
+      margin-bottom: 0.5rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+
+<body>
+
+  <site-header></site-header>
+
+  <main class="container mt-8 mb-8" style="max-width: 1280px;">
+    <div class="text-center mb-8">
+      <h1>JSON 竊・CSV 螟画鋤</h1>
+      <p class="text-muted mt-2">繝阪せ繝医＆繧後◆JSON繧るｫ伜ｺｦ縺ｪ繧｢繝ｫ繧ｴ繝ｪ繧ｺ繝縺ｧ閾ｪ蜍輔ヵ繝ｩ繝・ヨ蛹悶＠縲・xcel縺ｧ謇ｱ縺・ｄ縺吶＞CSV縺ｸ螟画鋤縺励∪縺吶・/p>
+      <div class="flex justify-center gap-4 mt-4">
+        <span class="tag">繧ｵ繝ｼ繝舌・騾∽ｿ｡縺ｪ縺・/span>
+        <button id="btnSample" class="text-sm text-primary"
+          style="background:none; border:none; text-decoration:underline; cursor:pointer;">繧ｵ繝ｳ繝励Ν繧貞・蜉帙☆繧・/button>
+      </div>
+    </div>
+
+    <!-- 繝・・繝ｫ繝舌・ -->
+    <div class="tool-config-bar mb-6">
+      <div class="form-group">
+        <label class="text-xs font-bold text-muted" for="delim">蛹ｺ蛻・ｊ譁・ｭ・/label>
+        <select id="delim" class="form-select">
+          <option value="," selected>繧ｫ繝ｳ繝・(,)</option>
+          <option value="tab">繧ｿ繝・(\t)</option>
+          <option value=";">繧ｻ繝溘さ繝ｭ繝ｳ (;)</option>
+        </select>
+      </div>
+      <div class="form-group-inline">
+        <label class="checkbox-wrapper">
+          <input type="checkbox" id="includeHeader" checked />
+          <span>隕句・縺暦ｼ医・繝・ム・峨ｒ蜷ｫ繧√ｋ</span>
+        </label>
+        <label class="checkbox-wrapper">
+          <input type="checkbox" id="flatten" checked />
+          <span>繝阪せ繝医＠縺滓ｧ矩繧貞ｹｳ蝮ｦ蛹厄ｼ医ヵ繝ｩ繝・ヨ蛹厄ｼ・/span>
+        </label>
+      </div>
+      <div class="text-sm text-muted" style="margin-left: auto;">
+        <span id="statusMsg" class="font-bold"></span>
+      </div>
+    </div>
+
+    <div class="split-pane">
+      <!-- 蜈･蜉帙き繝ｩ繝 -->
+      <div class="flex flex-col gap-2">
+        <div class="toolbar">
+          <h2 class="text-lg font-bold">JSON 蜈･蜉・/h2>
+          <button id="btnClear" class="btn btn-danger-ghost btn-sm">蜈･蜉帙ｒ繧ｯ繝ｪ繧｢</button>
+        </div>
+        <textarea id="input" class="code-editor" style="height: 500px;" placeholder='縺薙％縺ｫJSON繧偵・繝ｼ繧ｹ繝医＠縺ｦ縺上□縺輔＞縲・></textarea>
+        <div id="errorMsg" class="alert alert-warning mt-2" style="display:none"></div>
+      </div>
+
+      <!-- 蜃ｺ蜉帙き繝ｩ繝 -->
+      <div class="flex flex-col gap-2">
+        <div class="toolbar">
+          <h2 class="text-lg font-bold">CSV 蜃ｺ蜉帷ｵ先棡</h2>
+          <div class="flex gap-2">
+            <button class="btn btn-secondary btn-sm" id="btnCopy" disabled>繧ｳ繝斐・</button>
+            <button class="btn btn-primary btn-sm" id="btnDownload" disabled>繝繧ｦ繝ｳ繝ｭ繝ｼ繝・/button>
+          </div>
+        </div>
+        <textarea id="output" class="code-editor" readonly style="height: 500px;"
+          placeholder="縺薙％縺ｫ螟画鋤縺輔ｌ縺櫃SV縺瑚｡ｨ遉ｺ縺輔ｌ縺ｾ縺・></textarea>
+      </div>
+    </div>
+
+    <!-- 繧ｳ繝ｳ繝・Φ繝・ｼｷ蛹悶そ繧ｯ繧ｷ繝ｧ繝ｳ (AdSense蟇ｾ遲・ 1,000譁・ｭ嶺ｻ･荳翫・迢ｬ閾ｪ隗｣隱ｬ) -->
+    <article class="technical-content">
+      <h2>謚陦楢ｧ｣隱ｬ・哽SON縺九ｉCSV縺ｸ縺ｮ螟画鋤縺ｨ讒矩縺ｮ蟷ｳ蝮ｦ蛹・/h2>
+      <p>
+        繝｢繝繝ｳ縺ｪAPI繧Цeb繧｢繝励Μ繧ｱ繝ｼ繧ｷ繝ｧ繝ｳ縺ｮ繝輔Ο繝ｳ繝医お繝ｳ繝峨↓縺翫＞縺ｦ縲゛SON・・avaScript Object
+        Notation・峨・繝・・繧ｿ縺ｮ繝・ヵ繧｡繧ｯ繝医せ繧ｿ繝ｳ繝繝ｼ繝峨〒縺吶ゅ＠縺九＠縲√ン繧ｸ繝阪せ縺ｮ迴ｾ蝣ｴ繧・ョ繝ｼ繧ｿ蛻・梵縺ｮ繝励Ο繧ｻ繧ｹ縺ｫ縺翫＞縺ｦ縺ｯ縲∽ｾ晉┯縺ｨ縺励※Excel繧Жoogle繧ｹ繝励Ξ繝・ラ繧ｷ繝ｼ繝医√＆繧峨↓縺ｯ莨晉ｵｱ逧・↑RDBMS・医Μ繝ｬ繝ｼ繧ｷ繝ｧ繝翫Ν繝・・繧ｿ繝吶・繧ｹ・峨∈縺ｮ繧､繝ｳ繝昴・繝医↓驕ｩ縺励◆CSV・・omma-Separated
+        Values・牙ｽ｢蠑上′蠢・ｦ√→縺輔ｌ縺ｾ縺吶・
+      </p>
+
+      <h3>髫主ｱ､讒矩・・SON・峨ｒ莠梧ｬ｡蜈・｡ｨ・・SV・峨↓縺吶ｋ謖第姶</h3>
+      <p>
+        JSON縺ｮ譛螟ｧ縺ｮ迚ｹ蠕ｴ縺ｯ縲後ロ繧ｹ繝茨ｼ磯嚴螻､讒矩・峨阪→縲碁・蛻励阪〒縺吶ゆｾ九∴縺ｰ縲√Θ繝ｼ繧ｶ繝ｼ諠・ｱ縺ｮ荳ｭ縺ｫ隍・焚縺ｮ騾｣邨｡蜈医ｄ菴乗園縺後が繝悶ず繧ｧ繧ｯ繝医→縺励※蜷ｫ縺ｾ繧後※縺・ｋ蝣ｴ蜷医√％繧後ｒ豌ｴ蟷ｳ縺ｪ荳陦後・CSV縺ｫ縺吶ｋ縺溘ａ縺ｫ縺ｯ縲∵ｧ矩繧偵後ヵ繝ｩ繝・ヨ蛹厄ｼ・lattening・峨阪☆繧句ｿ・ｦ√′縺ゅｊ縺ｾ縺吶・
+      </p>
+      <p>
+        譛ｬ繝・・繝ｫ縺ｫ謳ｭ霈峨＆繧後◆縲後ロ繧ｹ繝医ｒ繝輔Λ繝・ヨ蛹悶肴ｩ溯・縺ｯ縲∝・蟶ｰ逧・↑繧｢繝ｫ繧ｴ繝ｪ繧ｺ繝繧堤畑縺・※蜈ｨ縺ｦ縺ｮ繝励Ο繝代ユ繧｣繧呈歓蜃ｺ縺励・code>user.address.city</code>
+        縺ｮ繧医≧縺ｪ繝峨ャ繝郁ｨ俶ｳ輔〒譁ｰ縺励＞蛻怜錐繧堤函謌舌＠縺ｾ縺吶ゅ％繧後↓繧医ｊ縲√←繧薙↑縺ｫ隍・尅縺ｪ髫主ｱ､繧呈戟縺､JSON繝・・繧ｿ縺ｧ縺ゅ▲縺ｦ繧ゅ√ョ繝ｼ繧ｿ縺ｮ谺謳阪ｒ譛蟆城剞縺ｫ謚代∴縺､縺､縲√せ繝励Ξ繝・ラ繧ｷ繝ｼ繝医〒隗｣譫仙庄閭ｽ縺ｪ蠖｢蠑上∈縺ｨ蜀肴ｧ区・縺励∪縺吶・
+      </p>
+
+      <h3>RFC 8259貅匁侠縺ｮ繝代・繧ｹ縺ｨ繧ｻ繧ｭ繝･繝ｪ繝・ぅ</h3>
+      <p>
+        螳牙・縺ｪ繝・・繧ｿ螟画鋤縺ｮ縺溘ａ縺ｫ縺ｯ縲∝宍蟇・↑JSON繝代・繧ｵ繝ｼ縺御ｸ榊庄谺縺ｧ縺吶よ悽繝・・繝ｫ縺ｯ繝悶Λ繧ｦ繧ｶ讓呎ｺ悶・ <code>JSON.parse</code>・・CMAScript/RFC
+        8259貅匁侠・峨ｒ蛻ｩ逕ｨ縺励※縺翫ｊ縲∵ｧ区枚繧ｨ繝ｩ繝ｼ縺檎匱逕溘＠縺溷ｴ蜷医↓縺ｯ縲∬ｩｲ蠖鍋ｮ・園縺ｧ縺ｮ蜈･蜉帙ｒ蜊ｳ蠎ｧ縺ｫ讀懃衍縺励・←蛻・↑繝輔ぅ繝ｼ繝峨ヰ繝・け繧定ｿ斐＠縺ｾ縺吶・
+      </p>
+      <p>
+        <strong>繧ｻ繧ｭ繝･繝ｪ繝・ぅ縺ｮ蠕ｹ蠎包ｼ・/strong>
+        譛ｬ繝・・繝ｫ縺ｯ縲後ヶ繝ｩ繧ｦ繧ｶ螳檎ｵ仙梛縲阪〒縺吶ゆｸ悶・荳ｭ縺ｫ縺ゅｋ螟壹￥縺ｮ螟画鋤繧ｵ繧､繝医・縲∝､ｧ縺阪↑JSON繝・・繧ｿ繧偵瑚ｧ｣譫舌阪→縺・≧蜷咲岼縺ｧ閾ｪ遉ｾ繧ｵ繝ｼ繝舌・縺ｫ騾∽ｿ｡縺励√◎縺薙〒蜃ｦ逅・ｒ陦後▲縺ｦ縺・∪縺吶・onvertFileBox縺ｯ縲゛avaScript縺ｮ繝｡繝｢繝ｪ邂｡逅・ｩ溯・繧呈ｴｻ逕ｨ縺励∝・蜉帙ョ繝ｼ繧ｿ繧剃ｸ蛻・し繝ｼ繝舌・縺ｫ騾∽ｻ倥＠縺ｪ縺・％縺ｨ縺ｧ縲∵ｩ溷ｯ・ュ蝣ｱ縺ｮ貍乗ｴｩ繝ｪ繧ｹ繧ｯ繧堤黄逅・噪縺ｫ驕ｮ譁ｭ縺励※縺・∪縺吶・
+      </p>
+
+      <h3>Excel莠呈鋤諤ｧ縺ｨ繧ｨ繧ｹ繧ｱ繝ｼ繝怜・逅・/h3>
+      <p>
+        蜊倥↑繧九き繝ｳ繝槫玄蛻・ｊ縺ｧ縺ｯ縲∝､画鋤邨先棡縺ｯ縲悟｣翫ｌ縺溘ョ繝ｼ繧ｿ縲阪↓縺ｪ繧翫°縺ｭ縺ｾ縺帙ｓ縲・SV蠖｢蠑上↓縺翫＞縺ｦ縲√ョ繝ｼ繧ｿ縺ｮ荳ｭ縺ｫ繧ｫ繝ｳ繝槭′蜷ｫ縺ｾ繧後※縺・ｋ蝣ｴ蜷医ｄ縲∵隼陦後′蜷ｫ縺ｾ繧後※縺・ｋ蝣ｴ蜷医√◎繧後ｉ縺ｯ繝繝悶Ν繧ｯ繧ｩ繝ｼ繝・・繧ｷ繝ｧ繝ｳ・・・峨〒蝗ｲ繧上ｌ縲√け繧ｩ繝ｼ繝郁・菴薙・莠碁㍾・・"・峨↓縺吶ｋ縺薙→縺ｧ繧ｨ繧ｹ繧ｱ繝ｼ繝励＆繧後ｋ蠢・ｦ√′縺ゅｊ縺ｾ縺呻ｼ・FC
+        4180・峨・
+      </p>
+      <p>
+        蠖薙お繝ｳ繧ｸ繝九い繝ｪ繝ｳ繧ｰ繝√・繝縺ｯ縲・xcel遲峨・荳ｻ隕√↑繧｢繝励Μ繧ｱ繝ｼ繧ｷ繝ｧ繝ｳ縺梧ｭ｣縺励￥隱ｭ縺ｿ霎ｼ繧√ｋ繧医≧縲∝宍蟇・↑繧ｯ繧ｩ繝ｼ繝・ぅ繝ｳ繧ｰ繝ｫ繝ｼ繝ｫ繧貞ｮ溯｣・＠縺ｦ縺・∪縺吶ゅ％繧後↓繧医ｊ縲∽ｽ乗園縺ｮ荳ｭ縺ｫ縲鯉ｽ槭ン繝ｫ
+        2,3髫弱阪→縺・▲縺溘き繝ｳ繝槭′蜷ｫ縺ｾ繧後※縺・※繧ゅ√う繝ｳ繝昴・繝域凾縺ｫ蛻励′縺壹ｌ繧九％縺ｨ縺ｪ縺乗ｭ｣遒ｺ縺ｫ蠕ｩ蜈・＆繧後∪縺吶・
+      </p>
+
+      <h3>繧医￥縺ゅｋ雉ｪ蝠・(FAQ)</h3>
+      <div class="mt-4">
+        <h4 class="font-bold">Q. 蟾ｨ螟ｧ縺ｪJSON繝輔ぃ繧､繝ｫ繧定ｪｭ縺ｿ霎ｼ繧√∪縺吶°・・/h4>
+        <p class="text-sm">A.
+          繝悶Λ繧ｦ繧ｶ荳翫〒JavaScript繧貞虚縺九☆諤ｧ雉ｪ荳翫∫ｫｯ譛ｫ縺ｮ繝｡繝｢繝ｪ・・AM・蛾㍼縺ｫ萓晏ｭ倥＠縺ｾ縺吶よ焚MB遞句ｺｦ縺ｮ繝・く繧ｹ繝医ョ繝ｼ繧ｿ縺ｧ縺ゅｌ縺ｰ迸ｬ譎ゅ↓蜃ｦ逅・＠縺ｾ縺吶′縲∵焚逋ｾMB繧定ｶ・∴繧句ｴ蜷医・縲∝・逅・溷ｺｦ縺御ｽ惹ｸ九＠縺溘ｊ繝悶Λ繧ｦ繧ｶ縺瑚ｭｦ蜻翫ｒ蜃ｺ縺吝ｴ蜷医′縺ゅｊ縺ｾ縺吶・
+        </p>
+
+        <h4 class="font-bold">Q. 驟榊・縺ｮ荳ｭ縺ｫ驟榊・縺後≠繧句ｴ蜷医・縺ｩ縺・↑繧翫∪縺吶°・・/h4>
+        <p class="text-sm">A. 譁・ｭ怜・蛹厄ｼ・SON.stringify・峨＆繧後※荳縺､縺ｮ繧ｻ繝ｫ縺ｫ譬ｼ邏阪＆繧後∪縺吶ゅ％繧後・縲∽ｺ梧ｬ｡蜈・・陦ｨ蠖｢蠑上〒縺ゅｋCSV縺ｫ縲∽ｸ画ｬ｡蜈・ｻ･荳翫・讒矩繧貞ｮ悟・縺ｫ繝槭ャ繝斐Φ繧ｰ縺吶ｋ縺薙→縺瑚ｫ也炊逧・↓髮｣縺励＞縺溘ａ縺ｧ縺吶・
+        </p>
+
+        <h4 class="font-bold">Q. 蜃ｺ蜉帙＆繧後◆CSV縺ｮ譁・ｭ励さ繝ｼ繝峨・・・/h4>
+        <p class="text-sm">A. 繝・ヵ繧ｩ繝ｫ繝医・UTF-8縺ｧ縺吶・xcel縺ｧ髢九￥髫帙↓譁・ｭ怜喧縺代☆繧句ｴ蜷医・縲∝ｽ薙し繧､繝医・縲靴SV譁・ｭ励さ繝ｼ繝牙､画鋤縲阪ヤ繝ｼ繝ｫ繧剃ｽｵ逕ｨ縺励※Shift-JIS縺ｫ螟画鋤縺吶ｋ縺薙→繧偵♀蜍ｧ繧√＠縺ｾ縺吶・/p>
+      </div>
+
+      <h3 class="mt-8">蜉ｹ邇・噪縺ｪ繝ｯ繝ｼ繧ｯ繝輔Ο繝ｼ縺ｮ縺溘ａ縺ｫ</h3>
+      <p>
+        髢狗匱縺ｮ迴ｾ蝣ｴ縺ｧ縺ｯ縲、PI縺ｮ繝・ヰ繝・げ荳ｭ縺ｫ繝ｬ繧ｹ繝昴Φ繧ｹ繧堤ｴ譌ｩ縺丞庄隕門喧縺励◆縺・ｴ髱｢縺悟､壹￥縺ゅｊ縺ｾ縺吶ゅ◎縺ｮ繧医≧縺ｪ譎ゅ√ヶ繝ｩ繧ｦ繧ｶ縺ｮ繝・・繝ｭ繝・ヱ繝ｼ繝・・繝ｫ縺九ｉJSON繧偵さ繝斐・縺励√％縺薙↓繝壹・繧ｹ繝医＠縺ｦ縲後さ繝斐・縲阪・繧ｿ繝ｳ繧呈款縺吶□縺代〒縲√◎縺ｮ縺ｾ縺ｾ繧ｹ繝励Ξ繝・ラ繧ｷ繝ｼ繝医∈雋ｼ繧贋ｻ倥￠繧峨ｌ繧九ゅ％縺ｮ縲御ｸ迸ｬ縺ｮ蛻ｩ萓ｿ諤ｧ縲阪ｒ縲∵怙鬮倥・繧ｻ繧ｭ繝･繝ｪ繝・ぅ縺ｨ蜈ｱ縺ｫ謠蝉ｾ帙＠邯壹￠繧九％縺ｨ縺靴onvertFileBox縺ｮ隱・ｊ縺ｧ縺吶・
+      </p>
+    </article>
+
+  </main>
+
+  <site-footer></site-footer>
+
+  <script src="/assets/js/ui.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const inputEl = $("input");
+    const outputEl = $("output");
+    const errorMsgEl = $("errorMsg");
+    const statusEl = $("statusMsg");
+
+    const delimEl = $("delim");
+    const includeHeaderEl = $("includeHeader");
+    const flattenEl = $("flatten");
+
+    const btnCopy = $("btnCopy");
+    const btnDownload = $("btnDownload");
+    const btnClear = $("btnClear");
+    const btnSample = $("btnSample");
+
+    let lastCsv = "";
+    let lastFileBase = "json_to_csv";
+    let debounceTimer = null;
+
+    function setError(text) {
+      if (!text) {
+        errorMsgEl.style.display = "none";
+        return;
+      }
+      errorMsgEl.textContent = text;
+      errorMsgEl.style.display = "block";
+    }
+
+    function setStatus(text) {
+      statusEl.textContent = text;
+    }
+
+    function normalizeDelim(v) {
+      return v === "tab" ? "\t" : v;
+    }
+
+    function isPlainObject(x) {
+      return x && typeof x === "object" && !Array.isArray(x);
+    }
+
+    function flattenObject(obj, prefix = "", out = {}) {
+      for (const [k, v] of Object.entries(obj)) {
+        const key = prefix ? `${prefix}.${k}` : k;
+        if (isPlainObject(v)) {
+          flattenObject(v, key, out);
+        } else if (Array.isArray(v)) {
+          out[key] = JSON.stringify(v);
+        } else {
+          out[key] = v;
+        }
+      }
+      return out;
+    }
+
+    function collectHeaders(rows) {
+      const set = new Set();
+      for (const r of rows) {
+        for (const k of Object.keys(r)) set.add(k);
+      }
+      return Array.from(set);
+    }
+
+    function csvEscape(value, delimChar) {
+      const s = (value === null || value === undefined) ? "" : String(value);
+      const needs = s.includes('"') || s.includes("\n") || s.includes("\r") || s.includes(delimChar);
+      if (!needs) return s;
+      return '"' + s.replace(/"/g, '""') + '"';
+    }
+
+    function jsonToRows(inputText, doFlatten) {
+      const raw = JSON.parse(inputText);
+      let arr;
+      if (Array.isArray(raw)) {
+        arr = raw;
+      } else if (isPlainObject(raw)) {
+        arr = [raw];
+      } else {
+        arr = [{ value: raw }];
+      }
+      const rows = arr.map((x) => {
+        if (isPlainObject(x)) return doFlatten ? flattenObject(x) : x;
+        return { value: (Array.isArray(x) ? JSON.stringify(x) : x) };
+      });
+      return rows;
+    }
+
+    function buildCsv(rows, delimChar, includeHeader) {
+      const headers = collectHeaders(rows);
+      const lines = [];
+      if (includeHeader) {
+        lines.push(headers.map(h => csvEscape(h, delimChar)).join(delimChar));
+      }
+      for (const r of rows) {
+        const line = headers.map(h => csvEscape(r[h], delimChar)).join(delimChar);
+        lines.push(line);
+      }
+      return { csv: lines.join("\n"), headers, count: rows.length };
+    }
+
+    function run() {
+      const text = (inputEl.value ?? "").trim();
+      setError("");
+
+      if (!text) {
+        outputEl.value = "";
+        btnCopy.disabled = true;
+        btnDownload.disabled = true;
+        lastCsv = "";
+        setStatus("");
+        return;
+      }
+
+      const delimChar = normalizeDelim(delimEl.value);
+      const includeHeader = !!includeHeaderEl.checked;
+      const doFlatten = !!flattenEl.checked;
+
+      try {
+        const rows = jsonToRows(text, doFlatten);
+        const { csv, headers, count } = buildCsv(rows, delimChar, includeHeader);
+
+        lastCsv = csv;
+        outputEl.value = csv;
+
+        btnCopy.disabled = !lastCsv;
+        btnDownload.disabled = !lastCsv;
+        setStatus(`${count}陦・/ ${headers.length}蛻・螟画鋤螳御ｺ・);
+        lastFileBase = "json_to_csv";
+      } catch (e) {
+        // console.error(e);
+        // JSON繝代・繧ｹ荳ｭ縺九ｂ縺励ｌ縺ｪ縺・・縺ｧ縲・撕縺九↓繧ｨ繝ｩ繝ｼ繧貞・縺吶°縲√ョ繝舌え繝ｳ繧ｹ荳ｭ縺ｯ辟｡隕悶☆繧・
+        // 縺薙％縺ｧ縺ｯ譏守､ｺ逧・↓繧ｨ繝ｩ繝ｼ繧定｡ｨ遉ｺ縺帙★縲∵・蜉滓凾縺ｮ縺ｿ譖ｴ譁ｰ縺吶ｋ謇九ｂ縺ゅｋ縺後・
+        // 繝ｦ繝ｼ繧ｶ繝ｼ菴馴ｨ鍋噪縺ｫ縺ｯ繧ｨ繝ｩ繝ｼ縺悟・縺ｦ縺・ｋ縺薙→縺後ｏ縺九▲縺溘⊇縺・′縺・＞蝣ｴ蜷医ｂ縺ゅｋ縲・
+        // 縺溘□縺怜・蜉帑ｸｭ縺ｯ縺・ｋ縺輔＞縺ｮ縺ｧ縲ヾyntaxError縺ｪ繧峨Γ繝・そ繝ｼ繧ｸ縺縺大・縺吶・
+        outputEl.value = ""; // 繧ｯ繝ｪ繧｢縺吶ｋ縺九∝燕縺ｮ繧呈ｮ九☆縺九ゅけ繝ｪ繧｢縺吶ｋ縺ｻ縺・′隱､隗｣縺後↑縺・・
+        btnCopy.disabled = true;
+        btnDownload.disabled = true;
+        lastCsv = "";
+        setStatus("繧ｨ繝ｩ繝ｼ");
+        setError("JSON縺ｮ蠖｢蠑上′豁｣縺励￥縺ゅｊ縺ｾ縺帙ｓ (Syntax Error)");
+      }
+    }
+
+    function scheduleRun() {
+      if (debounceTimer) clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(run, 500); // JSON蜈･蜉帙↑縺ｮ縺ｧ蟆代＠髟ｷ繧√↓蠕・▽
+    }
+
+    // Events
+    inputEl.addEventListener("input", scheduleRun);
+    delimEl.addEventListener("change", run);
+    includeHeaderEl.addEventListener("change", run);
+    flattenEl.addEventListener("change", run);
+
+    btnCopy.addEventListener("click", async () => {
+      if (!lastCsv) return;
+      copyToClipboard(lastCsv, btnCopy);
+    });
+
+    btnDownload.addEventListener("click", () => {
+      if (!lastCsv) return;
+      const blob = new Blob([lastCsv], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${lastFileBase}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    btnClear.addEventListener("click", () => {
+      inputEl.value = "";
+      run();
+    });
+
+    btnSample.addEventListener("click", () => {
+      inputEl.value = JSON.stringify([
+        { id: 1, name: "Alice", age: 30, meta: { city: "Tokyo", tags: ["a", "b"] } },
+        { id: 2, name: "Bob", age: 25, meta: { city: "Osaka", tags: ["x"] } }
+      ], null, 2);
+      run();
+    });
+  </script>
+</body>
+
+</html>
+

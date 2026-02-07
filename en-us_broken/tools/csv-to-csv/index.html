@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="index,follow" />
+
+    <title>CSV Encoding Converter | Shift-JIS to UTF-8 & Extra Secure | ConvertFileBox</title>
+    <meta name="description"
+        content="Convert CSV character encoding (Shift-JIS, UTF-8, UTF-8 BOM) instantly in your browser. Fix Excel mojibake issues securely. Zero data sent to server. Free and professional." />
+    <link rel="canonical" href="https://www.convertfilebox.net/en-us/tools/csv-to-csv/" />
+    <link rel="alternate" hreflang="ja-jp" href="https://www.convertfilebox.net/ja-jp/tools/csv-to-csv/" />
+    <link rel="alternate" hreflang="en" href="https://www.convertfilebox.net/en-us/tools/csv-to-csv/" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+    <!-- Shift-JIS support -->
+    <script src="https://cdn.jsdelivr.net/npm/encoding-japanese@2.2.0/encoding.min.js"></script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
+        crossorigin="anonymous"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2M7JXDP7J8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-2M7JXDP7J8');
+    </script>
+
+    <style>
+        .form-select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.9375rem;
+            background-color: white;
+        }
+
+        .split-pane {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 960px) {
+            .split-pane {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Technical content styles */
+        .technical-content {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            line-height: 1.8;
+        }
+
+        .technical-content h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .technical-content h3 {
+            font-size: 1.125rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            border-left: 4px solid var(--primary);
+            padding-left: 1rem;
+        }
+
+        .technical-content p {
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+        }
+
+        .technical-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .technical-content li {
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .technical-content strong {
+            color: var(--text-main);
+        }
+    </style>
+</head>
+
+<body>
+
+    <site-header></site-header>
+
+    <main class="container mt-8 mb-8" style="max-width: 1280px;">
+        <div class="text-center mb-8">
+            <h1>CSV Encoding Converter</h1>
+            <p class="text-muted mt-2">
+                Fix CSV character encoding issues (Mojibake) instantly. <br>
+                Convert between Shift-JIS, UTF-8, and more, safely in your browser.
+            </p>
+            <div class="flex justify-center gap-4 mt-4">
+                <span class="tag">100% Client-Side</span>
+            </div>
+        </div>
+
+        <!-- Tool Section -->
+        <label class="file-drop-area" id="dropArea" for="fileInput">
+            <input type="file" id="fileInput" class="file-input" accept=".csv,text/csv,.txt,text/plain" />
+            <div style="font-size: 2rem; color: var(--text-light); margin-bottom: 0.5rem;">唐</div>
+            <p class="font-bold text-main">Select CSV or Drag & Drop</p>
+            <p class="text-sm text-muted mt-2">.csv, .txt (Supports large files up to 1GB)</p>
+            <div id="fileInfo" class="alert alert-info inline-flex items-center gap-2 mt-4"
+                style="display:none; text-align:left; margin-left:auto; margin-right:auto;">
+                <span id="fileName"></span> <span class="text-xs opacity-75" id="fileSize"></span>
+            </div>
+        </label>
+
+        <div class="tool-config-bar mb-6">
+            <div class="form-group">
+                <label class="text-xs font-bold text-muted" for="inEnc">1. Input Encoding</label>
+                <select id="inEnc" class="form-select" disabled>
+                    <option value="shift_jis" selected>Shift-JIS (Legacy Windows)</option>
+                    <option value="utf-8">UTF-8 (Standard)</option>
+                    <option value="utf-8-bom">UTF-8 with BOM</option>
+                    <option value="utf-16le">UTF-16LE</option>
+                    <option value="utf-16be">UTF-16BE</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="text-xs font-bold text-muted" for="outEnc">2. Output Encoding</label>
+                <select id="outEnc" class="form-select" disabled>
+                    <option value="shift_jis" selected>Shift-JIS (Excel Recommended)</option>
+                    <option value="utf-8">UTF-8</option>
+                    <option value="utf-8-bom">UTF-8 with BOM</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="text-xs font-bold text-muted" for="eol">Line Endings (EOL)</label>
+                <select id="eol" class="form-select" disabled>
+                    <option value="crlf" selected>CRLF (Windows)</option>
+                    <option value="lf">LF (Unix/Mac)</option>
+                </select>
+            </div>
+
+            <div style="margin-left: auto;">
+                <button class="btn btn-primary" id="btnDownload" disabled>Convert & Download</button>
+            </div>
+        </div>
+        <div id="warnBadge" class="alert alert-warning mt-4 text-xs" style="display:none"></div>
+
+        <div class="split-pane">
+            <!-- Preview Input -->
+            <div class="flex flex-col gap-2">
+                <div class="toolbar">
+                    <h2 class="text-lg font-bold">Input Preview</h2>
+                    <span id="inPreviewStat" class="text-xs text-muted"></span>
+                </div>
+                <textarea id="previewIn" class="code-editor" readonly style="height: 300px;"
+                    placeholder="Content will appear here"></textarea>
+            </div>
+
+            <!-- Preview Output -->
+            <div class="flex flex-col gap-2">
+                <div class="toolbar">
+                    <h2 class="text-lg font-bold">Output Preview</h2>
+                    <span id="outPreviewStat" class="text-xs text-muted"></span>
+                </div>
+                <textarea id="previewOut" class="code-editor" readonly style="height: 300px;"
+                    placeholder="Converted preview will appear here"></textarea>
+            </div>
+        </div>
+
+        <div class="flex justify-center mt-4 text-xs text-muted">
+            窶ｻ Preview shows only the first 50 rows for performance.
+        </div>
+
+        <!-- Enhanced Technical Content for AdSense Compliance -->
+        <article class="technical-content">
+            <h2>Technical Deep Dive: Solving the "Mojibake" Problem in CSV Files</h2>
+            <p>
+                One of the most persistent frustrations for data analysts and international businesses is character
+                corruption, often referred to as <strong>"Mojibake."</strong> This occurs when a file is saved in one
+                encoding format but opened in another, leading to unreadable symbols and data loss.
+            </p>
+
+            <h3>The Shift-JIS vs. UTF-8 Conflict</h3>
+            <p>
+                Historically, different operating systems developed their own standards for mapping characters to binary
+                code. Windows systems in Japan famously used <code>Shift-JIS (CP932)</code>, while modern web platforms
+                and Unix-based systems exclusively use <code>UTF-8</code>.
+            </p>
+            <p>
+                The typical "Excel Mojibake" happens because Excel窶覇specially on Windows窶俳ften assumes CSV files are
+                encoded in the system's legacy code page by default. When it encounters a UTF-8 file without a specific
+                marker, it misinterprets the data. Our tool bridges this gap by offering high-precision re-encoding.
+            </p>
+
+            <h3>Understanding the BOM (Byte Order Mark)</h3>
+            <p>
+                The <strong>BOM (Byte Order Mark)</strong> is a small snippet of data at the very beginning of a file
+                that signals to the software which encoding is being used. Adding a BOM to a UTF-8 file
+                (<code>UTF-8 with BOM</code>) is often the most reliable way to ensure that Microsoft Excel and other
+                legacy spreadsheet applications recognize the data correctly, preserving international characters across
+                global teams.
+            </p>
+            <p>
+                We support converting to UTF-8 with BOM, allowing you to maintain modern encoding standards while
+                staying compatible with traditional business software.
+            </p>
+
+            <h3>Pure Browser-Based Security for Business Data</h3>
+            <p>
+                CSV files often contain highly sensitive data窶把ustomer emails, financial records, or internal logistics.
+                Uploading these files to a "cloud-based" converter exposes them to the provider's servers and potential
+                security breaches.
+            </p>
+            <p>
+                ConvertFileBox utilizes <strong>Local Processing Architecture.</strong> By leveraging the
+                <code>encoding-japanese</code> library and modern browser APIs, we do all the heavy lifting directly on
+                your computer. <strong>Your data is never sent to our server.</strong> This ensures your business
+                remains compliant with privacy regulations like GDPR and CCPA while you perform your daily data tasks.
+            </p>
+
+            <h3>Frequently Asked Questions (FAQ)</h3>
+            <div class="mt-4">
+                <h4 class="font-bold">Q. Can I convert large files?</h4>
+                <p class="text-sm">A. Yes. Since we use the local machine's memory, you can typically convert files up
+                    to 1GB. However, very old computers with limited RAM may struggle with multi-gigabyte files.</p>
+
+                <h4 class="font-bold">Q. Is my data stored?</h4>
+                <p class="text-sm">A. Never. We don't even have a "database" for user files. Everything is transient in
+                    your browser's memory and disappears when you close the tab.</p>
+
+                <h4 class="font-bold">Q. Why do symbols appear as "?" when converting to Shift-JIS?</h4>
+                <p class="text-sm">A. Shift-JIS is a limited set of characters. Modern emojis and certain international
+                    symbols simply do not exist in the Shift-JIS standard. If your data contains these, we recommend
+                    using UTF-8 with BOM for Excel compatibility instead.</p>
+            </div>
+
+            <h3 class="mt-8">Precision Engineered for Professional Use</h3>
+            <p>
+                Whether you are migrating legacy mainframe data to a modern CRM or fixing a spreadsheet for a client, we
+                hope our Encoding Converter provides the reliability and peace of mind you need.
+            </p>
+        </article>
+
+    </main>
+
+    <site-footer></site-footer>
+
+    <script src="/assets/js/ui.js"></script>
+    <script>
+        const $ = (id) => document.getElementById(id);
+
+        const fileInputEl = $("fileInput");
+        const dropArea = $("dropArea");
+        const fileInfoEl = $("fileInfo");
+        const fileNameEl = $("fileName");
+        const fileSizeEl = $("fileSize");
+
+        const inEncEl = $("inEnc");
+        const outEncEl = $("outEnc");
+        const eolEl = $("eol");
+
+        const btnDownload = $("btnDownload");
+
+        const previewInEl = $("previewIn");
+        const previewOutEl = $("previewOut");
+        const inPreviewStatEl = $("inPreviewStat");
+        const outPreviewStatEl = $("outPreviewStat");
+        const warnBadgeEl = $("warnBadge");
+
+        let lastSelectedFile = null;
+        let lastOutputBytes = null;
+        let lastOutputName = "converted.csv";
+
+        function showWarn(text) {
+            if (!text) {
+                warnBadgeEl.style.display = "none";
+                warnBadgeEl.textContent = "";
+                return;
+            }
+            warnBadgeEl.style.display = "block";
+            warnBadgeEl.textContent = text;
+        }
+
+        function normalizeToLF(s) {
+            return s.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+        }
+        function applyEol(s, eol) {
+            const lf = normalizeToLF(s);
+            return (eol === "crlf") ? lf.replace(/\n/g, "\r\n") : lf;
+        }
+
+        function decodeArrayBuffer(buf, encSel) {
+            const enc = (encSel === "utf-8-bom") ? "utf-8" : encSel;
+            let text = "";
+            try {
+                text = new TextDecoder(enc, { fatal: false }).decode(buf);
+            } catch (e) {
+                text = new TextDecoder("utf-8", { fatal: false }).decode(buf);
+            }
+            if (text.startsWith("\uFEFF")) text = text.slice(1);
+            return text.replace(/\u0000/g, "");
+        }
+
+        function encodeToBytes(text, outEnc) {
+            if (outEnc === "utf-8" || outEnc === "utf-8-bom") {
+                const u8 = new TextEncoder().encode(text);
+                if (outEnc === "utf-8-bom") {
+                    const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+                    const merged = new Uint8Array(bom.length + u8.length);
+                    merged.set(bom, 0);
+                    merged.set(u8, bom.length);
+                    return merged;
+                }
+                return u8;
+            }
+            if (outEnc === "shift_jis") {
+                if (!window.Encoding) throw new Error("Encoding library not loaded.");
+                const unicodeCodes = Encoding.stringToCode(text);
+                const sjisCodes = Encoding.convert(unicodeCodes, "SJIS", "UNICODE");
+                return new Uint8Array(sjisCodes);
+            }
+            return new TextEncoder().encode(text);
+        }
+
+        function decodeBytes(bytes, enc) {
+            if (enc === "shift_jis") {
+                if (!window.Encoding) return "(Encoding library missing)";
+                const codes = Array.from(bytes);
+                const unicodeCodes = Encoding.convert(codes, "UNICODE", "SJIS");
+                return Encoding.codeToString(unicodeCodes);
+            }
+            let t = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
+            if (t.startsWith("\uFEFF")) t = t.slice(1);
+            return t;
+        }
+
+        function makePreview(text) {
+            const lf = normalizeToLF(text);
+            const lines = lf.split("\n");
+            const head = lines.slice(0, 50).join("\n");
+            const more = lines.length > 50 ? `\n\n... (Showing top 50 lines)` : "";
+            return head + more;
+        }
+
+        function buildOutputName(originalName, outEnc) {
+            const base = (originalName || "converted").replace(/\.[^.]+$/, "");
+            const suffix = (outEnc === "shift_jis") ? "sjis" : (outEnc === "utf-8-bom") ? "utf8bom" : "utf8";
+            return `${base}.${suffix}.csv`;
+        }
+
+        async function reloadAndConvert() {
+            if (!lastSelectedFile) return;
+            fileInfoEl.style.display = "inline-flex";
+            fileNameEl.textContent = lastSelectedFile.name;
+            const sizeKB = Math.round(lastSelectedFile.size / 1024);
+            fileSizeEl.textContent = `(${sizeKB}KB)`;
+            showWarn("");
+
+            try {
+                const ab = await lastSelectedFile.arrayBuffer();
+                const inText = decodeArrayBuffer(ab, inEncEl.value);
+                previewInEl.value = makePreview(inText);
+                inPreviewStatEl.textContent = `Read as: ${inEncEl.options[inEncEl.selectedIndex].text}`;
+
+                const outText = applyEol(inText, eolEl.value);
+                const outBytes = encodeToBytes(outText, outEncEl.value);
+                const outTextForPreview = decodeBytes(outBytes, outEncEl.value);
+                previewOutEl.value = makePreview(outTextForPreview);
+                outPreviewStatEl.textContent = `Output as: ${outEncEl.options[outEncEl.selectedIndex].text}`;
+
+                if (outEncEl.value === "shift_jis" && outTextForPreview !== outText) {
+                    showWarn("Warning: Some characters (emojis etc.) cannot be represented in Shift-JIS and may be missing.");
+                }
+                lastOutputBytes = outBytes;
+                lastOutputName = buildOutputName(lastSelectedFile.name, outEncEl.value);
+                btnDownload.disabled = false;
+            } catch (e) {
+                btnDownload.disabled = true;
+                previewInEl.value = "Error during conversion.";
+                showWarn("Conversion failed. Check encoding library.");
+            }
+        }
+
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.add('dragover'), false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, () => dropArea.classList.remove('dragover'), false);
+        });
+
+        dropArea.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files && files[0]) {
+                fileInputEl.files = files;
+                handleFile(files[0]);
+            }
+        });
+
+        fileInputEl.addEventListener("change", (e) => {
+            const f = e.target.files && e.target.files[0];
+            if (f) handleFile(f);
+        });
+
+        function handleFile(f) {
+            lastSelectedFile = f;
+            inEncEl.disabled = false;
+            outEncEl.disabled = false;
+            eolEl.disabled = false;
+            reloadAndConvert();
+        }
+
+        inEncEl.addEventListener("change", reloadAndConvert);
+        eolEl.addEventListener("change", reloadAndConvert);
+        outEncEl.addEventListener("change", reloadAndConvert);
+
+        btnDownload.addEventListener("click", () => {
+            if (!lastOutputBytes) return;
+            const blob = new Blob([lastOutputBytes], { type: "text/csv" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = lastOutputName;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+        });
+    </script>
+</body>
+
+</html>

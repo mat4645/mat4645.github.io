@@ -1,51 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Root (Redirect) -->
   <url>
-    <loc>https://mat4645.github.io/</loc>
-    <lastmod>2026-01-17</lastmod>
+    <loc>https://www.convertfilebox.net/</loc>
+    <lastmod>2026-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
+  <!-- JA-JP Section -->
   <url>
-    <loc>https://mat4645.github.io/tools/</loc>
-    <lastmod>2026-01-17</lastmod>
+    <loc>https://www.convertfilebox.net/ja-jp/</loc>
+    <lastmod>2026-02-07</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
   <url>
-    <loc>https://mat4645.github.io/tools/csv-to-json/</loc>
-    <lastmod>2026-01-17</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://www.convertfilebox.net/ja-jp/tools/</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url><loc>https://www.convertfilebox.net/ja-jp/tools/csv-to-json/</loc><priority>0.7</priority></url>
+  <url><loc>https://www.convertfilebox.net/ja-jp/tools/csv-to-json-paste/</loc><priority>0.7</priority></url>
+  <url><loc>https://www.convertfilebox.net/ja-jp/tools/json-to-csv/</loc><priority>0.7</priority></url>
+  <url><loc>https://www.convertfilebox.net/ja-jp/tools/json-formatter/</loc><priority>0.7</priority></url>
+  <url><loc>https://www.convertfilebox.net/ja-jp/tools/csv-to-csv/</loc><priority>0.7</priority></url>
+  <url><loc>https://www.convertfilebox.net/ja-jp/tools/json-to-json-schema/</loc><priority>0.7</priority></url>
+  <url><loc>https://www.convertfilebox.net/ja-jp/about/</loc><priority>0.4</priority></url>
+  <url><loc>https://www.convertfilebox.net/ja-jp/privacy/</loc><priority>0.4</priority></url>
 
+  <!-- EN-US Section -->
   <url>
-    <loc>https://mat4645.github.io/tools/json-to-csv/</loc>
-    <lastmod>2026-01-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://www.convertfilebox.net/en-us/</loc>
+    <lastmod>2026-02-07</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
-
-  <url>
-    <loc>https://mat4645.github.io/tools/json-formatter/</loc>
-    <lastmod>2026-01-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://mat4645.github.io/about/</loc>
-    <lastmod>2026-01-17</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
-
-  <url>
-    <loc>https://mat4645.github.io/privacy/</loc>
-    <lastmod>2026-01-17</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.4</priority>
-  </url>
+  <url><loc>https://www.convertfilebox.net/en-us/tools/</loc><priority>0.8</priority></url>
+  <url><loc>https://www.convertfilebox.net/en-us/tools/csv-to-json/</loc><priority>0.7</priority></url>
+  <url><loc>https://www.convertfilebox.net/en-us/tools/csv-to-json-paste/</loc><priority>0.7</priority></url>
+  <url><loc>https://www.convertfilebox.net/en-us/tools/json-to-csv/</loc><priority>0.7</priority></url>
+  <url><loc>https://www.convertfilebox.net/en-us/tools/json-formatter/</loc><priority>0.7</priority></url>
+  <url><loc>https://www.convertfilebox.net/en-us/tools/csv-to-csv/</loc><priority>0.7</priority></url>
+  <url><loc>https://www.convertfilebox.net/en-us/tools/json-to-json-schema/</loc><priority>0.7</priority></url>
+  <url><loc>https://www.convertfilebox.net/en-us/about/</loc><priority>0.4</priority></url>
+  <url><loc>https://www.convertfilebox.net/en-us/privacy/</loc><priority>0.4</priority></url>
 </urlset>
