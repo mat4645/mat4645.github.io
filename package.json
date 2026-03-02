@@ -1,0 +1,41 @@
+{
+  "name": "mat4645.github.io",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "playwright test",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "build:css": "tailwindcss -i ./src/global.css -o ./assets/css/style.css --minify",
+    "dev:css": "tailwindcss -i ./src/global.css -o ./assets/css/style.css --watch",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,mjs,cjs,ts}": [
+      "npx eslint --fix",
+      "npx prettier --write"
+    ],
+    "*.{html,css,json,md}": [
+      "npx prettier --write"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.58.2",
+    "@tailwindcss/cli": "^4.2.1",
+    "eslint": "^10.0.2",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.1",
+    "prettier": "^3.8.1",
+    "tailwindcss": "^4.2.1"
+  }
+}

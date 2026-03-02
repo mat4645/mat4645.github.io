@@ -4,21 +4,21 @@
  */
 
 class SiteHeader extends HTMLElement {
-    constructor() {
-        super();
-    }
+  constructor() {
+    super();
+  }
 
-    connectedCallback() {
-        const lang = document.documentElement.lang || 'ja-jp';
-        const isEn = lang.startsWith('en');
-        const prefix = isEn ? '/en-us' : '/ja-jp';
+  connectedCallback() {
+    const lang = document.documentElement.lang || 'ja-jp';
+    const isEn = lang.startsWith('en');
+    const prefix = isEn ? '/en-us' : '/ja-jp';
 
-        const homePath = `${prefix}/`;
-        const toolsPath = `${prefix}/tools/`;
-        const aboutPath = `${prefix}/about/`;
-        const privacyPath = `${prefix}/privacy/`;
+    const homePath = `${prefix}/`;
+    const toolsPath = `${prefix}/tools/`;
+    const aboutPath = `${prefix}/about/`;
+    const privacyPath = `${prefix}/privacy/`;
 
-        this.innerHTML = `
+    this.innerHTML = `
         <header class="site-header">
             <div class="container flex items-center justify-between" style="height: 100%;">
                 <a href="${homePath}" class="brand">
@@ -66,53 +66,53 @@ class SiteHeader extends HTMLElement {
         </header>
         `;
 
-        this.initMobileMenu();
-        this.setActiveLink();
-    }
+    this.initMobileMenu();
+    this.setActiveLink();
+  }
 
-    getSwitchUrl(targetLang) {
-        const currentPath = window.location.pathname;
-        if (targetLang === 'en-us') {
-            if (currentPath.includes('/en-us/')) return currentPath;
-            return currentPath.replace('/ja-jp/', '/en-us/');
-        } else {
-            if (currentPath.includes('/ja-jp/')) return currentPath;
-            return currentPath.replace('/en-us/', '/ja-jp/');
-        }
+  getSwitchUrl(targetLang) {
+    const currentPath = window.location.pathname;
+    if (targetLang === 'en-us') {
+      if (currentPath.includes('/en-us/')) return currentPath;
+      return currentPath.replace('/ja-jp/', '/en-us/');
+    } else {
+      if (currentPath.includes('/ja-jp/')) return currentPath;
+      return currentPath.replace('/en-us/', '/ja-jp/');
     }
+  }
 
-    initMobileMenu() {
-        const btn = this.querySelector('#mobile-menu-btn');
-        const nav = this.querySelector('#nav-links');
-        if (btn && nav) {
-            btn.addEventListener('click', () => {
-                nav.classList.toggle('open');
-            });
-        }
+  initMobileMenu() {
+    const btn = this.querySelector('#mobile-menu-btn');
+    const nav = this.querySelector('#nav-links');
+    if (btn && nav) {
+      btn.addEventListener('click', () => {
+        nav.classList.toggle('open');
+      });
     }
+  }
 
-    setActiveLink() {
-        const currentPath = window.location.pathname;
-        const links = this.querySelectorAll('.nav-link');
-        links.forEach(link => {
-            if (link.getAttribute('href') === currentPath) {
-                link.classList.add('active');
-            }
-        });
-    }
+  setActiveLink() {
+    const currentPath = window.location.pathname;
+    const links = this.querySelectorAll('.nav-link');
+    links.forEach((link) => {
+      if (link.getAttribute('href') === currentPath) {
+        link.classList.add('active');
+      }
+    });
+  }
 }
 
 class SiteFooter extends HTMLElement {
-    connectedCallback() {
-        const lang = document.documentElement.lang || 'ja-jp';
-        const isEn = lang.startsWith('en');
-        const prefix = isEn ? '/en-us' : '/ja-jp';
+  connectedCallback() {
+    const lang = document.documentElement.lang || 'ja-jp';
+    const isEn = lang.startsWith('en');
+    const prefix = isEn ? '/en-us' : '/ja-jp';
 
-        const toolsPath = `${prefix}/tools/`;
-        const aboutPath = `${prefix}/about/`;
-        const privacyPath = `${prefix}/privacy/`;
+    const toolsPath = `${prefix}/tools/`;
+    const aboutPath = `${prefix}/about/`;
+    const privacyPath = `${prefix}/privacy/`;
 
-        this.innerHTML = `
+    this.innerHTML = `
         <footer class="site-footer">
             <div class="container text-center">
                 <div class="flex justify-center gap-4 mb-4 text-sm text-muted">
@@ -127,7 +127,7 @@ class SiteFooter extends HTMLElement {
             </div>
         </footer>
         `;
-    }
+  }
 }
 
 customElements.define('site-header', SiteHeader);
