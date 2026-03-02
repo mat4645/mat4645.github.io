@@ -30,6 +30,7 @@ export default [
         module: 'readonly',
         process: 'readonly',
         __dirname: 'readonly',
+        localStorage: 'readonly',
       },
     },
     rules: {
