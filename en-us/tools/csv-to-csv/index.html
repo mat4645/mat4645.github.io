@@ -188,7 +188,24 @@
 
       <!-- Standard Security Block -->
       <section class="panel-security mb-8">
-        <h2 class="text-lg font-bold mb-4">🛡️ Security & Privacy Guaranteed</h2>
+        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+          <svg
+            class="w-6 h-6 text-brand-green"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            style="width: 24px; height: 24px; display: inline-block"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+            />
+          </svg>
+          Security & Privacy Guaranteed
+        </h2>
         <p class="mb-4 font-bold">
           Your data never leaves your browser. We prioritize your privacy above all else.
         </p>
@@ -287,9 +304,7 @@
           <div class="panel" style="height: 100%; display: flex; flex-direction: column">
             <div class="toolbar mb-4">
               <h2 class="text-lg font-bold">3. Output Preview</h2>
-              <button class="btn btn-primary btn-sm" id="btnDownload" disabled>
-                Convert & Download
-              </button>
+              <button class="btn-primary" id="btnDownload" disabled>Convert & Download</button>
             </div>
             <div class="text-sm text-muted mb-2 min-h-[1.5em] font-bold">
               <span id="outPreviewStat"></span>

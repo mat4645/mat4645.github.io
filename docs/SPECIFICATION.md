@@ -3,7 +3,7 @@
 ## アーキテクチャ (Architecture)
 
 - **フロントエンド**: HTML5, Vanilla JavaScript, Web Workers, Service Workers (PWA化)
-- **CSS フレームワーク**: Tailwind CSS v4 を導入し、Material Design 3 (M3) 特有のデザイントークン（Color, Elevation, Typography）とGlassmorphismを適用。
+- **CSS フレームワーク**: Tailwind CSS v4 を導入し、独自のTheming (`@theme`) による「Deep Navy × Emerald Green」のフラットデザインを適用。Glassmorphismを排除し堅牢で軽量なUIを構築。
 - **データ・ステート管理**: サーバーへの送信を一切行わず、`FileReader API` を用いた完全ローカルでの同期・非同期処理。
 - **UI Components**: `assets/js/ui.js` 内で `<site-header>`, `<site-footer>` を定義。
 
@@ -21,6 +21,6 @@
 
 ## デザイン仕様 (Premium UI/UX)
 
-1. **Color Roles & Glassmorphism**: `Primary`, `Surface` 等のM3カラーに、透過背景・ブラー（`backdrop-blur`）を掛け合わせたモダンUI。
+1. **Color Roles & Flat Design**: `Deep Navy` (`#1e3a8a`) をベースカラー、`Emerald Green` (`#059669`) をアクセントとした、信頼感の高いモダンなフラットデザイン。
 2. **Typography**: Google Fonts `Inter`。Tailwindによるレスポンシブスケール運用。
-3. **Card UI & Interactions**: ホバー時等の滑らかなアニメーション(`transition-all`, `hover:-translate-y-1`)の適用。
+3. **Card UI & Accessibility**: 全てのインタラクティブ要素に最低44x44pxのタップ領域、`focus-visible`リング、ホバーアクション、およびSVGアイコン(`aria-hidden`)を採用し100点要件のUXを提供。

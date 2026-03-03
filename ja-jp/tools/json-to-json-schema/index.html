@@ -156,7 +156,24 @@
 
       <!-- Standard Security Block -->
       <section class="panel-security mb-8">
-        <h2 class="text-lg font-bold mb-4">🛡️ セキュリティに関するお約束</h2>
+        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+          <svg
+            class="w-6 h-6 text-brand-green"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            style="width: 24px; height: 24px; display: inline-block"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+            />
+          </svg>
+          セキュリティに関するお約束
+        </h2>
         <p class="mb-4 font-bold">
           当サイトでは、入力されたデータが一瞬たりとも外部サーバーへ送信されることはありません。
         </p>
@@ -176,7 +193,7 @@
           <div class="panel flex-1 flex flex-col">
             <div class="toolbar mb-4">
               <h2 class="text-lg font-bold">1. 入力 (JSON)</h2>
-              <button id="btnClear" class="btn btn-danger-ghost btn-sm">クリア</button>
+              <button id="btnClear" class="btn-outline">クリア</button>
             </div>
             <textarea
               id="ta"
@@ -193,7 +210,7 @@
           <div class="panel" style="height: 100%; display: flex; flex-direction: column">
             <div class="toolbar mb-4">
               <h2 class="text-lg font-bold">2. 生成結果 (JSON Schema)</h2>
-              <button class="btn btn-secondary btn-sm" id="btnCopy" disabled>結果をコピー</button>
+              <button class="btn-outline" id="btnCopy" disabled>結果をコピー</button>
             </div>
             <textarea
               id="output"

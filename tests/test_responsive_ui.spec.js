@@ -14,9 +14,10 @@ test.describe('Responsive and Premium UI (M3 & Glassmorphism)', () => {
     const count = await cardElements.count();
     expect(count).toBeGreaterThan(0);
 
-    // Test Glassmorphism header/nav presence
+    // Test Flat design header/nav presence
     const header = page.locator('header');
-    await expect(header).toHaveClass(/backdrop-blur/);
+    await expect(header).toHaveClass(/sticky/);
+    await expect(header).toHaveClass(/border-b/);
 
     if (isMobile) {
       // Test mobile responsive padding

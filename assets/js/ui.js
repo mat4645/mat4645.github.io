@@ -26,8 +26,8 @@ class SiteHeader extends HTMLElement {
     const aboutPath = `${prefix}/about/`;
 
     this.innerHTML = `
-        <header class="site-header sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant transition-colors duration-300">
-            <div class="container flex items-center justify-between" style="height: 100%;">
+        <header class="site-header sticky top-0 z-50 bg-surface border-b border-border shadow-sm transition-colors duration-300">
+            <div class="container flex items-center justify-between min-h-[64px]">
                 <a href="${homePath}" class="brand">
                     <div class="brand-logo" aria-hidden="true">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"

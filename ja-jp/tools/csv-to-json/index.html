@@ -187,7 +187,24 @@
 
       <!-- Standard Security Block -->
       <section class="panel-security mb-8">
-        <h2 class="text-lg font-bold mb-4">🛡️ セキュリティに関するお約束</h2>
+        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+          <svg
+            class="w-6 h-6 text-brand-green"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            style="width: 24px; height: 24px; display: inline-block"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+            />
+          </svg>
+          セキュリティに関するお約束
+        </h2>
         <p class="mb-4 font-bold">
           当サイトでは、入力されたデータが一瞬たりとも外部サーバーへ送信されることはありません。
         </p>
@@ -237,14 +254,28 @@
 
           <div class="panel">
             <h2 class="text-lg font-bold mb-4">2. ファイル選択</h2>
-            <label class="file-drop-area" id="dropArea" for="fileInput">
+            <label class="file-drop-area cursor-pointer" id="dropArea" for="fileInput">
               <input
                 type="file"
                 id="fileInput"
                 class="file-input"
                 accept=".csv,text/csv,.txt,text/plain"
               />
-              <div style="font-size: 2rem; color: var(--text-light); margin-bottom: 0.5rem">📁</div>
+              <svg
+                class="text-muted mb-2 mx-auto"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                style="width: 48px; height: 48px"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+                />
+              </svg>
               <p class="font-bold text-main">ファイルを選択 または ドラッグ&ドロップ</p>
               <p class="text-sm text-muted mt-2">.csv, .txt (1GB以下のファイルを推奨)</p>
             </label>
@@ -262,10 +293,8 @@
             <div class="toolbar">
               <h2 class="text-lg font-bold">3. 変換結果</h2>
               <div class="flex gap-2">
-                <button class="btn btn-secondary btn-sm" id="btnCopy" disabled>コピー</button>
-                <button class="btn btn-primary btn-sm" id="btnDownload" disabled>
-                  ダウンロード
-                </button>
+                <button class="btn-outline" id="btnCopy" disabled>コピー</button>
+                <button class="btn-primary" id="btnDownload" disabled>ダウンロード</button>
               </div>
             </div>
 

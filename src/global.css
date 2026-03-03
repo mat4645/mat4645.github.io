@@ -3,89 +3,70 @@
 @theme {
   --font-sans: 'Inter', system-ui, sans-serif;
 
-  /* Material Design 3 Light Theme Colors */
-  --color-primary: #006493;
-  --color-on-primary: #ffffff;
-  --color-primary-container: #cbe6ff;
-  --color-on-primary-container: #001e30;
+  /* Brand Colors */
+  --color-brand-navy: #1e3a8a;
+  /* Deep Navy */
+  --color-brand-green: #059669;
+  /* Emerald Green */
 
-  --color-secondary: #50606e;
-  --color-on-secondary: #ffffff;
-  --color-secondary-container: #d3e5f5;
-  --color-on-secondary-container: #0c1d29;
-
-  --color-tertiary: #65587b;
-  --color-on-tertiary: #ffffff;
-  --color-tertiary-container: #ecdcff;
-  --color-on-tertiary-container: #211534;
-
-  --color-error: #ba1a1a;
-  --color-on-error: #ffffff;
-  --color-error-container: #ffdad6;
-  --color-on-error-container: #410002;
-
-  --color-background: #fdfcff;
-  --color-on-background: #1a1c1e;
-  --color-surface: #fdfcff;
-  --color-on-surface: #1a1c1e;
-  --color-surface-variant: #dfe3eb;
-  --color-on-surface-variant: #43474e;
-  --color-outline: #73777f;
-  --color-outline-variant: #c3c6cf;
+  /* Neutral/Base Colors (Light) */
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  /* slate-900 */
+  --color-surface: #ffffff;
+  --color-surface-hover: #f8fafc;
+  /* slate-50 */
+  --color-border: #e2e8f0;
+  /* slate-200 */
+  --color-muted: #64748b;
+  /* slate-500 */
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme dark {
-  /* Material Design 3 Dark Theme Colors */
-  --color-primary: #8dcdff;
-  --color-on-primary: #00344f;
-  --color-primary-container: #004b70;
-  --color-on-primary-container: #cbe6ff;
-
-  --color-secondary: #b7c9d9;
-  --color-on-secondary: #22323f;
-  --color-secondary-container: #394956;
-  --color-on-secondary-container: #d3e5f5;
-
-  --color-tertiary: #d0c0e8;
-  --color-on-tertiary: #362b4a;
-  --color-tertiary-container: #4d4162;
-  --color-on-tertiary-container: #ecdcff;
-
-  --color-error: #ffb4ab;
-  --color-on-error: #690005;
-  --color-error-container: #93000a;
-  --color-on-error-container: #ffdad6;
-
-  --color-background: #1a1c1e;
-  --color-on-background: #e2e2e5;
-  --color-surface: #1a1c1e;
-  --color-on-surface: #e2e2e5;
-  --color-surface-variant: #43474e;
-  --color-on-surface-variant: #c3c6cf;
-  --color-outline: #8d9199;
-  --color-outline-variant: #43474e;
+  /* Dark Theme Colors */
+  --color-background: #0f172a;
+  /* slate-900 */
+  --color-foreground: #f1f5f9;
+  /* slate-100 */
+  --color-surface: #1e293b;
+  /* slate-800 */
+  --color-surface-hover: #334155;
+  /* slate-700 */
+  --color-border: #334155;
+  /* slate-700 */
+  --color-muted: #94a3b8;
+  /* slate-400 */
 }
 
 @layer base {
   body {
-    @apply bg-background text-on-background font-sans antialiased transition-colors duration-300;
+    @apply bg-background text-foreground font-sans antialiased transition-colors duration-300;
   }
 }
 
+/* Custom Utilities (Tailwind v4) */
+@utility btn-primary {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[44px] min-w-[44px] bg-gradient-to-r from-brand-navy to-brand-green text-white font-medium rounded-lg shadow-sm cursor-pointer transition-all duration-200 hover:shadow-md hover:opacity-90 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-green focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0;
+}
+
+@utility btn-outline {
+  @apply inline-flex items-center justify-center gap-2 px-6 py-3 min-h-[44px] min-w-[44px] border border-border bg-surface text-foreground font-medium rounded-lg shadow-sm cursor-pointer transition-colors duration-200 hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-navy focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
 @layer components {
-  /* Premium M3 Card */
+  /* Flat Professional Card */
   .card {
-    @apply bg-surface text-on-surface rounded-2xl shadow-sm border border-outline-variant overflow-hidden transition-all duration-300;
+    @apply bg-surface text-foreground rounded-xl shadow-sm border border-border overflow-hidden transition-all duration-200;
   }
 
   .card-hover {
-    @apply hover:shadow-md hover:-translate-y-1;
+    @apply hover:shadow-md hover:border-brand-green cursor-pointer;
   }
 
   .card-header {
-    @apply px-6 py-4 border-b border-outline-variant bg-surface-variant/30;
+    @apply px-6 py-4 border-b border-border bg-surface-hover;
   }
 
   .card-body {
@@ -93,44 +74,22 @@
   }
 
   .card-footer {
-    @apply px-6 py-4 bg-surface-variant/20 border-t border-outline-variant;
+    @apply px-6 py-4 bg-surface-hover border-t border-border;
   }
 
-  /* Glassmorphism Panel */
-  .panel {
-    @apply bg-surface/80 backdrop-blur-md border border-outline-variant/50 rounded-2xl p-6 shadow-sm;
-  }
-
-  /* Buttons */
-  .btn {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full font-medium transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
-  }
-
-  .btn-primary {
-    @apply bg-primary text-on-primary hover:bg-primary/90 hover:shadow-md;
-  }
-
-  .btn-secondary {
-    @apply bg-secondary-container text-on-secondary-container hover:bg-secondary-container/90;
-  }
-
-  .btn-outline {
-    @apply border border-outline text-primary hover:bg-primary-container/30;
-  }
-
-  /* Inputs */
+  /* Inputs & Selects */
   .input {
-    @apply w-full rounded-xl border border-outline-variant bg-surface px-4 py-3 text-on-surface transition-colors focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary;
+    @apply w-full min-h-[44px] rounded-lg border border-border bg-surface px-4 py-2 text-foreground transition-colors focus:border-brand-green focus:outline-none focus:ring-1 focus:ring-brand-green;
   }
 
   /* Text areas (Code editors) */
   .code-editor {
-    @apply w-full rounded-xl border border-outline-variant bg-surface-variant/30 px-4 py-3 text-on-surface font-mono text-sm focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary h-full resize-none;
+    @apply w-full rounded-lg border border-border bg-surface-hover px-4 py-3 text-foreground font-mono text-sm focus:border-brand-green focus:outline-none focus:ring-1 focus:ring-brand-green h-full resize-none;
   }
 }
 
 @layer utilities {
   .text-muted {
-    @apply text-on-surface-variant;
+    @apply text-muted;
   }
 }
