@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -156,6 +156,7 @@
         ]
       }
     </script>
+    <link rel="manifest" href="/manifest.json" />
   </head>
 
   <body>
@@ -373,7 +374,7 @@
 
     <site-footer></site-footer>
 
-    <!-- Reuse the same logic from the Japanese version -->
+    <!-- Web Worker integration -->
     <script src="/assets/js/ui.js"></script>
     <script>
       const $ = (id) => document.getElementById(id);
@@ -397,6 +398,8 @@
       let lastSelectedFile = null;
       let lastJsonText = '';
 
+      let csvWorker = null;
+
       function setError(text) {
         if (!text) {
           errorMsgEl.style.display = 'none';
@@ -410,119 +413,6 @@
         statInfoEl.textContent = text || '';
       }
 
-      function normalizeNewlines(s) {
-        return s.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-      }
-
-      function decodeArrayBuffer(buf, encSel) {
-        const enc = encSel === 'utf-8-bom' ? 'utf-8' : encSel;
-        let text = '';
-        try {
-          text = new TextDecoder(enc, { fatal: false }).decode(buf);
-        } catch (e) {
-          text = new TextDecoder('utf-8', { fatal: false }).decode(buf);
-        }
-        if (text.startsWith('\uFEFF')) text = text.slice(1);
-        return text.replace(/\u0000/g, '');
-      }
-
-      function parseCSV(text, delimiterChar) {
-        const delim = delimiterChar === 'tab' ? '\t' : delimiterChar;
-        const s = normalizeNewlines(text);
-
-        const rows = [];
-        let i = 0,
-          field = '',
-          row = [],
-          inQuotes = false;
-
-        while (i < s.length) {
-          const ch = s[i];
-
-          if (inQuotes) {
-            if (ch === '"') {
-              if (s[i + 1] === '"') {
-                field += '"';
-                i += 2;
-                continue;
-              }
-              inQuotes = false;
-              i++;
-              continue;
-            } else {
-              field += ch;
-              i++;
-              continue;
-            }
-          } else {
-            if (ch === '"') {
-              inQuotes = true;
-              i++;
-              continue;
-            }
-            if (ch === delim) {
-              row.push(field);
-              field = '';
-              i++;
-              continue;
-            }
-            if (ch === '\n') {
-              row.push(field);
-              rows.push(row);
-              field = '';
-              row = [];
-              i++;
-              continue;
-            }
-            field += ch;
-            i++;
-            continue;
-          }
-        }
-        row.push(field);
-        rows.push(row);
-
-        while (
-          rows.length &&
-          rows[rows.length - 1].length === 1 &&
-          rows[rows.length - 1][0].trim() === ''
-        )
-          rows.pop();
-        return rows;
-      }
-
-      function safeKey(s, idx) {
-        const t = (s ?? '').trim();
-        if (!t) return `col${idx + 1}`;
-        return t.replace(/\s+/g, '_').replace(/[^\w\-]/g, '_');
-      }
-
-      function csvToJson(text) {
-        const rows = parseCSV(text, delimiterEl.value);
-        if (!rows.length) return { json: [], headers: [], rowsCount: 0 };
-
-        let headers = [];
-        let start = 0;
-
-        if (hasHeaderEl.checked) {
-          headers = rows[0].map((h, i) => safeKey(h, i));
-          start = 1;
-        } else {
-          const maxCols = Math.max(...rows.map((r) => r.length));
-          headers = Array.from({ length: maxCols }, (_, i) => `col${i + 1}`);
-        }
-
-        const json = rows.slice(start).map((r) => {
-          const o = {};
-          for (let i = 0; i < headers.length; i++) {
-            o[headers[i]] = r[i] ?? '';
-          }
-          return o;
-        });
-
-        return { json, headers, rowsCount: rows.length };
-      }
-
       async function reloadAndConvert() {
         if (!lastSelectedFile) return;
 
@@ -530,28 +420,61 @@
         fileNameEl.textContent = lastSelectedFile.name;
         setError('');
 
+        outputEl.value = 'Processing... Please wait.';
+        btnCopy.disabled = true;
+        btnDownload.disabled = true;
+        setStat('Processing in background web worker...');
+
         try {
           const ab = await lastSelectedFile.arrayBuffer();
-          const text = decodeArrayBuffer(ab, fileEncodingEl.value);
 
-          const { json, headers, rowsCount } = csvToJson(text);
+          if (!csvWorker) {
+            csvWorker = new Worker('/assets/js/worker-csv.js');
+          }
 
-          lastJsonText = JSON.stringify(json, null, 2);
-          outputEl.value = lastJsonText;
+          csvWorker.onmessage = function (e) {
+            const data = e.data;
+            if (data.success) {
+              lastJsonText = data.jsonText;
+              outputEl.value = lastJsonText;
 
-          btnCopy.disabled = json.length === 0;
-          btnDownload.disabled = json.length === 0;
+              btnCopy.disabled = data.json.length === 0;
+              btnDownload.disabled = data.json.length === 0;
 
-          setStat(
-            `Convertion Successful: Rows=${rowsCount} / JSON items=${json.length} / Columns=${headers.length}`,
+              setStat(
+                `Conversion Successful: Rows=${data.rowsCount} / JSON items=${data.json.length} / Columns=${data.headers.length}`,
+              );
+
+              if (data.rowsCount <= 1 && hasHeaderEl.checked) {
+                setError('Warning: 0 data rows found. Please check header settings.');
+              }
+              if (data.headers.length <= 1) {
+                setError('Warning: Only 1 column detected. Check your delimiter settings.');
+              }
+            } else {
+              lastJsonText = '';
+              outputEl.value = '';
+              setError('Conversion failed: ' + data.error);
+              setStat('');
+            }
+          };
+
+          csvWorker.onerror = function (e) {
+            lastJsonText = '';
+            outputEl.value = '';
+            setError('A critical web worker error occurred.');
+            setStat('');
+          };
+
+          csvWorker.postMessage(
+            {
+              fileBuffer: ab,
+              fileEncoding: fileEncodingEl.value,
+              delimiter: delimiterEl.value,
+              hasHeader: hasHeaderEl.checked,
+            },
+            [ab],
           );
-
-          if (rowsCount <= 1 && hasHeaderEl.checked) {
-            setError('Warning: 0 data rows found. Please check header settings.');
-          }
-          if (headers.length <= 1) {
-            setError('Warning: Only 1 column detected. Check your delimiter settings.');
-          }
         } catch (e) {
           console.error(e);
           lastJsonText = '';
@@ -600,7 +523,8 @@
 
       btnCopy.addEventListener('click', () => {
         if (!lastJsonText) return;
-        copyToClipboard(lastJsonText, btnCopy);
+        fetch('/assets/js/ui.js') // Trigger copyToClipboard from UI.js if needed, or inline
+          .then(() => copyToClipboard(lastJsonText, btnCopy));
       });
 
       btnDownload.addEventListener('click', () => {

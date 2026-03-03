@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -162,6 +162,7 @@
         ]
       }
     </script>
+    <link rel="manifest" href="/manifest.json" />
   </head>
 
   <body>
@@ -354,6 +355,7 @@
 
       let lastJsonText = '';
       let debounceTimer = null;
+      let csvWorker = null;
 
       function setError(text) {
         if (!text) {
@@ -366,107 +368,6 @@
 
       function setStatus(text) {
         statusEl.textContent = text;
-      }
-
-      function normalizeNewlines(s) {
-        return s.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-      }
-
-      function parseCSV(text, delimiterChar) {
-        const delim = delimiterChar === 'tab' ? '\t' : delimiterChar;
-        const s = normalizeNewlines(text || '');
-
-        const rows = [];
-        let i = 0,
-          field = '',
-          row = [],
-          inQuotes = false;
-
-        while (i < s.length) {
-          const ch = s[i];
-
-          if (inQuotes) {
-            if (ch === '"') {
-              if (s[i + 1] === '"') {
-                field += '"';
-                i += 2;
-                continue;
-              }
-              inQuotes = false;
-              i++;
-              continue;
-            } else {
-              field += ch;
-              i++;
-              continue;
-            }
-          } else {
-            if (ch === '"') {
-              inQuotes = true;
-              i++;
-              continue;
-            }
-            if (ch === delim) {
-              row.push(field);
-              field = '';
-              i++;
-              continue;
-            }
-            if (ch === '\n') {
-              row.push(field);
-              rows.push(row);
-              field = '';
-              row = [];
-              i++;
-              continue;
-            }
-            field += ch;
-            i++;
-            continue;
-          }
-        }
-        row.push(field);
-        rows.push(row);
-
-        while (
-          rows.length &&
-          rows[rows.length - 1].length === 1 &&
-          rows[rows.length - 1][0].trim() === ''
-        )
-          rows.pop();
-        return rows;
-      }
-
-      function safeKey(s, idx) {
-        const t = (s ?? '').trim();
-        if (!t) return `col${idx + 1}`;
-        return t.replace(/\s+/g, '_').replace(/[^\w\-]/g, '_');
-      }
-
-      function csvToJson(text) {
-        const rows = parseCSV(text, delimiterEl.value);
-        if (!rows.length) return { json: [], headers: [], rowsCount: 0 };
-
-        let headers = [];
-        let start = 0;
-
-        if (hasHeaderEl.checked) {
-          headers = rows[0].map((h, i) => safeKey(h, i));
-          start = 1;
-        } else {
-          const maxCols = Math.max(...rows.map((r) => r.length));
-          headers = Array.from({ length: maxCols }, (_, i) => `col${i + 1}`);
-        }
-
-        const json = rows.slice(start).map((r) => {
-          const o = {};
-          for (let i = 0; i < headers.length; i++) {
-            o[headers[i]] = r[i] ?? '';
-          }
-          return o;
-        });
-
-        return { json, headers, rowsCount: rows.length };
       }
 
       function convertNow() {
@@ -482,26 +383,57 @@
           return;
         }
 
+        outputEl.value = 'Processing... Please wait.';
+        btnCopy.disabled = true;
+        btnDownload.disabled = true;
+        setStatus('Processing in background web worker...');
+
         try {
-          const { json, headers, rowsCount } = csvToJson(text);
-          lastJsonText = JSON.stringify(json, null, 2);
-          outputEl.value = lastJsonText;
-
-          btnCopy.disabled = json.length === 0;
-          btnDownload.disabled = json.length === 0;
-
-          setStatus(`${json.length} records converted`);
-
-          if (rowsCount <= 1 && hasHeaderEl.checked) {
-            setError('No data rows found. Check your CSV format.');
+          if (!csvWorker) {
+            csvWorker = new Worker('/assets/js/worker-csv.js');
           }
+
+          csvWorker.onmessage = function (e) {
+            const data = e.data;
+            if (data.success) {
+              lastJsonText = data.jsonText;
+              outputEl.value = lastJsonText;
+              btnCopy.disabled = data.json.length === 0;
+              btnDownload.disabled = data.json.length === 0;
+              setStatus(`${data.json.length} records converted`);
+              if (data.rowsCount <= 1 && hasHeaderEl.checked) {
+                setError('No data rows found. Check your CSV format.');
+              }
+            } else {
+              lastJsonText = '';
+              outputEl.value = '';
+              btnCopy.disabled = true;
+              btnDownload.disabled = true;
+              setStatus('Error');
+              setError('Conversion failed: ' + data.error);
+            }
+          };
+
+          csvWorker.onerror = function (e) {
+            lastJsonText = '';
+            outputEl.value = '';
+            setStatus('Error');
+            setError('A critical web worker error occurred.');
+          };
+
+          csvWorker.postMessage({
+            textData: text,
+            isTextMode: true,
+            delimiter: delimiterEl.value,
+            hasHeader: hasHeaderEl.checked,
+          });
         } catch (e) {
           lastJsonText = '';
           outputEl.value = '';
           btnCopy.disabled = true;
           btnDownload.disabled = true;
           setStatus('Error');
-          setError('Conversion failed. Please verify your CSV text.');
+          setError('Unexpected error setting up conversion.');
         }
       }
 

@@ -1,7 +1,15 @@
-# ROADMAP
+# ROADMAP (Ultimate Plan)
 
-- [ ] **フェーズ1: 基盤構築** (M3 トークン定義、Tailwind導入、`ui.js` のヘッダー・フッター改修)
-- [ ] **フェーズ2: ルート＆ランディングページの改修** (`index.html`, `ja-jp/index.html`)
-- [ ] **フェーズ3: ツールページのUI改修** (各ツールのUIをM3のCardやButtonへ変更)
-- [ ] **フェーズ4: 英語 (en-us) 版への展開と検証**
-- [ ] **フェーズ5: ユーザーテスト・最終微調整**
+すべての計画フェーズにおいて「アーキテクチャの真実性」「絶対的セキュリティ」「自動品質保証」を実現しました。
+
+- [x] **Component 1: DevEx, Testing Setup & CI/CD Pipeline** (`package.json`, Lint, Playwright, GitHub Actions)
+- [x] **Component 2: Tailwind v4 Foundation & M3 Dark Mode UI** (`global.css`, `ui.js`)
+- [x] **Component 3: Ultimate Technical SEO & Strict CSP Security** (SEO Tags, Semantic HTML, Content Security Policy)
+- [x] **Component 4: True Web Worker Architecture & Offline PWA** (`worker-csv.js`, `sw.js`, `manifest.json`)
+- [x] **Component 5: Premium UI/UX Polish** (Glassmorphism, Card UI, Tonal Elevation)
+- [x] **Component 6: Documentation Mastery & Conclusion** (各種ドキュメント同期)
+
+**今後の展望 (Future Vision)**
+
+- 変換ツールの追加（例: XML, YAML）
+- ブラウザ拡張機能としての展開

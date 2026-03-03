@@ -3,6 +3,14 @@
  * 120-point Architecture: Ensures absolute UI consistency and modularity.
  */
 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch((err) => {
+      console.error('ServiceWorker registration failed: ', err);
+    });
+  });
+}
+
 class SiteHeader extends HTMLElement {
   constructor() {
     super();
@@ -18,7 +26,7 @@ class SiteHeader extends HTMLElement {
     const aboutPath = `${prefix}/about/`;
 
     this.innerHTML = `
-        <header class="site-header">
+        <header class="site-header sticky top-0 z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant transition-colors duration-300">
             <div class="container flex items-center justify-between" style="height: 100%;">
                 <a href="${homePath}" class="brand">
                     <div class="brand-logo" aria-hidden="true">

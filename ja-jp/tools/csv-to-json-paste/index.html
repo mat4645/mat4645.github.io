@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ja-jp">
   <head>
     <meta charset="utf-8" />
@@ -161,6 +161,7 @@
         ]
       }
     </script>
+    <link rel="manifest" href="/manifest.json" />
   </head>
 
   <body>
@@ -315,6 +316,7 @@
 
       let lastJsonText = '';
       let debounceTimer = null;
+      let csvWorker = null;
 
       function setError(text) {
         if (!text) {
@@ -323,60 +325,6 @@
         }
         errorMsgEl.textContent = text;
         errorMsgEl.style.display = 'block';
-      }
-
-      function parseCSV(text, delimiterChar) {
-        const delim = delimiterChar === 'tab' ? '\t' : delimiterChar;
-        const s = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-        const rows = [];
-        let i = 0,
-          field = '',
-          row = [],
-          inQuotes = false;
-
-        while (i < s.length) {
-          const ch = s[i];
-          if (inQuotes) {
-            if (ch === '"') {
-              if (s[i + 1] === '"') {
-                field += '"';
-                i += 2;
-              } else {
-                inQuotes = false;
-                i++;
-              }
-            } else {
-              field += ch;
-              i++;
-            }
-          } else {
-            if (ch === '"') {
-              inQuotes = true;
-              i++;
-            } else if (ch === delim) {
-              row.push(field);
-              field = '';
-              i++;
-            } else if (ch === '\n') {
-              row.push(field);
-              rows.push(row);
-              field = '';
-              row = [];
-              i++;
-            } else {
-              field += ch;
-              i++;
-            }
-          }
-        }
-        row.push(field);
-        rows.push(row);
-        return rows.filter((r) => r.length > 1 || r[0].trim() !== '');
-      }
-
-      function safeKey(s, idx) {
-        const t = (s ?? '').trim();
-        return t ? t.replace(/\s+/g, '_') : `col${idx + 1}`;
       }
 
       function convertNow() {
@@ -391,33 +339,57 @@
           return;
         }
 
-        try {
-          const rows = parseCSV(text, delimiterEl.value);
-          if (!rows.length) throw new Error('No data');
+        outputEl.value = '処理中... しばらくお待ちください。';
+        btnCopy.disabled = true;
+        btnDownload.disabled = true;
+        statusEl.textContent = 'バックグラウンドのWebワーカーで処理しています...';
 
-          let headers = [];
-          let start = 0;
-          if (hasHeaderEl.checked) {
-            headers = rows[0].map((h, i) => safeKey(h, i));
-            start = 1;
-          } else {
-            const max = Math.max(...rows.map((r) => r.length));
-            headers = Array.from({ length: max }, (_, i) => `col${i + 1}`);
+        try {
+          if (!csvWorker) {
+            csvWorker = new Worker('/assets/js/worker-csv.js');
           }
 
-          const json = rows.slice(start).map((r) => {
-            const o = {};
-            headers.forEach((h, i) => (o[h] = r[i] ?? ''));
-            return o;
-          });
+          csvWorker.onmessage = function (e) {
+            const data = e.data;
+            if (data.success) {
+              lastJsonText = data.jsonText;
+              outputEl.value = lastJsonText;
+              btnCopy.disabled = data.json.length === 0;
+              btnDownload.disabled = data.json.length === 0;
+              statusEl.textContent = `${data.json.length}件 変換完了`;
+              if (data.rowsCount <= 1 && hasHeaderEl.checked) {
+                setError('データ行が0件です。フォーマットを確認してください。');
+              }
+            } else {
+              lastJsonText = '';
+              outputEl.value = '';
+              btnCopy.disabled = true;
+              btnDownload.disabled = true;
+              statusEl.textContent = 'エラー';
+              setError('変換失敗: ' + data.error);
+            }
+          };
 
-          lastJsonText = JSON.stringify(json, null, 2);
-          outputEl.value = lastJsonText;
-          btnCopy.disabled = false;
-          btnDownload.disabled = false;
-          statusEl.textContent = `${json.length}件 変換完了`;
+          csvWorker.onerror = function (e) {
+            lastJsonText = '';
+            outputEl.value = '';
+            statusEl.textContent = 'エラー';
+            setError('重大なWebワーカーエラーが発生しました。');
+          };
+
+          csvWorker.postMessage({
+            textData: text,
+            isTextMode: true,
+            delimiter: delimiterEl.value,
+            hasHeader: hasHeaderEl.checked,
+          });
         } catch (e) {
-          setError('パース失敗: 形式を確認してください');
+          lastJsonText = '';
+          outputEl.value = '';
+          btnCopy.disabled = true;
+          btnDownload.disabled = true;
+          statusEl.textContent = 'エラー';
+          setError('予期せぬエラーが発生しました。');
         }
       }
 

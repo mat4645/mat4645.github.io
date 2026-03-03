@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -169,6 +169,7 @@
         ]
       }
     </script>
+    <link rel="manifest" href="/manifest.json" />
   </head>
 
   <body>
@@ -359,6 +360,7 @@
 
     <site-footer></site-footer>
 
+    <!-- Web Worker integration -->
     <script src="/assets/js/ui.js"></script>
     <script>
       const $ = (id) => document.getElementById(id);
@@ -381,6 +383,8 @@
       let lastFileBase = 'json_to_csv';
       let debounceTimer = null;
 
+      let jsonWorker = null;
+
       function setError(text) {
         if (!text) {
           errorMsgEl.style.display = 'none';
@@ -392,74 +396,6 @@
 
       function setStatus(text) {
         statusEl.textContent = text;
-      }
-
-      function normalizeDelim(v) {
-        return v === 'tab' ? '\t' : v;
-      }
-
-      function isPlainObject(x) {
-        return x && typeof x === 'object' && !Array.isArray(x);
-      }
-
-      function flattenObject(obj, prefix = '', out = {}) {
-        for (const [k, v] of Object.entries(obj)) {
-          const key = prefix ? `${prefix}.${k}` : k;
-          if (isPlainObject(v)) {
-            flattenObject(v, key, out);
-          } else if (Array.isArray(v)) {
-            out[key] = JSON.stringify(v);
-          } else {
-            out[key] = v;
-          }
-        }
-        return out;
-      }
-
-      function collectHeaders(rows) {
-        const set = new Set();
-        for (const r of rows) {
-          for (const k of Object.keys(r)) set.add(k);
-        }
-        return Array.from(set);
-      }
-
-      function csvEscape(value, delimChar) {
-        const s = value === null || value === undefined ? '' : String(value);
-        const needs =
-          s.includes('"') || s.includes('\n') || s.includes('\r') || s.includes(delimChar);
-        if (!needs) return s;
-        return '"' + s.replace(/"/g, '""') + '"';
-      }
-
-      function jsonToRows(inputText, doFlatten) {
-        const raw = JSON.parse(inputText);
-        let arr;
-        if (Array.isArray(raw)) {
-          arr = raw;
-        } else if (isPlainObject(raw)) {
-          arr = [raw];
-        } else {
-          arr = [{ value: raw }];
-        }
-        const rows = arr.map((x) => {
-          if (isPlainObject(x)) return doFlatten ? flattenObject(x) : x;
-          return { value: Array.isArray(x) ? JSON.stringify(x) : x };
-        });
-        return rows;
-      }
-
-      function buildCsv(rows, delimChar, includeHeader) {
-        const headers = collectHeaders(rows);
-        const lines = [];
-        if (includeHeader) {
-          lines.push(headers.map((h) => csvEscape(h, delimChar)).join(delimChar));
-        }
-        for (const r of rows) {
-          const line = headers.map((h) => csvEscape(r[h], delimChar)).join(delimChar);
-          lines.push(line);
-        }
-        return { csv: lines.join('\n'), headers, count: rows.length };
       }
 
       function run() {
@@ -475,28 +411,60 @@
           return;
         }
 
-        const delimChar = normalizeDelim(delimEl.value);
-        const includeHeader = !!includeHeaderEl.checked;
-        const doFlatten = !!flattenEl.checked;
+        outputEl.value = 'Processing... Please wait.';
+        btnCopy.disabled = true;
+        btnDownload.disabled = true;
+        setStatus('Processing in background web worker...');
 
         try {
-          const rows = jsonToRows(text, doFlatten);
-          const { csv, headers, count } = buildCsv(rows, delimChar, includeHeader);
+          if (!jsonWorker) {
+            jsonWorker = new Worker('/assets/js/worker-json.js');
+          }
 
-          lastCsv = csv;
-          outputEl.value = csv;
+          jsonWorker.onmessage = function (e) {
+            const data = e.data;
+            if (data.success) {
+              lastCsv = data.csv;
+              outputEl.value = lastCsv;
+              btnCopy.disabled = !lastCsv;
+              btnDownload.disabled = !lastCsv;
+              setStatus(`${data.count} rows / ${data.headers.length} columns converted`);
+              lastFileBase = 'json_to_csv';
+              setError('');
+            } else {
+              lastCsv = '';
+              outputEl.value = '';
+              btnCopy.disabled = true;
+              btnDownload.disabled = true;
+              setStatus('Error');
+              if (data.syntaxError) {
+                setError('Invalid JSON format (Syntax Error)');
+              } else {
+                setError('Conversion failed: ' + data.error);
+              }
+            }
+          };
 
-          btnCopy.disabled = !lastCsv;
-          btnDownload.disabled = !lastCsv;
-          setStatus(`${count} rows / ${headers.length} columns converted`);
-          lastFileBase = 'json_to_csv';
+          jsonWorker.onerror = function (e) {
+            lastCsv = '';
+            outputEl.value = '';
+            setStatus('Error');
+            setError('A critical web worker error occurred.');
+          };
+
+          jsonWorker.postMessage({
+            text: text,
+            delimiter: delimEl.value,
+            includeHeader: !!includeHeaderEl.checked,
+            doFlatten: !!flattenEl.checked,
+          });
         } catch (e) {
           outputEl.value = '';
           btnCopy.disabled = true;
           btnDownload.disabled = true;
           lastCsv = '';
           setStatus('Error');
-          setError('Invalid JSON format (Syntax Error)');
+          setError('Unexpected error setting up conversion.');
         }
       }
 

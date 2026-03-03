@@ -1,19 +1,26 @@
-# SPECIFICATION
+# SPECIFICATION (100-Point Ultimate Architecture)
 
 ## アーキテクチャ (Architecture)
 
-- **HTML**: M3に準拠したセマンティックHTMLへと構造をリファクタリングする。
-- **CSS フレームワーク**: Tailwind CSS をCDN経由で読み込み、M3特有のデザイントークン（Color, Elevation, Typography）をユーティリティクラス（`bg-surface-container`, `text-on-surface`, `shadow-md` など）を用いて再現する。
-- **UI Components**: `assets/js/ui.js` 内で定義されている Web Components (`<site-header>`, `<site-footer>`) の出力HTMLも、Tailwind CSS + M3の仕様に合わせて書き換える。
+- **フロントエンド**: HTML5, Vanilla JavaScript, Web Workers, Service Workers (PWA化)
+- **CSS フレームワーク**: Tailwind CSS v4 を導入し、Material Design 3 (M3) 特有のデザイントークン（Color, Elevation, Typography）とGlassmorphismを適用。
+- **データ・ステート管理**: サーバーへの送信を一切行わず、`FileReader API` を用いた完全ローカルでの同期・非同期処理。
+- **UI Components**: `assets/js/ui.js` 内で `<site-header>`, `<site-footer>` を定義。
 
-## デザイン仕様 (Material Design 3)
+## パフォーマンス＆最適化 (True Performance)
 
-1. **Color Roles**:
-   - `Primary`, `On-Primary`, `Primary-Container`, `On-Primary-Container` の適用。
-   - `Surface`, `Surface-Container-Lowest` から `Surface-Container-Highest` の多段階の表面色設定によるTonal Elevationの実現。
-2. **Typography**: Google Fonts の `Inter` をそのまま利用しつつ、Display, Headline, Title, Body, Label のスケールに則ったTailwindクラスの運用。
-3. **State Layers**: ホバー（`hover:bg-primary/8` などの擬似クラス）やフォーカス（`focus:ring`）の適切な設定。
+- **非同期処理 (Web Workers)**: `worker-csv.js`, `worker-json.js` を導入。大容量ファイルのパース・変換処理をメインスレッドから分離し、UIフリーズを0に。
+- **PWA (Progressive Web App)**: `manifest.json` と `sw.js` (Service Worker) によるオフラインキャッシュ戦略。ネットワーク切断時でも100%動作する最強のUXを提供。
+- **DevEx (Developer Experience)**: `ESLint`, `Prettier`, `Husky`, `lint-staged` を導入。コミット時の自動整形と静的解析によりコード品質を自動防衛。
+- **TDD (自動テスト)**: Playwrightを用いたE2Eテスト (`tests/`) によるリグレッション防止。
 
-## 変換機能
+## セキュリティ (Absolute Security)
 
-- 既存の変換処理ロジック（JavaScript）は一切変更せず、UI層（View）のみを改修する。
+- **Content Security Policy (CSP)**: HTTP Header (`<meta http-equiv="Content-Security-Policy">`) により、Google Ads / Analytics 以外の全ての外部通信を物理的に遮断。XSS等の脅威を無効化。
+- **Privacy Core**: サーバーへのデータ送信ゼロ。すべてブラウザ内で完結。
+
+## デザイン仕様 (Premium UI/UX)
+
+1. **Color Roles & Glassmorphism**: `Primary`, `Surface` 等のM3カラーに、透過背景・ブラー（`backdrop-blur`）を掛け合わせたモダンUI。
+2. **Typography**: Google Fonts `Inter`。Tailwindによるレスポンシブスケール運用。
+3. **Card UI & Interactions**: ホバー時等の滑らかなアニメーション(`transition-all`, `hover:-translate-y-1`)の適用。

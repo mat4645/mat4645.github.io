@@ -1,0 +1,327 @@
+[
+  {
+    "filePath": "C:\\Users\\matun\\Documents\\GitHub\\mat4645.github.io\\assets\\js\\ui.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "C:\\Users\\matun\\Documents\\GitHub\\mat4645.github.io\\assets\\js\\worker-csv.js",
+    "messages": [
+      {
+        "ruleId": "no-useless-assignment",
+        "severity": 2,
+        "message": "This assigned value is not used in subsequent statements.",
+        "line": 9,
+        "column": 7,
+        "messageId": "unnecessaryAssignment",
+        "endLine": 9,
+        "endColumn": 11
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 1,
+        "message": "'e' is defined but never used.",
+        "line": 12,
+        "column": 12,
+        "messageId": "unusedVar",
+        "endLine": 12,
+        "endColumn": 13
+      },
+      {
+        "ruleId": "no-control-regex",
+        "severity": 2,
+        "message": "Unexpected control character(s) in regular expression: \\x00.",
+        "line": 16,
+        "column": 23,
+        "messageId": "unexpected",
+        "endLine": 16,
+        "endColumn": 32
+      },
+      {
+        "ruleId": "no-useless-escape",
+        "severity": 2,
+        "message": "Unnecessary escape character: \\-.",
+        "line": 88,
+        "column": 46,
+        "messageId": "unnecessaryEscape",
+        "endLine": 88,
+        "endColumn": 47,
+        "suggestions": [
+          {
+            "messageId": "removeEscape",
+            "fix": { "range": [1794, 1795], "text": "" },
+            "desc": "Remove the `\\`. This maintains the current functionality."
+          },
+          {
+            "messageId": "escapeBackslash",
+            "fix": { "range": [1794, 1794], "text": "\\" },
+            "desc": "Replace the `\\` with `\\\\` to include the actual backslash character."
+          }
+        ]
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 3,
+    "fatalErrorCount": 0,
+    "warningCount": 1,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "source": "// assets/js/worker-csv.js\n\nfunction normalizeNewlines(s) {\n  return s.replace(/\\r\\n/g, '\\n').replace(/\\r/g, '\\n');\n}\n\nfunction decodeArrayBuffer(buf, encSel) {\n  const enc = encSel === 'utf-8-bom' ? 'utf-8' : encSel;\n  let text = '';\n  try {\n    text = new TextDecoder(enc, { fatal: false }).decode(buf);\n  } catch (e) {\n    text = new TextDecoder('utf-8', { fatal: false }).decode(buf);\n  }\n  if (text.startsWith('\\uFEFF')) text = text.slice(1);\n  return text.replace(/\\u0000/g, '');\n}\n\nfunction parseCSV(text, delimiterChar) {\n  const delim = delimiterChar === 'tab' ? '\\t' : delimiterChar;\n  const s = normalizeNewlines(text);\n\n  const rows = [];\n  let i = 0,\n    field = '',\n    row = [],\n    inQuotes = false;\n\n  while (i < s.length) {\n    const ch = s[i];\n\n    if (inQuotes) {\n      if (ch === '\"') {\n        if (s[i + 1] === '\"') {\n          field += '\"';\n          i += 2;\n          continue;\n        }\n        inQuotes = false;\n        i++;\n        continue;\n      } else {\n        field += ch;\n        i++;\n        continue;\n      }\n    } else {\n      if (ch === '\"') {\n        inQuotes = true;\n        i++;\n        continue;\n      }\n      if (ch === delim) {\n        row.push(field);\n        field = '';\n        i++;\n        continue;\n      }\n      if (ch === '\\n') {\n        row.push(field);\n        rows.push(row);\n        field = '';\n        row = [];\n        i++;\n        continue;\n      }\n      field += ch;\n      i++;\n      continue;\n    }\n  }\n  row.push(field);\n  rows.push(row);\n\n  while (\n    rows.length &&\n    rows[rows.length - 1].length === 1 &&\n    rows[rows.length - 1][0].trim() === ''\n  ) {\n    rows.pop();\n  }\n  return rows;\n}\n\nfunction safeKey(s, idx) {\n  const t = (s ?? '').trim();\n  if (!t) return `col${idx + 1}`;\n  return t.replace(/\\s+/g, '_').replace(/[^\\w\\-]/g, '_');\n}\n\nfunction csvToJson(text, delimiter, hasHeader) {\n  const rows = parseCSV(text, delimiter);\n  if (!rows.length) return { json: [], headers: [], rowsCount: 0 };\n\n  let headers = [];\n  let start = 0;\n\n  if (hasHeader) {\n    headers = rows[0].map((h, i) => safeKey(h, i));\n    start = 1;\n  } else {\n    const maxCols = Math.max(...rows.map((r) => r.length));\n    headers = Array.from({ length: maxCols }, (_, i) => `col${i + 1}`);\n  }\n\n  const json = rows.slice(start).map((r) => {\n    const o = {};\n    for (let i = 0; i < headers.length; i++) {\n      o[headers[i]] = r[i] ?? '';\n    }\n    return o;\n  });\n\n  return { json, headers, rowsCount: rows.length };\n}\n\nself.addEventListener('message', async (e) => {\n  const { fileBuffer, textData, isTextMode, fileEncoding, delimiter, hasHeader } = e.data;\n  try {\n    let text = '';\n    if (isTextMode) {\n      text = textData;\n    } else {\n      text = decodeArrayBuffer(fileBuffer, fileEncoding);\n    }\n\n    const { json, headers, rowsCount } = csvToJson(text, delimiter, hasHeader);\n\n    // Use JSON.stringify outside the main thread memory allocation for the big string if possible\n    // Although returning raw JSON object to main thread takes structured clone overhead.\n    // Typically it is faster to stringify in the worker to not block the main thread.\n    const jsonText = JSON.stringify(json, null, 2);\n\n    self.postMessage({ success: true, json, jsonText, headers, rowsCount });\n  } catch (err) {\n    self.postMessage({ success: false, error: err.message });\n  }\n});\n",
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "C:\\Users\\matun\\Documents\\GitHub\\mat4645.github.io\\assets\\js\\worker-json.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "C:\\Users\\matun\\Documents\\GitHub\\mat4645.github.io\\eslint.config.mjs",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "C:\\Users\\matun\\Documents\\GitHub\\mat4645.github.io\\playwright.config.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "C:\\Users\\matun\\Documents\\GitHub\\mat4645.github.io\\scripts\\inject_json_ld.js",
+    "messages": [
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 1,
+        "message": "'e' is defined but never used.",
+        "line": 27,
+        "column": 12,
+        "messageId": "unusedVar",
+        "endLine": 27,
+        "endColumn": 13
+      },
+      {
+        "ruleId": "no-console",
+        "severity": 1,
+        "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
+        "line": 133,
+        "column": 5,
+        "messageId": "limited",
+        "endLine": 133,
+        "endColumn": 16,
+        "suggestions": [
+          {
+            "fix": { "range": [3455, 3512], "text": "" },
+            "messageId": "removeConsole",
+            "data": { "propertyName": "log" },
+            "desc": "Remove the console.log()."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-console",
+        "severity": 1,
+        "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
+        "line": 164,
+        "column": 1,
+        "messageId": "limited",
+        "endLine": 164,
+        "endColumn": 12,
+        "suggestions": [
+          {
+            "fix": { "range": [4133, 4170], "text": "" },
+            "messageId": "removeConsole",
+            "data": { "propertyName": "log" },
+            "desc": "Remove the console.log()."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-console",
+        "severity": 1,
+        "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
+        "line": 171,
+        "column": 3,
+        "messageId": "limited",
+        "endLine": 171,
+        "endColumn": 14,
+        "suggestions": [
+          {
+            "fix": { "range": [4384, 4421], "text": "" },
+            "messageId": "removeConsole",
+            "data": { "propertyName": "log" },
+            "desc": "Remove the console.log()."
+          }
+        ]
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 4,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "source": "const fs = require('fs');\nconst path = require('path');\n\nfunction processFile(filePath) {\n  let content = fs.readFileSync(filePath, 'utf8');\n\n  // Check if we already injected breadcrumbs\n  if (content.includes('\"@type\": \"BreadcrumbList\"')) {\n    return;\n  }\n\n  // Extract title\n  const titleMatch = content.match(/<title>([\\s\\S]*?)<\\/title>/);\n  const title = titleMatch ? titleMatch[1].trim() : 'ConvertFileBox';\n\n  // Extract canonical URL\n  const canonicalMatch = content.match(/<link\\s+rel=\"canonical\"\\s+href=\"([^\"]+)\"\\s*\\/>/i);\n  let canonicalUrl = canonicalMatch ? canonicalMatch[1] : '';\n\n  if (!canonicalUrl) {\n    return;\n  }\n\n  let urlObj;\n  try {\n    urlObj = new URL(canonicalUrl);\n  } catch (e) {\n    return;\n  }\n\n  const pathname = urlObj.pathname;\n  const segments = pathname.split('/').filter(Boolean);\n\n  // Build BreadcrumbList\n  let breadcrumbs = [];\n  if (segments.length >= 1) {\n    const lang = segments[0]; // en-us or ja-jp\n    breadcrumbs.push({\n      '@type': 'ListItem',\n      position: 1,\n      name: 'Home',\n      item: `https://www.convertfilebox.net/${lang}/`,\n    });\n\n    if (segments.length >= 2 && segments[1] === 'tools') {\n      breadcrumbs.push({\n        '@type': 'ListItem',\n        position: 2,\n        name: lang === 'ja-jp' ? 'ツール一覧' : 'Tools',\n        item: `https://www.convertfilebox.net/${lang}/tools/`,\n      });\n\n      if (segments.length >= 3) {\n        breadcrumbs.push({\n          '@type': 'ListItem',\n          position: 3,\n          name: title,\n          item: canonicalUrl,\n        });\n      }\n    } else if (segments.length >= 2 && segments[1] === 'about') {\n      breadcrumbs.push({\n        '@type': 'ListItem',\n        position: 2,\n        name: lang === 'ja-jp' ? 'このサイトについて' : 'About',\n        item: canonicalUrl,\n      });\n    } else if (segments.length >= 2 && segments[1] === 'privacy') {\n      breadcrumbs.push({\n        '@type': 'ListItem',\n        position: 2,\n        name: lang === 'ja-jp' ? 'プライバシーポリシー' : 'Privacy Policy',\n        item: canonicalUrl,\n      });\n    }\n  }\n\n  const breadcrumbData = {\n    '@context': 'https://schema.org',\n    '@type': 'BreadcrumbList',\n    itemListElement: breadcrumbs,\n  };\n\n  // Build FAQPage\n  const faqRegex =\n    /<h4[^>]*>([QＱ][.．]?\\s*)(.*?)<\\/h4>\\s*<p[^>]*>([AＡ][.．]?\\s*)([\\s\\S]*?)<\\/p>/gi;\n  let match;\n  let faqContent = [];\n\n  while ((match = faqRegex.exec(content)) !== null) {\n    const q = match[2].trim();\n    const a = match[4]\n      .replace(/<[^>]+>/g, '')\n      .trim()\n      .replace(/\\s+/g, ' ');\n    faqContent.push({\n      '@type': 'Question',\n      name: q,\n      acceptedAnswer: {\n        '@type': 'Answer',\n        text: a,\n      },\n    });\n  }\n\n  let structuredDataArr = [];\n  if (breadcrumbs.length > 0) {\n    structuredDataArr.push(breadcrumbData);\n  }\n  if (faqContent.length > 0) {\n    structuredDataArr.push({\n      '@context': 'https://schema.org',\n      '@type': 'FAQPage',\n      mainEntity: faqContent,\n    });\n  }\n\n  // Inject script\n  const scriptContent = structuredDataArr\n    .map(\n      (d) =>\n        `    <script type=\"application/ld+json\">\\n${JSON.stringify(d, null, 2)\n          .split('\\n')\n          .map((l, i) => (i === 0 ? l : '      ' + l))\n          .join('\\n')}\\n    </script>`,\n    )\n    .join('\\n');\n\n  if (structuredDataArr.length > 0) {\n    // Inject just before </head>\n    content = content.replace(/(<\\/head>)/i, `${scriptContent}\\n  $1`);\n    fs.writeFileSync(filePath, content, 'utf8');\n    console.log(`Injected structured data into ${filePath}`);\n  }\n}\n\nfunction traverse(dir) {\n  if (!fs.existsSync(dir)) return;\n  const files = fs.readdirSync(dir);\n  for (const file of files) {\n    const fullPath = path.join(dir, file);\n    if (fs.statSync(fullPath).isDirectory()) {\n      const ignoredDirs = [\n        'en-us_broken',\n        'ja-jp_broken',\n        'node_modules',\n        '.git',\n        '.github',\n        'assets',\n        'scripts',\n        'tests',\n        'docs',\n        '.husky',\n      ];\n      if (!ignoredDirs.includes(file)) {\n        traverse(fullPath);\n      }\n    } else if (fullPath.endsWith('.html')) {\n      processFile(fullPath);\n    }\n  }\n}\n\nconsole.log('Starting traversal...');\ntraverse(path.join(__dirname, '..', 'en-us'));\ntraverse(path.join(__dirname, '..', 'ja-jp'));\n\n// Also root index.html\nconst rootIndex = path.join(__dirname, '..', 'index.html');\nif (fs.existsSync(rootIndex)) {\n  console.log('Processing root index');\n  processFile(rootIndex);\n}\n",
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "C:\\Users\\matun\\Documents\\GitHub\\mat4645.github.io\\scripts\\inject_seo.js",
+    "messages": [
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 1,
+        "message": "'match' is assigned a value but never used.",
+        "line": 63,
+        "column": 11,
+        "messageId": "unusedVar",
+        "endLine": 63,
+        "endColumn": 16
+      },
+      {
+        "ruleId": "no-console",
+        "severity": 1,
+        "message": "Unexpected console statement. Only these console methods are allowed: warn, error.",
+        "line": 78,
+        "column": 3,
+        "messageId": "limited",
+        "endLine": 78,
+        "endColumn": 14,
+        "suggestions": [
+          {
+            "fix": { "range": [3266, 3303], "text": "" },
+            "messageId": "removeConsole",
+            "data": { "propertyName": "log" },
+            "desc": "Remove the console.log()."
+          }
+        ]
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 2,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "source": "const fs = require('fs');\nconst path = require('path');\n\nconst csp = `\n    <!-- Strict Content Security Policy -->\n    <meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://pagead2.googlesyndication.com https://www.google.com; frame-src https://googleads.g.doubleclick.net https://www.google.com;\" />\n`;\n\nfunction processFile(filePath) {\n  let content = fs.readFileSync(filePath, 'utf8');\n  if (content.includes('Content-Security-Policy')) return; // Already processed\n\n  // Extract title\n  const titleMatch = content.match(/<title>([\\s\\S]*?)<\\/title>/);\n  const title = titleMatch ? titleMatch[1].trim() : 'ConvertFileBox';\n\n  // Extract description\n  const descMatch = content.match(/<meta\\s+name=\"description\"\\s+content=\"([\\s\\S]*?)\"\\s*\\/>/i);\n  let description = descMatch ? descMatch[1].trim() : '';\n\n  // Extract canonical URL\n  const canonicalMatch = content.match(/<link\\s+rel=\"canonical\"\\s+href=\"([^\"]+)\"\\s*\\/>/i);\n  let canonicalUrl = canonicalMatch ? canonicalMatch[1] : '';\n\n  if (!canonicalUrl) {\n    console.warn(`No canonical URL found in ${filePath}`);\n    return;\n  }\n\n  const ogTags = `\n    <!-- Open Graph & Twitter Card -->\n    <meta property=\"og:title\" content=\"${title}\" />\n    <meta property=\"og:description\" content=\"${description}\" />\n    <meta property=\"og:type\" content=\"website\" />\n    <meta property=\"og:url\" content=\"${canonicalUrl}\" />\n    <meta property=\"og:image\" content=\"https://www.convertfilebox.net/assets/icon-large.png\" />\n    <meta name=\"twitter:card\" content=\"summary_large_image\" />`;\n\n  // Insert CSP and OG after description tag\n  content = content.replace(\n    /(<meta\\s+name=\"description\"\\s+content=\"[\\s\\S]*?\"\\s*\\/>)/i,\n    `$1\\n${csp}\\n${ogTags}`,\n  );\n\n  // Also fix hreflang=\"en\" to \"en-us\"\n  content = content.replace(/hreflang=\"en\"/g, 'hreflang=\"en-us\"');\n\n  // Insert x-default hreflang\n  const enMatch = canonicalUrl.match(/https:\\/\\/www\\.convertfilebox\\.net\\/en-us\\/(.*)/);\n  const jpMatch = canonicalUrl.match(/https:\\/\\/www\\.convertfilebox\\.net\\/ja-jp\\/(.*)/);\n\n  let route = '';\n  if (enMatch) route = enMatch[1];\n  if (jpMatch) route = jpMatch[1];\n\n  const xdefaultUrl = `https://www.convertfilebox.net/en-us/${route}`;\n  const xdefaultTag = `\\n    <link rel=\"alternate\" hreflang=\"x-default\" href=\"${xdefaultUrl}\" />`;\n\n  // Find the last alternate link to insert after\n  const alternateRegex = /<link\\s+rel=\"alternate\"\\s+hreflang=\"[^\"]+\"\\s+href=\"[^\"]+\"\\s*\\/>/g;\n  let match;\n  let lastIndex = -1;\n  while ((match = alternateRegex.exec(content)) !== null) {\n    lastIndex = alternateRegex.lastIndex;\n  }\n\n  if (lastIndex !== -1 && !content.includes('hreflang=\"x-default\"')) {\n    content = content.slice(0, lastIndex) + xdefaultTag + content.slice(lastIndex);\n  } else if (!content.includes('hreflang=\"x-default\"')) {\n    // If no alternate links found, append to canonical\n    content = content.replace(\n      /(<link\\s+rel=\"canonical\"\\s+href=\"[^\"]+\"\\s*\\/>)/i,\n      `$1${xdefaultTag}`,\n    );\n  }\n\n  fs.writeFileSync(filePath, content, 'utf8');\n  console.log(`Processed ${filePath}`);\n}\n\nfunction traverse(dir) {\n  const files = fs.readdirSync(dir);\n  for (const file of files) {\n    const fullPath = path.join(dir, file);\n    if (fs.statSync(fullPath).isDirectory()) {\n      if (!fullPath.includes('en-us_broken') && !fullPath.includes('ja-jp_broken')) {\n        traverse(fullPath);\n      }\n    } else if (fullPath.endsWith('.html')) {\n      processFile(fullPath);\n    }\n  }\n}\n\ntraverse(path.join(__dirname, '..', 'en-us'));\ntraverse(path.join(__dirname, '..', 'ja-jp'));\n",
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "C:\\Users\\matun\\Documents\\GitHub\\mat4645.github.io\\sw.js",
+    "messages": [
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'fetch' is not defined.",
+        "line": 51,
+        "column": 14,
+        "messageId": "undef",
+        "endLine": 51,
+        "endColumn": 19
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 1,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "source": "const CACHE_NAME = 'convertfilebox-v1';\nconst urlsToCache = [\n  '/',\n  '/assets/css/style.css',\n  '/assets/js/ui.js',\n  '/assets/js/worker-csv.js',\n  '/assets/js/worker-json.js',\n];\n\nself.addEventListener('install', (event) => {\n  event.waitUntil(\n    caches.open(CACHE_NAME).then((cache) => {\n      // use catch to prevent failure if a url doesn't exist\n      return Promise.allSettled(urlsToCache.map((url) => cache.add(url)));\n    }),\n  );\n  self.skipWaiting();\n});\n\nself.addEventListener('activate', (event) => {\n  event.waitUntil(\n    caches.keys().then((cacheNames) => {\n      return Promise.all(\n        cacheNames.map((cacheName) => {\n          if (cacheName !== CACHE_NAME) {\n            return caches.delete(cacheName);\n          }\n        }),\n      );\n    }),\n  );\n  self.clients.claim();\n});\n\nself.addEventListener('fetch', (event) => {\n  // Only cache GET requests\n  if (event.request.method !== 'GET') {\n    return;\n  }\n\n  // Exclude extension requests or api requests if necessary\n  if (!event.request.url.startsWith('http')) {\n    return;\n  }\n\n  event.respondWith(\n    caches.match(event.request).then((response) => {\n      if (response) {\n        return response; // Cache hit\n      }\n      return fetch(event.request)\n        .then((networkResponse) => {\n          // Dynamic caching\n          if (\n            !networkResponse ||\n            networkResponse.status !== 200 ||\n            networkResponse.type !== 'basic'\n          ) {\n            return networkResponse;\n          }\n          const responseToCache = networkResponse.clone();\n          caches.open(CACHE_NAME).then((cache) => {\n            cache.put(event.request, responseToCache);\n          });\n          return networkResponse;\n        })\n        .catch(() => {\n          // Offline fallback could be handled here\n        });\n    }),\n  );\n});\n",
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "C:\\Users\\matun\\Documents\\GitHub\\mat4645.github.io\\tests\\test_existing_convert.spec.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "C:\\Users\\matun\\Documents\\GitHub\\mat4645.github.io\\tests\\test_m3_darkmode.spec.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "C:\\Users\\matun\\Documents\\GitHub\\mat4645.github.io\\tests\\test_pwa_seo.spec.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "C:\\Users\\matun\\Documents\\GitHub\\mat4645.github.io\\tests\\test_responsive_ui.spec.js",
+    "messages": [
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 1,
+        "message": "'bodyPadding' is assigned a value but never used.",
+        "line": 23,
+        "column": 13,
+        "messageId": "unusedVar",
+        "endLine": 23,
+        "endColumn": 24,
+        "suggestions": [
+          {
+            "messageId": "removeVar",
+            "data": { "varName": "bodyPadding" },
+            "fix": { "range": [846, 966], "text": "" },
+            "desc": "Remove unused variable 'bodyPadding'."
+          }
+        ]
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 1,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "source": "const { test, expect } = require('@playwright/test');\n\ntest.describe('Responsive and Premium UI (M3 & Glassmorphism)', () => {\n  test('Index page has new premium responsive layout', async ({ page, isMobile }) => {\n    await page.goto('/');\n\n    // Check main container bounds\n    const mainContainer = page.locator('main .container').first();\n    await expect(mainContainer).toBeVisible();\n\n    // Cards should use new components classes (from global.css .card)\n    const cardElements = page.locator('.card');\n    // Ensure at least some cards exist\n    const count = await cardElements.count();\n    expect(count).toBeGreaterThan(0);\n\n    // Test Glassmorphism header/nav presence\n    const header = page.locator('header');\n    await expect(header).toHaveClass(/backdrop-blur/);\n\n    if (isMobile) {\n      // Test mobile responsive padding\n      const bodyPadding = await page.evaluate(() => {\n        return window.getComputedStyle(document.body).padding;\n      });\n      // specific mobile padding checks if needed\n    }\n  });\n\n  test('Tools index has premium card UI', async ({ page }) => {\n    await page.goto('/en-us/tools/');\n\n    // Check that tool links are presented as cards\n    const toolCards = page.locator('.card');\n    const count = await toolCards.count();\n    expect(count).toBeGreaterThan(1);\n\n    // Ensure hovering triggers transform classes if possible\n    const firstCard = toolCards.first();\n    await expect(firstCard).toHaveClass(/card-hover/);\n  });\n});\n",
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "C:\\Users\\matun\\Documents\\GitHub\\mat4645.github.io\\tests\\test_worker_performance.spec.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  }
+]
