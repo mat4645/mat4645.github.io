@@ -10,6 +10,26 @@
       name="description"
       content="CSV の文字コード（Shift-JIS、UTF-8、UTF-8 BOM付き）をブラウザ内で安全に変換。Excel での文字化けを即座に修正。サーバー送信なし、1GB以上の大容量ファイル対応、完全無料。"
     />
+
+    <!-- Strict Content Security Policy -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://pagead2.googlesyndication.com https://www.google.com; frame-src https://googleads.g.doubleclick.net https://www.google.com;"
+    />
+
+    <!-- Open Graph & Twitter Card -->
+    <meta
+      property="og:title"
+      content="CSV文字化け解消｜Shift-JIS/UTF-8 変換ツール【ブラウザ完結】"
+    />
+    <meta
+      property="og:description"
+      content="CSV の文字コード（Shift-JIS、UTF-8、UTF-8 BOM付き）をブラウザ内で安全に変換。Excel での文字化けを即座に修正。サーバー送信なし、1GB以上の大容量ファイル対応、完全無料。"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.convertfilebox.net/ja-jp/tools/csv-to-csv/" />
+    <meta property="og:image" content="https://www.convertfilebox.net/assets/icon-large.png" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="https://www.convertfilebox.net/ja-jp/tools/csv-to-csv/" />
     <link
       rel="alternate"
@@ -19,6 +39,11 @@
     <link
       rel="alternate"
       hreflang="en-us"
+      href="https://www.convertfilebox.net/en-us/tools/csv-to-csv/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
       href="https://www.convertfilebox.net/en-us/tools/csv-to-csv/"
     />
 
@@ -102,6 +127,32 @@
         color: var(--text-muted);
       }
     </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.convertfilebox.net/ja-jp/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "ツール一覧",
+            "item": "https://www.convertfilebox.net/ja-jp/tools/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "CSV文字化け解消｜Shift-JIS/UTF-8 変換ツール【ブラウザ完結】",
+            "item": "https://www.convertfilebox.net/ja-jp/tools/csv-to-csv/"
+          }
+        ]
+      }
+    </script>
   </head>
 
   <body>
