@@ -2,3 +2,10 @@ node_modules/
 playwright-report/
 test-results/
 .env
+
+# Agent/AI Development Tools
+.agent/
+.agents/
+_agent/
+_agents/
+.gemini/
