@@ -1,322 +1,569 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ja-jp">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="index,follow" />
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="robots" content="index,follow" />
+    <title>CSV→JSON 変換（貼り付け版）| インストール不要・無料・セキュア | ConvertFileBox</title>
+    <meta
+      name="description"
+      content="CSVを貼り付けるだけで即座にJSONへ変換。システム制約でファイルをアップロードできない環境に最適です。ブラウザ内処理でサーバー送信なし。カンマ・タブ区切り対応。エンジニア向けのセキュアなツール。"
+    />
 
-  <title>CSV→JSON 変換（貼り付け版）| インストール不要・無料・セキュア | ConvertFileBox</title>
-  <meta name="description"
-    content="CSVを貼り付けるだけで即座にJSONへ変換。システム制約でファイルをアップロードできない環境に最適です。ブラウザ内処理でサーバー送信なし。カンマ・タブ区切り対応。エンジニア向けのセキュアなツール。" />
-  <link rel="canonical" href="https://www.convertfilebox.net/ja-jp/tools/csv-to-json-paste/" />
-  <link rel="alternate" hreflang="ja-jp" href="https://www.convertfilebox.net/ja-jp/tools/csv-to-json-paste/" />
-  <link rel="alternate" hreflang="en-us" href="https://www.convertfilebox.net/en-us/tools/csv-to-json-paste/" />
+    <!-- Strict Content Security Policy -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://pagead2.googlesyndication.com https://www.google.com; frame-src https://googleads.g.doubleclick.net https://www.google.com;"
+    />
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="/assets/css/style.css">
+    <!-- Open Graph & Twitter Card -->
+    <meta
+      property="og:title"
+      content="CSV→JSON 変換（貼り付け版）| インストール不要・無料・セキュア | ConvertFileBox"
+    />
+    <meta
+      property="og:description"
+      content="CSVを貼り付けるだけで即座にJSONへ変換。システム制約でファイルをアップロードできない環境に最適です。ブラウザ内処理でサーバー送信なし。カンマ・タブ区切り対応。エンジニア向けのセキュアなツール。"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://www.convertfilebox.net/ja-jp/tools/csv-to-json-paste/"
+    />
+    <meta property="og:image" content="https://www.convertfilebox.net/assets/icon-large.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://www.convertfilebox.net/ja-jp/tools/csv-to-json-paste/" />
+    <link
+      rel="alternate"
+      hreflang="ja-jp"
+      href="https://www.convertfilebox.net/ja-jp/tools/csv-to-json-paste/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en-us"
+      href="https://www.convertfilebox.net/en-us/tools/csv-to-json-paste/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://www.convertfilebox.net/en-us/tools/csv-to-json-paste/"
+    />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Styles -->
+    <link rel="stylesheet" href="/assets/css/style.css" />
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
-    crossorigin="anonymous"></script>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-2M7JXDP7J8"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-2M7JXDP7J8');
-  </script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-  <style>
-    .form-select {
-      width: 100%;
-      padding: 0.5rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-size: 0.9375rem;
-      background-color: white;
-    }
-
-    .checkbox-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.9375rem;
-      cursor: pointer;
-    }
-
-    .split-pane {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    @media (min-width: 960px) {
-      .split-pane {
-        grid-template-columns: 1fr 1fr;
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2M7JXDP7J8"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
       }
-    }
+      gtag('js', new Date());
+      gtag('config', 'G-2M7JXDP7J8');
+    </script>
 
-    /* 技術解説用スタイル */
-    .technical-content {
-      margin-top: 4rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--border);
-      line-height: 1.8;
-    }
+    <style>
+      .form-select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        font-size: 0.9375rem;
+        background-color: white;
+      }
 
-    .technical-content h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-      color: var(--text-main);
-    }
+      .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9375rem;
+        cursor: pointer;
+      }
 
-    .technical-content h3 {
-      font-size: 1.125rem;
-      margin-top: 2rem;
-      margin-bottom: 1rem;
-      color: var(--text-main);
-      border-left: 4px solid var(--primary);
-      padding-left: 1rem;
-    }
+      .split-pane {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
 
-    .technical-content p {
-      margin-bottom: 1rem;
-      color: var(--text-muted);
-    }
-  </style>
-</head>
+      @media (min-width: 960px) {
+        .split-pane {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
 
-<body>
+      /* 技術解説用スタイル */
+      .technical-content {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+        line-height: 1.8;
+      }
 
-  <site-header></site-header>
+      .technical-content h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-main);
+      }
 
-  <main class="container mt-8 mb-8" style="max-width: 1280px;">
-    <div class="text-center mb-8">
-      <h1>CSV → JSON 変換（貼り付け版）</h1>
-      <p class="text-muted mt-2">テキストを貼り付けるだけで即座に構造化されたJSONへ。ファイル出力できない環境やデバッグに最適です。</p>
-      <div class="flex justify-center gap-4 mt-4">
-        <span class="tag">サーバー送信なし</span>
-        <button id="btnSample" class="text-sm text-primary"
-          style="background:none; border:none; text-decoration:underline; cursor:pointer;">サンプルを入力する</button>
-        <a href="/ja-jp/tools/csv-to-json/" class="text-sm text-primary"
-          style="text-decoration:underline">ファイル読み込み版はこちら</a>
-      </div>
-    </div>
+      .technical-content h3 {
+        font-size: 1.125rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: var(--text-main);
+        border-left: 4px solid var(--primary);
+        padding-left: 1rem;
+      }
 
-    <!-- Standard Security Block -->
-    <section class="panel-security mb-8">
-      <h2 class="text-lg font-bold mb-4">🛡️ セキュリティに関するお約束</h2>
-      <p class="mb-4 font-bold">当サイトでは、入力されたデータが一瞬たりとも外部サーバーへ送信されることはありません。</p>
-      <ul class="list-disc list-inside text-sm text-muted pl-4">
-        <li>すべての解析・変換ロジックはあなたのブラウザ（JavaScript）内で実行されます。</li>
-        <li>機密性の高いログデータや個人情報を含むCSVなども、安心して処理いただけます。</li>
-        <li>入力された内容はページを閉じた瞬間にメモリから消去され、記録も残りません。</li>
-      </ul>
-    </section>
+      .technical-content p {
+        margin-bottom: 1rem;
+        color: var(--text-muted);
+      }
+    </style>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.convertfilebox.net/ja-jp/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "ツール一覧",
+            "item": "https://www.convertfilebox.net/ja-jp/tools/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "CSV→JSON 変換（貼り付け版）| インストール不要・無料・セキュア | ConvertFileBox",
+            "item": "https://www.convertfilebox.net/ja-jp/tools/csv-to-json-paste/"
+          }
+        ]
+      }
+    </script>
+    <link rel="manifest" href="/manifest.json" />
+  </head>
 
-    <div class="tool-config-bar mb-6">
-      <div class="form-group">
-        <label class="text-xs font-bold text-muted">区切り文字</label>
-        <select id="delimiter" class="form-select">
-          <option value="," selected>カンマ (,)</option>
-          <option value="tab">タブ (\t)</option>
-          <option value=";">セミコロン (;)</option>
-        </select>
-      </div>
-      <div>
-        <label class="text-xs font-bold text-muted block">&nbsp;</label>
-        <label class="checkbox-wrapper">
-          <input type="checkbox" id="hasHeader" checked />
-          <span>1行目はヘッダー行</span>
-        </label>
-      </div>
-      <div class="text-sm text-muted" style="margin-left: auto;">
-        <span id="statusMsg" class="font-bold"></span>
-      </div>
-    </div>
+  <body
+    class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 leading-relaxed text-base transition-colors duration-200"
+  >
+    <site-header></site-header>
 
-    <div class="split-pane">
-      <!-- Input Column -->
-      <div class="flex flex-col gap-2">
-        <div class="toolbar">
-          <h2 class="text-lg font-bold">CSV 入力</h2>
-          <button id="btnClear" class="btn btn-danger-ghost btn-sm">クリア</button>
+    <main class="max-w-4xl mx-auto px-6 py-10 space-y-8">
+      <section class="text-center space-y-4">
+        <div
+          class="inline-flex items-center px-3 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-bold border border-emerald-200 dark:border-emerald-800"
+        >
+          <svg
+            class="w-4 h-4 mr-1.5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
+              fill-rule="evenodd"
+            ></path>
+          </svg>
+          完全クライアントサイド実行
         </div>
-        <textarea id="csvInput" class="code-editor" style="height: 500px;"
-          placeholder="ここにCSVをペーストしてください..."></textarea>
+        <h1 class="text-4xl font-extrabold tracking-tight">CSV to JSON 変換（貼り付け版）</h1>
+        <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          テキストを貼り付けるだけで即座に構造化されたJSONへ。ファイル出力できない環境やデバッグに最適です。
+        </p>
+        <div class="flex justify-center gap-4 mt-2">
+          <button
+            id="btnSample"
+            class="text-sm font-medium text-[#1e3a8a] dark:text-blue-400 hover:text-emerald-600 transition-colors flex items-center gap-1 tap-target px-2"
+          >
+            サンプルを入力する
+          </button>
+          <a
+            href="/ja-jp/tools/csv-to-json/"
+            class="text-sm font-medium text-[#1e3a8a] dark:text-blue-400 hover:text-emerald-600 transition-colors flex items-center gap-1 tap-target px-2"
+          >
+            ファイル読み込み版はこちら
+          </a>
+        </div>
+      </section>
+
+      <div
+        class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 p-5 flex items-start gap-4"
+      >
+        <div class="text-emerald-600 dark:text-emerald-400">
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </div>
+        <div class="space-y-1">
+          <h3 class="font-bold text-emerald-800 dark:text-emerald-300">100% プライバシー保護</h3>
+          <p class="text-sm text-emerald-700/80 dark:text-emerald-400/80">
+            当サイトでは、入力されたデータが一瞬たりとも外部サーバーへ送信されることはありません。機密性の高いログデータも安心して処理いただけます。
+          </p>
+        </div>
       </div>
 
-      <!-- Output Column -->
-      <div class="flex flex-col gap-2">
-        <div class="toolbar">
-          <h2 class="text-lg font-bold">JSON 変換結果</h2>
-          <div class="flex gap-2">
-            <button class="btn btn-secondary btn-sm" id="btnCopy" disabled>コピー</button>
-            <button class="btn btn-primary btn-sm" id="btnDownload" disabled>ダウンロード</button>
+      <!-- Layout: 2 Columns for Input and Output -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left Column: Input and Configuration -->
+        <div class="space-y-6 flex flex-col h-full">
+          <div
+            class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 space-y-6"
+          >
+            <div
+              class="flex items-center gap-2 border-b border-slate-100 dark:border-slate-700 pb-4"
+            >
+              <h2 class="font-bold text-lg">1. 変換設定</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label class="block text-sm font-semibold" for="delimiter">区切り文字</label>
+                <select
+                  class="w-full tap-target bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-colors rounded"
+                  id="delimiter"
+                >
+                  <option value="," selected>カンマ (,)</option>
+                  <option value="\t">タブ (Tab)</option>
+                  <option value=";">セミコロン (;)</option>
+                </select>
+              </div>
+              <div class="flex items-center gap-3 md:pt-7">
+                <input
+                  checked=""
+                  class="w-6 h-6 rounded border-slate-300 dark:border-slate-600 text-[#1e3a8a] focus:ring-[#1e3a8a] cursor-pointer"
+                  id="hasHeader"
+                  type="checkbox"
+                />
+                <label
+                  class="text-sm font-medium cursor-pointer tap-target flex items-center"
+                  for="hasHeader"
+                  >1行目はヘッダー行</label
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-3 flex-grow flex flex-col">
+            <div class="flex items-center justify-between">
+              <label class="font-bold flex items-center gap-2" for="csvInput">
+                <svg
+                  class="w-5 h-5 text-slate-500"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+                2. CSV 入力
+              </label>
+              <button
+                class="text-sm font-medium text-slate-500 hover:text-red-600 transition-colors tap-target px-2 py-1"
+                id="btnClear"
+              >
+                クリア
+              </button>
+            </div>
+            <textarea
+              class="w-full h-full min-h-[400px] p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-colors"
+              id="csvInput"
+              placeholder="ここにCSVをペーストしてください..."
+            ></textarea>
           </div>
         </div>
-        <textarea id="outputText" class="code-editor" readonly style="height: 500px;"
-          placeholder="変換されたJSONがここに表示されます。"></textarea>
 
-        <div id="errorMsg" class="alert alert-warning mt-2" style="display:none"></div>
+        <!-- Right Column: Output -->
+        <div class="space-y-3 flex flex-col h-full">
+          <div class="flex items-center justify-between">
+            <label class="font-bold flex items-center gap-2" for="outputText">
+              <svg
+                class="w-5 h-5 text-slate-500"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125h-7.5c-.621 0-1.125-.504-1.125-1.125m0 0v-1.5c0-.621.504-1.125 1.125-1.125m0 0h7.5m-7.5 0V5.625m0 0a1.125 1.125 0 0 1 1.125-1.125h1.5a1.125 1.125 0 0 1 1.125 1.125m-3.75 0h7.5m-7.5 0V14.25m0-8.625a1.125 1.125 0 0 0-1.125 1.125v1.5a1.125 1.125 0 0 0 1.125 1.125m0 0h1.5a1.125 1.125 0 0 0 1.125-1.125v-1.5a1.125 1.125 0 0 0-1.125-1.125m0 0h-1.5Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              3. JSON 変換結果
+            </label>
+            <div class="text-xs font-bold text-slate-500" id="statusMsg">待機中...</div>
+          </div>
+          <textarea
+            class="w-full flex-grow min-h-[400px] p-4 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y"
+            id="outputText"
+            placeholder="変換されたJSONがここに表示されます"
+            readonly=""
+          ></textarea>
+
+          <div
+            id="errorMsg"
+            class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 p-3 rounded text-sm font-medium"
+            style="display: none"
+          ></div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <button
+              class="tap-target bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg py-3 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              id="btnCopy"
+              disabled
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              コピー
+            </button>
+            <button
+              class="tap-target bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg py-3 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              id="btnDownload"
+              disabled
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              ダウンロード
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
+      <!-- 技術解説コンテンツ -->
+      <article
+        class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 prose dark:prose-invert max-w-none"
+      >
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+          「貼り付け版」ツールの活用シーンと技術的メリット
+        </h2>
+        <p class="mb-4">
+          エンジニアリングやデータ解析の現場では、必ずしも「ファイル」としてデータが存在しているわけではありません。ブラウザのデベロッパーツール、クラウド上の管理画面、あるいは共有されたドキュメントの一部。これらの断片的なデータを素早く構造化するために、この「貼り付け版」ツールは設計されました。
+        </p>
 
-    <!-- 技術解説コンテンツ -->
-    <article class="technical-content">
-      <h2>「貼り付け版」ツールの活用シーンと技術的メリット</h2>
-      <p>
-        エンジニアリングやデータ解析の現場では、必ずしも「ファイル」としてデータが存在しているわけではありません。ブラウザのデベロッパーツール、クラウド上の管理画面、あるいは共有されたドキュメントの一部。これらの断片的なデータを素早く構造化するために、この「貼り付け版」ツールは設計されました。
-      </p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          VDI（仮想デスクトップ）や制限環境での有用性
+        </h3>
+        <p class="mb-4">
+          セキュリティの厳しいVDI環境や、特定のクラウドストレージ以外へのファイル書き出しが制限されているプロジェクト等、物理的な「ファイル」をアップロードすることが困難な場合があります。本ツールはクリップボードを経由したデータの直接投入を可能にすることで、環境の制約を回避し、ワークフローを阻害しません。
+        </p>
 
-      <h3>VDI（仮想デスクトップ）や制限環境での有用性</h3>
-      <p>
-        セキュリティの厳しいVDI環境や、特定のクラウドストレージ以外へのファイル書き出しが制限されているプロジェクト等、物理的な「ファイル」をアップロードすることが困難な場合があります。本ツールはクリップボードを経由したデータの直接投入を可能にすることで、環境の制約を回避し、ワークフローを阻害しません。
-      </p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          リアルタイム・フィードバックの重要性
+        </h3>
+        <p class="mb-4">
+          当ツールは、1文字入力されるごとに内部でパース処理を行う「ストリーム指向」の設計を採用しています。一般的な変換サイトのように「変換ボタン」を押してから結果を待つ必要はありません。これにより、区切り文字の設定ミスや、データの欠損をその場でリアルタイムに修正できます。
+        </p>
 
-      <h3>リアルタイム・フィードバックの重要性</h3>
-      <p>
-        当ツールは、1文字入力されるごとに内部でパース処理を行う「ストリーム指向」の設計を採用しています。一般的な変換サイトのように「変換ボタン」を押してから結果を待つ必要はありません。これにより、区切り文字の設定ミスや、データの欠損をその場でリアルタイムに修正できます。
-      </p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          RFC 4180への厳格な準拠
+        </h3>
+        <p class="mb-8">
+          貼り付けられたテキストであっても、私たちのパースエンジンはRFC
+          4180の仕様を厳格に遵守します。クォートで囲まれたフィールド内の改行、クォート自体のエスケープ（""）を正確に処理し、ビジネスユースに耐えうる高品質なJSONオブジェクトを生成します。
+        </p>
+      </article>
+    </main>
 
-      <h3>RFC 4180への厳格な準拠</h3>
-      <p>
-        貼り付けられたテキストであっても、私たちのパースエンジンはRFC
-        4180の仕様を厳格に遵守します。クォートで囲まれたフィールド内の改行、クォート自体のエスケープ（""）を正確に処理し、ビジネスユースに耐えうる高品質なJSONオブジェクトを生成します。
-      </p>
-    </article>
-  </main>
+    <site-footer></site-footer>
 
-  <site-footer></site-footer>
+    <script src="/assets/js/ui.js"></script>
+    <script>
+      const $ = (id) => document.getElementById(id);
 
-  <script src="/assets/js/ui.js"></script>
-  <script>
-    const $ = (id) => document.getElementById(id);
+      const delimiterEl = $('delimiter');
+      const hasHeaderEl = $('hasHeader');
+      const csvInputEl = $('csvInput');
+      const outputEl = $('outputText');
+      const errorMsgEl = $('errorMsg');
+      const statusEl = $('statusMsg');
 
-    const delimiterEl = $("delimiter");
-    const hasHeaderEl = $("hasHeader");
-    const csvInputEl = $("csvInput");
-    const outputEl = $("outputText");
-    const errorMsgEl = $("errorMsg");
-    const statusEl = $("statusMsg");
+      const btnCopy = $('btnCopy');
+      const btnDownload = $('btnDownload');
+      const btnClear = $('btnClear');
+      const btnSample = $('btnSample');
 
-    const btnCopy = $("btnCopy");
-    const btnDownload = $("btnDownload");
-    const btnClear = $("btnClear");
-    const btnSample = $("btnSample");
+      let lastJsonText = '';
+      let debounceTimer = null;
+      let csvWorker = null;
 
-    let lastJsonText = "";
-    let debounceTimer = null;
-
-    function setError(text) {
-      if (!text) { errorMsgEl.style.display = "none"; return; }
-      errorMsgEl.textContent = text;
-      errorMsgEl.style.display = "block";
-    }
-
-    function parseCSV(text, delimiterChar) {
-      const delim = delimiterChar === "tab" ? "\t" : delimiterChar;
-      const s = text.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-      const rows = [];
-      let i = 0, field = "", row = [], inQuotes = false;
-
-      while (i < s.length) {
-        const ch = s[i];
-        if (inQuotes) {
-          if (ch === '"') {
-            if (s[i + 1] === '"') { field += '"'; i += 2; }
-            else { inQuotes = false; i++; }
-          } else { field += ch; i++; }
-        } else {
-          if (ch === '"') { inQuotes = true; i++; }
-          else if (ch === delim) { row.push(field); field = ""; i++; }
-          else if (ch === "\n") { row.push(field); rows.push(row); field = ""; row = []; i++; }
-          else { field += ch; i++; }
+      function setError(text) {
+        if (!text) {
+          errorMsgEl.style.display = 'none';
+          return;
         }
-      }
-      row.push(field);
-      rows.push(row);
-      return rows.filter(r => r.length > 1 || r[0].trim() !== "");
-    }
-
-    function safeKey(s, idx) {
-      const t = (s ?? "").trim();
-      return t ? t.replace(/\s+/g, "_") : `col${idx + 1}`;
-    }
-
-    function convertNow() {
-      const text = csvInputEl.value.trim();
-      setError("");
-      if (!text) {
-        lastJsonText = ""; outputEl.value = "";
-        btnCopy.disabled = true; btnDownload.disabled = true;
-        statusEl.textContent = ""; return;
+        errorMsgEl.textContent = text;
+        errorMsgEl.style.display = 'block';
       }
 
-      try {
-        const rows = parseCSV(text, delimiterEl.value);
-        if (!rows.length) throw new Error("No data");
-
-        let headers = [];
-        let start = 0;
-        if (hasHeaderEl.checked) {
-          headers = rows[0].map((h, i) => safeKey(h, i));
-          start = 1;
-        } else {
-          const max = Math.max(...rows.map(r => r.length));
-          headers = Array.from({ length: max }, (_, i) => `col${i + 1}`);
+      function convertNow() {
+        const text = csvInputEl.value.trim();
+        setError('');
+        if (!text) {
+          lastJsonText = '';
+          outputEl.value = '';
+          btnCopy.disabled = true;
+          btnDownload.disabled = true;
+          statusEl.textContent = '';
+          return;
         }
 
-        const json = rows.slice(start).map(r => {
-          const o = {};
-          headers.forEach((h, i) => o[h] = r[i] ?? "");
-          return o;
-        });
+        outputEl.value = '処理中... しばらくお待ちください。';
+        btnCopy.disabled = true;
+        btnDownload.disabled = true;
+        statusEl.textContent = 'バックグラウンドのWebワーカーで処理しています...';
 
-        lastJsonText = JSON.stringify(json, null, 2);
-        outputEl.value = lastJsonText;
-        btnCopy.disabled = false;
-        btnDownload.disabled = false;
-        statusEl.textContent = `${json.length}件 変換完了`;
-      } catch (e) {
-        setError("パース失敗: 形式を確認してください");
+        try {
+          if (!csvWorker) {
+            csvWorker = new Worker('/assets/js/worker-csv.js');
+          }
+
+          csvWorker.onmessage = function (e) {
+            const data = e.data;
+            if (data.success) {
+              lastJsonText = data.jsonText;
+              outputEl.value = lastJsonText;
+              btnCopy.disabled = data.json.length === 0;
+              btnDownload.disabled = data.json.length === 0;
+              statusEl.textContent = `${data.json.length}件 変換完了`;
+              if (data.rowsCount <= 1 && hasHeaderEl.checked) {
+                setError('データ行が0件です。フォーマットを確認してください。');
+              }
+            } else {
+              lastJsonText = '';
+              outputEl.value = '';
+              btnCopy.disabled = true;
+              btnDownload.disabled = true;
+              statusEl.textContent = 'エラー';
+              setError('変換失敗: ' + data.error);
+            }
+          };
+
+          csvWorker.onerror = function (e) {
+            lastJsonText = '';
+            outputEl.value = '';
+            statusEl.textContent = 'エラー';
+            setError('重大なWebワーカーエラーが発生しました。');
+          };
+
+          csvWorker.postMessage({
+            textData: text,
+            isTextMode: true,
+            delimiter: delimiterEl.value,
+            hasHeader: hasHeaderEl.checked,
+          });
+        } catch (e) {
+          lastJsonText = '';
+          outputEl.value = '';
+          btnCopy.disabled = true;
+          btnDownload.disabled = true;
+          statusEl.textContent = 'エラー';
+          setError('予期せぬエラーが発生しました。');
+        }
       }
-    }
 
-    csvInputEl.addEventListener("input", () => {
-      if (debounceTimer) clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(convertNow, 300);
-    });
-    delimiterEl.addEventListener("change", convertNow);
-    hasHeaderEl.addEventListener("change", convertNow);
+      csvInputEl.addEventListener('input', () => {
+        if (debounceTimer) clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(convertNow, 300);
+      });
+      delimiterEl.addEventListener('change', convertNow);
+      hasHeaderEl.addEventListener('change', convertNow);
 
-    btnClear.addEventListener("click", () => { csvInputEl.value = ""; convertNow(); });
-    btnSample.addEventListener("click", () => {
-      csvInputEl.value = "id,name,role\n1,山田,エンジニア\n2,田中,デザイナー\n3,佐藤,マネージャー";
-      convertNow();
-    });
+      btnClear.addEventListener('click', () => {
+        csvInputEl.value = '';
+        convertNow();
+      });
+      btnSample.addEventListener('click', () => {
+        csvInputEl.value =
+          'id,name,role\n1,山田,エンジニア\n2,田中,デザイナー\n3,佐藤,マネージャー';
+        convertNow();
+      });
 
-    btnCopy.addEventListener("click", () => {
-      navigator.clipboard.writeText(lastJsonText);
-      const old = btnCopy.textContent;
-      btnCopy.textContent = "コピー完了";
-      setTimeout(() => btnCopy.textContent = old, 1500);
-    });
+      btnCopy.addEventListener('click', () => {
+        navigator.clipboard.writeText(lastJsonText);
+        const oldHtml = btnCopy.innerHTML;
+        btnCopy.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg> コピー完了`;
+        setTimeout(() => (btnCopy.innerHTML = oldHtml), 2000);
+      });
 
-    btnDownload.addEventListener("click", () => {
-      const blob = new Blob([lastJsonText], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url; a.download = "data.json"; a.click();
-      URL.revokeObjectURL(url);
-    });
-  </script>
-</body>
-
+      btnDownload.addEventListener('click', () => {
+        const blob = new Blob([lastJsonText], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.json';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+    </script>
+  </body>
 </html>

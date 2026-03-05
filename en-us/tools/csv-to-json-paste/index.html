@@ -1,410 +1,640 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="robots" content="index,follow" />
 
     <title>CSV to JSON (Paste Mode) | Quick Paste & Secure | ConvertFileBox</title>
-    <meta name="description"
-        content="Paste CSV text and convert it to JSON instantly. No file upload required. Perfect for quick data transformations. Fast, secure, and 100% browser-based." />
+    <meta
+      name="description"
+      content="Paste CSV text and convert it to JSON instantly. No file upload required. Perfect for quick data transformations. Fast, secure, and 100% browser-based."
+    />
+
+    <!-- Strict Content Security Policy -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://pagead2.googlesyndication.com https://www.google.com; frame-src https://googleads.g.doubleclick.net https://www.google.com;"
+    />
+
+    <!-- Open Graph & Twitter Card -->
+    <meta
+      property="og:title"
+      content="CSV to JSON (Paste Mode) | Quick Paste & Secure | ConvertFileBox"
+    />
+    <meta
+      property="og:description"
+      content="Paste CSV text and convert it to JSON instantly. No file upload required. Perfect for quick data transformations. Fast, secure, and 100% browser-based."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://www.convertfilebox.net/en-us/tools/csv-to-json-paste/"
+    />
+    <meta property="og:image" content="https://www.convertfilebox.net/assets/icon-large.png" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="https://www.convertfilebox.net/en-us/tools/csv-to-json-paste/" />
-    <link rel="alternate" hreflang="ja-jp" href="https://www.convertfilebox.net/ja-jp/tools/csv-to-json-paste/" />
-    <link rel="alternate" hreflang="en" href="https://www.convertfilebox.net/en-us/tools/csv-to-json-paste/" />
+    <link
+      rel="alternate"
+      hreflang="ja-jp"
+      href="https://www.convertfilebox.net/ja-jp/tools/csv-to-json-paste/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en-us"
+      href="https://www.convertfilebox.net/en-us/tools/csv-to-json-paste/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://www.convertfilebox.net/en-us/tools/csv-to-json-paste/"
+    />
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css" />
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
-        crossorigin="anonymous"></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
+      crossorigin="anonymous"
+    ></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2M7JXDP7J8"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
 
-        gtag('config', 'G-2M7JXDP7J8');
+      gtag('config', 'G-2M7JXDP7J8');
     </script>
 
     <style>
-        .form-select {
-            width: 100%;
-            padding: 0.5rem;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-size: 0.9375rem;
-            background-color: white;
-        }
+      .form-select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        font-size: 0.9375rem;
+        background-color: white;
+      }
 
-        .checkbox-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9375rem;
-            cursor: pointer;
-        }
+      .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9375rem;
+        cursor: pointer;
+      }
 
+      .split-pane {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 960px) {
         .split-pane {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
+          grid-template-columns: 1fr 1fr;
         }
+      }
 
-        @media (min-width: 960px) {
-            .split-pane {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
+      /* Technical content styles */
+      .technical-content {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+        line-height: 1.8;
+      }
 
-        /* Technical content styles */
-        .technical-content {
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-            line-height: 1.8;
-        }
+      .technical-content h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-main);
+      }
 
-        .technical-content h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-main);
-        }
+      .technical-content h3 {
+        font-size: 1.125rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: var(--text-main);
+        border-left: 4px solid var(--primary);
+        padding-left: 1rem;
+      }
 
-        .technical-content h3 {
-            font-size: 1.125rem;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            color: var(--text-main);
-            border-left: 4px solid var(--primary);
-            padding-left: 1rem;
-        }
-
-        .technical-content p {
-            margin-bottom: 1rem;
-            color: var(--text-muted);
-        }
+      .technical-content p {
+        margin-bottom: 1rem;
+        color: var(--text-muted);
+      }
     </style>
-</head>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.convertfilebox.net/en-us/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Tools",
+            "item": "https://www.convertfilebox.net/en-us/tools/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "CSV to JSON (Paste Mode) | Quick Paste & Secure | ConvertFileBox",
+            "item": "https://www.convertfilebox.net/en-us/tools/csv-to-json-paste/"
+          }
+        ]
+      }
+    </script>
+    <link rel="manifest" href="/manifest.json" />
+  </head>
 
-<body>
-
+  <body
+    class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 leading-relaxed text-base transition-colors duration-200"
+  >
     <site-header></site-header>
 
-    <main class="container mt-8 mb-8" style="max-width: 1280px;">
-        <div class="text-center mb-8">
-            <h1>CSV to JSON Converter (Paste)</h1>
-            <p class="text-muted mt-2">Instantly transform CSV text into JSON objects. Fast, reliable, and
-                privacy-focused processing directly in your browser.</p>
-            <div class="flex justify-center gap-4 mt-4">
-                <span class="tag">Zero Server Latency</span>
-                <button id="btnSample" class="text-sm text-primary"
-                    style="background:none; border:none; text-decoration:underline; cursor:pointer;">Load Sample
-                    Data</button>
-                <a href="/en-us/tools/csv-to-json/" class="text-sm text-primary"
-                    style="text-decoration:underline">Switch
-                    to File Mode</a>
-            </div>
+    <main class="max-w-4xl mx-auto px-6 py-10 space-y-8">
+      <section class="text-center space-y-4">
+        <div
+          class="inline-flex items-center px-3 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-bold border border-emerald-200 dark:border-emerald-800"
+        >
+          <svg
+            class="w-4 h-4 mr-1.5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
+              fill-rule="evenodd"
+            ></path>
+          </svg>
+          100% Client-Side Execution
         </div>
+        <h1 class="text-4xl font-extrabold tracking-tight">CSV to JSON Converter (Paste)</h1>
+        <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          Instantly transform CSV text into JSON objects. Fast, reliable, and privacy-focused
+          processing directly in your browser.
+        </p>
+        <div class="flex justify-center gap-4 mt-2">
+          <button
+            id="btnSample"
+            class="text-sm font-medium text-[#1e3a8a] dark:text-blue-400 hover:text-emerald-600 transition-colors flex items-center gap-1 tap-target px-2"
+          >
+            Load Sample Data
+          </button>
+          <a
+            href="/en-us/tools/csv-to-json/"
+            class="text-sm font-medium text-[#1e3a8a] dark:text-blue-400 hover:text-emerald-600 transition-colors flex items-center gap-1 tap-target px-2"
+          >
+            Switch to File Mode
+          </a>
+        </div>
+      </section>
 
-        <!-- Standard Security Block -->
-        <section class="panel-security mb-8">
-            <h2 class="text-lg font-bold mb-4">🛡️ Security & Privacy Guaranteed</h2>
-            <p class="mb-4 font-bold">Your data never leaves your browser. We prioritize your privacy above all else.
-            </p>
-            <ul class="list-disc list-inside text-sm text-muted pl-4">
-                <li>All conversion logic is executed locally in your browser using JavaScript.</li>
-                <li>Sensitive data, such as corporate logs or PII, can be processed safely without any risk of exposure.
-                </li>
-                <li>No data is sent to our servers, and nothing is stored or logged.</li>
-            </ul>
-        </section>
+      <div
+        class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 p-5 flex items-start gap-4"
+      >
+        <div class="text-emerald-600 dark:text-emerald-400">
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </div>
+        <div class="space-y-1">
+          <h3 class="font-bold text-emerald-800 dark:text-emerald-300">
+            Security & Privacy Guaranteed
+          </h3>
+          <p class="text-sm text-emerald-700/80 dark:text-emerald-400/80">
+            Your data never leaves your browser. All conversion logic is executed locally, ensuring
+            sensitive data remains truly private.
+          </p>
+        </div>
+      </div>
 
-        <div class="tool-config-bar mb-6">
-            <div class="form-group">
-                <label class="text-xs font-bold text-muted" for="delimiter">Delimiter</label>
-                <select id="delimiter" class="form-select">
-                    <option value="," selected>Comma (,)</option>
-                    <option value="tab">Tab (\t)</option>
-                    <option value=";">Semicolon (;)</option>
+      <!-- Layout: 2 Columns for Input and Output -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left Column: Input and Configuration -->
+        <div class="space-y-6 flex flex-col h-full">
+          <div
+            class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 space-y-6"
+          >
+            <div
+              class="flex items-center gap-2 border-b border-slate-100 dark:border-slate-700 pb-4"
+            >
+              <h2 class="font-bold text-lg">1. Settings</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label class="block text-sm font-semibold" for="delimiter">Delimiter</label>
+                <select
+                  class="w-full tap-target bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-colors rounded"
+                  id="delimiter"
+                >
+                  <option value="," selected>Comma (,)</option>
+                  <option value="\t">Tab (Tab)</option>
+                  <option value=";">Semicolon (;)</option>
                 </select>
+              </div>
+              <div class="flex items-center gap-3 md:pt-7">
+                <input
+                  checked=""
+                  class="w-6 h-6 rounded border-slate-300 dark:border-slate-600 text-[#1e3a8a] focus:ring-[#1e3a8a] cursor-pointer"
+                  id="hasHeader"
+                  type="checkbox"
+                />
+                <label
+                  class="text-sm font-medium cursor-pointer tap-target flex items-center"
+                  for="hasHeader"
+                  >Has Header Row</label
+                >
+              </div>
             </div>
-            <div>
-                <label class="text-xs font-bold text-muted block">&nbsp;</label>
-                <label class="checkbox-wrapper">
-                    <input type="checkbox" id="hasHeader" checked />
-                    <span>Has Header Row</span>
-                </label>
+          </div>
+
+          <div class="space-y-3 flex-grow flex flex-col">
+            <div class="flex items-center justify-between">
+              <label class="font-bold flex items-center gap-2" for="csvInput">
+                <svg
+                  class="w-5 h-5 text-slate-500"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+                2. Paste CSV
+              </label>
+              <button
+                class="text-sm font-medium text-slate-500 hover:text-red-600 transition-colors tap-target px-2 py-1"
+                id="btnClear"
+              >
+                Clear Input
+              </button>
             </div>
-            <div class="text-sm text-muted" style="margin-left: auto;">
-                <span id="statusMsg" class="font-bold"></span>
-            </div>
+            <textarea
+              class="w-full h-full min-h-[400px] p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-colors"
+              id="csvInput"
+              placeholder="Paste your CSV data here..."
+            ></textarea>
+          </div>
         </div>
 
-        <div class="split-pane">
-            <!-- Input Column -->
-            <div class="flex flex-col gap-2">
-                <div class="toolbar">
-                    <h2 class="text-lg font-bold">Paste CSV</h2>
-                    <button id="btnClear" class="btn btn-danger-ghost btn-sm">Clear</button>
-                </div>
-                <textarea id="csvInput" class="code-editor" style="height: 500px;"
-                    placeholder="Paste your CSV data here..."></textarea>
-            </div>
+        <!-- Right Column: Output -->
+        <div class="space-y-3 flex flex-col h-full">
+          <div class="flex items-center justify-between">
+            <label class="font-bold flex items-center gap-2" for="outputText">
+              <svg
+                class="w-5 h-5 text-slate-500"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125h-7.5c-.621 0-1.125-.504-1.125-1.125m0 0v-1.5c0-.621.504-1.125 1.125-1.125m0 0h7.5m-7.5 0V5.625m0 0a1.125 1.125 0 0 1 1.125-1.125h1.5a1.125 1.125 0 0 1 1.125 1.125m-3.75 0h7.5m-7.5 0V14.25m0-8.625a1.125 1.125 0 0 0-1.125 1.125v1.5a1.125 1.125 0 0 0 1.125 1.125m0 0h1.5a1.125 1.125 0 0 0 1.125-1.125v-1.5a1.125 1.125 0 0 0-1.125-1.125m0 0h-1.5Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              3. JSON Result
+            </label>
+            <div class="text-xs font-bold text-slate-500" id="statusMsg">Waiting for input...</div>
+          </div>
+          <textarea
+            class="w-full flex-grow min-h-[400px] p-4 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y"
+            id="outputText"
+            placeholder="JSON output will be generated automatically"
+            readonly=""
+          ></textarea>
 
-            <!-- Output Column -->
-            <div class="flex flex-col gap-2">
-                <div class="toolbar">
-                    <h2 class="text-lg font-bold">JSON Result</h2>
-                    <div class="flex gap-2">
-                        <button class="btn btn-secondary btn-sm" id="btnCopy" disabled>Copy</button>
-                        <button class="btn btn-primary btn-sm" id="btnDownload" disabled>Download</button>
-                    </div>
-                </div>
-                <textarea id="outputText" class="code-editor" readonly style="height: 500px;"
-                    placeholder="JSON output will be generated automatically"></textarea>
+          <div
+            id="errorMsg"
+            class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 p-3 rounded text-sm font-medium"
+            style="display: none"
+          ></div>
 
-                <div id="errorMsg" class="alert alert-warning mt-2" style="display:none"></div>
-            </div>
+          <div class="grid grid-cols-2 gap-4">
+            <button
+              class="tap-target bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg py-3 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              id="btnCopy"
+              disabled
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              Copy
+            </button>
+            <button
+              class="tap-target bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg py-3 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              id="btnDownload"
+              disabled
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              Download
+            </button>
+          </div>
         </div>
+      </div>
+      <!-- Technical Content for AdSense Compliance -->
+      <article
+        class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 prose dark:prose-invert max-w-none"
+      >
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+          Technical Insights: Why Paste-Mode CSV Conversion Matters
+        </h2>
+        <p class="mb-4">
+          For developers and data analysts, the ability to quickly transform data snippets without
+          the overhead of creating, saving, and managing files is a major productivity boost. "Paste
+          Mode" provides a high-velocity workflow for real-time debugging and data inspection.
+        </p>
 
-        <!-- Technical Content for AdSense Compliance -->
-        <article class="technical-content">
-            <h2>Technical Insights: Why Paste-Mode CSV Conversion Matters</h2>
-            <p>
-                For developers and data analysts, the ability to quickly transform data snippets without the overhead of
-                creating, saving, and managing files is a major productivity boost. "Paste Mode" provides a
-                high-velocity workflow for real-time debugging and data inspection.
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          The Value of Immediate Data Transformation
+        </h3>
+        <p class="mb-4">
+          When working with API responses or database query results that are in CSV format, the
+          traditional "File Mode" requires multiple manual steps. By using a clipboard-centric
+          approach, ConvertFileBox allows you to skip the filesystem entirely. Our engine listens
+          for <code>input</code> events and utilizes a debounced processing loop to ensure that even
+          large pastes are handled smoothly without freezing the UI.
+        </p>
+
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Maintaining Structure: RFC 4180 Parsing
+        </h3>
+        <p class="mb-4">
+          Even when data is "just pasted," it still requires a robust parser to be useful. Our
+          algorithm handles delicate CSV edge cases defined in <strong>RFC 4180</strong>, such as
+          multi-line fields (line breaks within quotes) and escaped double quotes (<code>""</code>).
+          Unlike simple regex-based splitters, our finite-state machine ensured that your resulting
+          JSON array accurately mirrors the source data's intended structure.
+        </p>
+
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Corporate Security: Protection by Omission
+        </h3>
+        <p class="mb-4">
+          In high-security enterprise environments, file uploads to external domains are often
+          strictly blocked by firewall rules or proxy policies. However, clipboard interactions
+          within the browser are usually permitted. This makes the Paste version of ConvertFileBox
+          an essential tool for engineers working behind corporate firewalls who need to sanitize or
+          restucture data without violating data egress policies.
+        </p>
+
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Frequently Asked Questions (FAQ)
+        </h3>
+        <div class="mt-4 space-y-4">
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. Can I paste TSV (Tab-Separated Values)?
+            </h4>
+            <p class="text-sm">
+              A. Yes. Simply change the Delimiter setting to "Tab (\t)". Excel often uses tabs when
+              copying a range of cells to the clipboard, making this the ideal setting for
+              spreadsheet-to-JSON workflows.
             </p>
-
-            <h3>The Value of Immediate Data Transformation</h3>
-            <p>
-                When working with API responses or database query results that are in CSV format, the traditional "File
-                Mode" requires multiple manual steps. By using a clipboard-centric approach, ConvertFileBox allows you
-                to skip the filesystem entirely. Our engine listens for <code>input</code> events and utilizes a
-                debounced processing loop to ensure that even large pastes are handled smoothly without freezing the UI.
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. Is there an input character limit?
+            </h4>
+            <p class="text-sm">
+              A. While the tool can handle several megabytes, browser performance when rendering
+              large text areas can decrease with very large inputs (50,000+ rows). For massive
+              datasets, we recommend our File-based converter.
             </p>
-
-            <h3>Maintaining Structure: RFC 4180 Parsing</h3>
-            <p>
-                Even when data is "just pasted," it still requires a robust parser to be useful. Our algorithm handles
-                delicate CSV edge cases defined in <strong>RFC 4180</strong>, such as multi-line fields (line breaks
-                within quotes) and escaped double quotes (<code>""</code>). Unlike simple regex-based splitters, our
-                finite-state machine ensured that your resulting JSON array accurately mirrors the source data's
-                intended structure.
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. Are my pastes tracked or logged?
+            </h4>
+            <p class="text-sm">
+              A. No. Everything happens in your browser's local RAM. We do not store any logs of the
+              data processed through our converters. Your privacy is protected by our client-side
+              architecture.
             </p>
-
-            <h3>Corporate Security: Protection by Omission</h3>
-            <p>
-                In high-security enterprise environments, file uploads to external domains are often strictly blocked by
-                firewall rules or proxy policies. However, clipboard interactions within the browser are usually
-                permitted. This makes the Paste version of ConvertFileBox an essential tool for engineers working behind
-                corporate firewalls who need to sanitize or restucture data without violating data egress policies.
-            </p>
-
-            <h3>Frequently Asked Questions (FAQ)</h3>
-            <div class="mt-4">
-                <h4 class="font-bold">Q. Can I paste TSV (Tab-Separated Values)?</h4>
-                <p class="text-sm">A. Yes. Simply change the Delimiter setting to "Tab (\t)". Excel often uses tabs when
-                    copying a range of cells to the clipboard, making this the ideal setting for spreadsheet-to-JSON
-                    workflows.</p>
-
-                <h4 class="font-bold">Q. Is there an input character limit?</h4>
-                <p class="text-sm">A. While the tool can handle several megabytes, browser performance when rendering
-                    large text areas can decrease with very large inputs (50,000+ rows). For massive datasets, we
-                    recommend our File-based converter.</p>
-
-                <h4 class="font-bold">Q. Are my pastes tracked or logged?</h4>
-                <p class="text-sm">A. No. Everything happens in your browser's local RAM. We do not store any logs of
-                    the data processed through our converters. Your privacy is protected by our client-side
-                    architecture.</p>
-            </div>
-        </article>
-
+          </div>
+        </div>
+      </article>
     </main>
 
     <site-footer></site-footer>
 
     <script src="/assets/js/ui.js"></script>
     <script>
-        const $ = (id) => document.getElementById(id);
+      const $ = (id) => document.getElementById(id);
 
-        const delimiterEl = $("delimiter");
-        const hasHeaderEl = $("hasHeader");
-        const csvInputEl = $("csvInput");
-        const outputEl = $("outputText");
-        const errorMsgEl = $("errorMsg");
-        const statusEl = $("statusMsg");
+      const delimiterEl = $('delimiter');
+      const hasHeaderEl = $('hasHeader');
+      const csvInputEl = $('csvInput');
+      const outputEl = $('outputText');
+      const errorMsgEl = $('errorMsg');
+      const statusEl = $('statusMsg');
 
-        const btnCopy = $("btnCopy");
-        const btnDownload = $("btnDownload");
-        const btnClear = $("btnClear");
-        const btnSample = $("btnSample");
+      const btnCopy = $('btnCopy');
+      const btnDownload = $('btnDownload');
+      const btnClear = $('btnClear');
+      const btnSample = $('btnSample');
 
-        let lastJsonText = "";
-        let debounceTimer = null;
+      let lastJsonText = '';
+      let debounceTimer = null;
+      let csvWorker = null;
 
-        function setError(text) {
-            if (!text) {
-                errorMsgEl.style.display = "none";
-                return;
-            }
-            errorMsgEl.textContent = text;
-            errorMsgEl.style.display = "block";
+      function setError(text) {
+        if (!text) {
+          errorMsgEl.style.display = 'none';
+          return;
+        }
+        errorMsgEl.textContent = text;
+        errorMsgEl.style.display = 'block';
+      }
+
+      function setStatus(text) {
+        statusEl.textContent = text;
+      }
+
+      function convertNow() {
+        const text = csvInputEl.value || '';
+        setError('');
+
+        if (!text.trim()) {
+          lastJsonText = '';
+          outputEl.value = '';
+          btnCopy.disabled = true;
+          btnDownload.disabled = true;
+          setStatus('');
+          return;
         }
 
-        function setStatus(text) {
-            statusEl.textContent = text;
-        }
+        outputEl.value = 'Processing... Please wait.';
+        btnCopy.disabled = true;
+        btnDownload.disabled = true;
+        setStatus('Processing in background web worker...');
 
-        function normalizeNewlines(s) {
-            return s.replace(/\r\n/g, "\n").replace(/\r/g, "\n");
-        }
+        try {
+          if (!csvWorker) {
+            csvWorker = new Worker('/assets/js/worker-csv.js');
+          }
 
-        function parseCSV(text, delimiterChar) {
-            const delim = delimiterChar === "tab" ? "\t" : delimiterChar;
-            const s = normalizeNewlines(text || "");
-
-            const rows = [];
-            let i = 0, field = "", row = [], inQuotes = false;
-
-            while (i < s.length) {
-                const ch = s[i];
-
-                if (inQuotes) {
-                    if (ch === '"') {
-                        if (s[i + 1] === '"') { field += '"'; i += 2; continue; }
-                        inQuotes = false; i++; continue;
-                    } else {
-                        field += ch; i++; continue;
-                    }
-                } else {
-                    if (ch === '"') { inQuotes = true; i++; continue; }
-                    if (ch === delim) { row.push(field); field = ""; i++; continue; }
-                    if (ch === "\n") { row.push(field); rows.push(row); field = ""; row = []; i++; continue; }
-                    field += ch; i++; continue;
-                }
-            }
-            row.push(field);
-            rows.push(row);
-
-            while (rows.length && rows[rows.length - 1].length === 1 && rows[rows.length - 1][0].trim() === "") rows.pop();
-            return rows;
-        }
-
-        function safeKey(s, idx) {
-            const t = (s ?? "").trim();
-            if (!t) return `col${idx + 1}`;
-            return t.replace(/\s+/g, "_").replace(/[^\w\-]/g, "_");
-        }
-
-        function csvToJson(text) {
-            const rows = parseCSV(text, delimiterEl.value);
-            if (!rows.length) return { json: [], headers: [], rowsCount: 0 };
-
-            let headers = [];
-            let start = 0;
-
-            if (hasHeaderEl.checked) {
-                headers = rows[0].map((h, i) => safeKey(h, i));
-                start = 1;
+          csvWorker.onmessage = function (e) {
+            const data = e.data;
+            if (data.success) {
+              lastJsonText = data.jsonText;
+              outputEl.value = lastJsonText;
+              btnCopy.disabled = data.json.length === 0;
+              btnDownload.disabled = data.json.length === 0;
+              setStatus(`${data.json.length} records converted`);
+              if (data.rowsCount <= 1 && hasHeaderEl.checked) {
+                setError('No data rows found. Check your CSV format.');
+              }
             } else {
-                const maxCols = Math.max(...rows.map(r => r.length));
-                headers = Array.from({ length: maxCols }, (_, i) => `col${i + 1}`);
+              lastJsonText = '';
+              outputEl.value = '';
+              btnCopy.disabled = true;
+              btnDownload.disabled = true;
+              setStatus('Error');
+              setError('Conversion failed: ' + data.error);
             }
+          };
 
-            const json = rows.slice(start).map(r => {
-                const o = {};
-                for (let i = 0; i < headers.length; i++) {
-                    o[headers[i]] = (r[i] ?? "");
-                }
-                return o;
-            });
+          csvWorker.onerror = function (e) {
+            lastJsonText = '';
+            outputEl.value = '';
+            setStatus('Error');
+            setError('A critical web worker error occurred.');
+          };
 
-            return { json, headers, rowsCount: rows.length };
+          csvWorker.postMessage({
+            textData: text,
+            isTextMode: true,
+            delimiter: delimiterEl.value,
+            hasHeader: hasHeaderEl.checked,
+          });
+        } catch (e) {
+          lastJsonText = '';
+          outputEl.value = '';
+          btnCopy.disabled = true;
+          btnDownload.disabled = true;
+          setStatus('Error');
+          setError('Unexpected error setting up conversion.');
         }
+      }
 
-        function convertNow() {
-            const text = csvInputEl.value || "";
-            setError("");
+      function scheduleConvert() {
+        if (debounceTimer) clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(convertNow, 350);
+      }
 
-            if (!text.trim()) {
-                lastJsonText = "";
-                outputEl.value = "";
-                btnCopy.disabled = true;
-                btnDownload.disabled = true;
-                setStatus("");
-                return;
-            }
+      csvInputEl.addEventListener('input', scheduleConvert);
+      delimiterEl.addEventListener('change', scheduleConvert);
+      hasHeaderEl.addEventListener('change', scheduleConvert);
 
-            try {
-                const { json, headers, rowsCount } = csvToJson(text);
-                lastJsonText = JSON.stringify(json, null, 2);
-                outputEl.value = lastJsonText;
+      btnClear.addEventListener('click', () => {
+        csvInputEl.value = '';
+        convertNow();
+      });
 
-                btnCopy.disabled = (json.length === 0);
-                btnDownload.disabled = (json.length === 0);
+      btnCopy.addEventListener('click', () => {
+        if (!lastJsonText) return;
+        navigator.clipboard.writeText(lastJsonText);
+        const oldHtml = btnCopy.innerHTML;
+        btnCopy.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg> Copied!`;
+        setTimeout(() => (btnCopy.innerHTML = oldHtml), 2000);
+      });
 
-                setStatus(`${json.length} records converted`);
+      btnDownload.addEventListener('click', () => {
+        if (!lastJsonText) return;
+        const blob = new Blob([lastJsonText], { type: 'application/json;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `csv-to-json_${Date.now()}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      });
 
-                if (rowsCount <= 1 && hasHeaderEl.checked) {
-                    setError("No data rows found. Check your CSV format.");
-                }
-            } catch (e) {
-                lastJsonText = "";
-                outputEl.value = "";
-                btnCopy.disabled = true;
-                btnDownload.disabled = true;
-                setStatus("Error");
-                setError("Conversion failed. Please verify your CSV text.");
-            }
-        }
+      btnSample.addEventListener('click', () => {
+        csvInputEl.value =
+          'id,name,role,department\n1,Alice,Engineer,Development\n2,Bob,Designer,UI/UX\n3,Charlie,Manager,Marketing';
+        convertNow();
+      });
 
-        function scheduleConvert() {
-            if (debounceTimer) clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(convertNow, 350);
-        }
-
-        csvInputEl.addEventListener("input", scheduleConvert);
-        delimiterEl.addEventListener("change", scheduleConvert);
-        hasHeaderEl.addEventListener("change", scheduleConvert);
-
-        btnClear.addEventListener("click", () => {
-            csvInputEl.value = "";
-            convertNow();
-        });
-
-        btnCopy.addEventListener("click", () => {
-            if (!lastJsonText) return;
-            copyToClipboard(lastJsonText, btnCopy);
-        });
-
-        btnDownload.addEventListener("click", () => {
-            if (!lastJsonText) return;
-            const blob = new Blob([lastJsonText], { type: "application/json;charset=utf-8" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `csv-to-json_${Date.now()}.json`;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            URL.revokeObjectURL(url);
-        });
-
-        btnSample.addEventListener("click", () => {
-            csvInputEl.value = "id,name,role,department\n1,Alice,Engineer,Development\n2,Bob,Designer,UI/UX\n3,Charlie,Manager,Marketing";
-            convertNow();
-        });
-
-        if (csvInputEl.value) convertNow();
+      if (csvInputEl.value) convertNow();
     </script>
-</body>
-
+  </body>
 </html>

@@ -1,304 +1,538 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="robots" content="index,follow" />
 
     <title>JSON to JSON Schema Generator - Online & Secure | Draft-07 Compliant</title>
-    <meta name="description"
-        content="Convert JSON to JSON Schema (Draft-07) instantly. No file upload required. Perfect for API design and data validation. Fast, secure, and 100% browser-based." />
+    <meta
+      name="description"
+      content="Convert JSON to JSON Schema (Draft-07) instantly. No file upload required. Perfect for API design and data validation. Fast, secure, and 100% browser-based."
+    />
+
+    <!-- Strict Content Security Policy -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://pagead2.googlesyndication.com https://www.google.com; frame-src https://googleads.g.doubleclick.net https://www.google.com;"
+    />
+
+    <!-- Open Graph & Twitter Card -->
+    <meta
+      property="og:title"
+      content="JSON to JSON Schema Generator - Online & Secure | Draft-07 Compliant"
+    />
+    <meta
+      property="og:description"
+      content="Convert JSON to JSON Schema (Draft-07) instantly. No file upload required. Perfect for API design and data validation. Fast, secure, and 100% browser-based."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://www.convertfilebox.net/en-us/tools/json-to-json-schema/"
+    />
+    <meta property="og:image" content="https://www.convertfilebox.net/assets/icon-large.png" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="canonical" href="https://www.convertfilebox.net/en-us/tools/json-to-json-schema/" />
-    <link rel="alternate" hreflang="ja-jp" href="https://www.convertfilebox.net/ja-jp/tools/json-to-json-schema/" />
-    <link rel="alternate" hreflang="en" href="https://www.convertfilebox.net/en-us/tools/json-to-json-schema/" />
+    <link
+      rel="alternate"
+      hreflang="ja-jp"
+      href="https://www.convertfilebox.net/ja-jp/tools/json-to-json-schema/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en-us"
+      href="https://www.convertfilebox.net/en-us/tools/json-to-json-schema/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://www.convertfilebox.net/en-us/tools/json-to-json-schema/"
+    />
 
     <!-- Styles -->
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css" />
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
-        crossorigin="anonymous"></script>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
+      crossorigin="anonymous"
+    ></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-2M7JXDP7J8"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
 
-        gtag('config', 'G-2M7JXDP7J8');
+      gtag('config', 'G-2M7JXDP7J8');
     </script>
 
     <style>
+      .split-pane {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 960px) {
         .split-pane {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
+          grid-template-columns: 1fr 1fr;
         }
+      }
 
-        @media (min-width: 960px) {
-            .split-pane {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
+      /* Technical content styles */
+      .technical-content {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border);
+        line-height: 1.8;
+      }
 
-        /* Technical content styles */
-        .technical-content {
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 1px solid var(--border);
-            line-height: 1.8;
-        }
+      .technical-content h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        color: var(--text-main);
+      }
 
-        .technical-content h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--text-main);
-        }
+      .technical-content h3 {
+        font-size: 1.125rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        color: var(--text-main);
+        border-left: 4px solid var(--primary);
+        padding-left: 1rem;
+      }
 
-        .technical-content h3 {
-            font-size: 1.125rem;
-            margin-top: 2rem;
-            margin-bottom: 1rem;
-            color: var(--text-main);
-            border-left: 4px solid var(--primary);
-            padding-left: 1rem;
-        }
-
-        .technical-content p {
-            margin-bottom: 1rem;
-            color: var(--text-muted);
-        }
+      .technical-content p {
+        margin-bottom: 1rem;
+        color: var(--text-muted);
+      }
     </style>
-</head>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.convertfilebox.net/en-us/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Tools",
+            "item": "https://www.convertfilebox.net/en-us/tools/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "JSON to JSON Schema Generator - Online & Secure | Draft-07 Compliant",
+            "item": "https://www.convertfilebox.net/en-us/tools/json-to-json-schema/"
+          }
+        ]
+      }
+    </script>
+    <link rel="manifest" href="/manifest.json" />
+  </head>
 
-<body>
-
+  <body
+    class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 leading-relaxed text-base transition-colors duration-200"
+  >
     <site-header></site-header>
 
-    <main class="container mt-8 mb-8" style="max-width: 1280px;">
-        <div class="text-center mb-8">
-            <h1>JSON to JSON Schema Generator</h1>
-            <p class="text-muted mt-2">Automatically derive a JSON Schema (Draft-07 compliant) from your JSON data.
-                Streamline your API documentation and validation workflows.</p>
-            <div class="flex justify-center gap-4 mt-4">
-                <span class="tag">Zero Server Latency</span>
-                <button id="btnSample" class="text-sm text-primary"
-                    style="background:none; border:none; text-decoration:underline; cursor:pointer;">Load Sample
-                    Data</button>
-            </div>
+    <main class="max-w-4xl mx-auto px-6 py-10 space-y-8">
+      <section class="text-center space-y-4">
+        <div
+          class="inline-flex items-center px-3 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-bold border border-emerald-200 dark:border-emerald-800"
+        >
+          <svg
+            class="w-4 h-4 mr-1.5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
+              fill-rule="evenodd"
+            ></path>
+          </svg>
+          100% Client-Side Execution
+        </div>
+        <h1 class="text-4xl font-extrabold tracking-tight">JSON to JSON Schema Generator</h1>
+        <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          Automatically derive a JSON Schema (Draft-07) from your JSON data. Streamline your API
+          documentation and validation workflows.
+        </p>
+        <div class="flex justify-center gap-4 mt-2">
+          <button
+            id="btnSample"
+            class="text-sm font-medium text-[#1e3a8a] dark:text-blue-400 hover:text-emerald-600 transition-colors flex items-center gap-1 tap-target px-2"
+          >
+            Load Sample Data
+          </button>
+        </div>
+      </section>
+
+      <div
+        class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 p-5 flex items-start gap-4"
+      >
+        <div class="text-emerald-600 dark:text-emerald-400">
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </div>
+        <div class="space-y-1">
+          <h3 class="font-bold text-emerald-800 dark:text-emerald-300">
+            Security & Privacy Guaranteed
+          </h3>
+          <p class="text-sm text-emerald-700/80 dark:text-emerald-400/80">
+            Your data never leaves your browser. All conversion logic is executed locally, ensuring
+            sensitive data remains truly private.
+          </p>
+        </div>
+      </div>
+
+      <!-- Layout: 2 Columns for Input and Output -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left Column: Input -->
+        <div class="space-y-3 flex flex-col h-full">
+          <div class="flex items-center justify-between">
+            <label class="font-bold flex items-center gap-2" for="ta">
+              <svg
+                class="w-5 h-5 text-slate-500"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              1. Input JSON
+            </label>
+            <button
+              class="text-sm font-medium text-slate-500 hover:text-red-600 transition-colors tap-target px-2 py-1"
+              id="btnClear"
+            >
+              Clear
+            </button>
+          </div>
+          <textarea
+            class="w-full h-full min-h-[400px] p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-colors"
+            id="ta"
+            placeholder="Paste your JSON data here..."
+          ></textarea>
         </div>
 
-        <!-- Standard Security Block -->
-        <section class="panel-security mb-8">
-            <h2 class="text-lg font-bold mb-4">🛡️ Security & Privacy Guaranteed</h2>
-            <p class="mb-4 font-bold">Your data never leaves your browser. We prioritize your privacy above all else.
-            </p>
-            <ul class="list-disc list-inside text-sm text-muted pl-4">
-                <li>All conversion logic is executed locally in your browser using JavaScript.</li>
-                <li>Sensitive data, such as corporate logs or PII, can be processed safely without any risk of exposure.
-                </li>
-                <li>No data is sent to our servers, and nothing is stored or logged.</li>
-            </ul>
-        </section>
+        <!-- Right Column: Output -->
+        <div class="space-y-3 flex flex-col h-full">
+          <div class="flex items-center justify-between">
+            <label class="font-bold flex items-center gap-2" for="output">
+              <svg
+                class="w-5 h-5 text-slate-500"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125h-7.5c-.621 0-1.125-.504-1.125-1.125m0 0v-1.5c0-.621.504-1.125 1.125-1.125m0 0h7.5m-7.5 0V5.625m0 0a1.125 1.125 0 0 1 1.125-1.125h1.5a1.125 1.125 0 0 1 1.125 1.125m-3.75 0h7.5m-7.5 0V14.25m0-8.625a1.125 1.125 0 0 0-1.125 1.125v1.5a1.125 1.125 0 0 0 1.125 1.125m0 0h1.5a1.125 1.125 0 0 0 1.125-1.125v-1.5a1.125 1.125 0 0 0-1.125-1.125m0 0h-1.5Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              2. Generated Schema
+            </label>
+          </div>
 
-        <div class="split-pane">
-            <!-- Input Column -->
-            <div class="flex flex-col gap-2">
-                <div class="toolbar">
-                    <h2 class="text-lg font-bold">Input (JSON)</h2>
-                    <button id="btnClear" class="btn btn-danger-ghost btn-sm">Clear</button>
-                </div>
-                <textarea id="ta" class="code-editor" style="height: 500px;"
-                    placeholder='Paste your JSON data here...'></textarea>
-                <div id="errorMsg" class="alert alert-warning mt-2" style="display:none"></div>
-            </div>
+          <textarea
+            class="w-full flex-grow min-h-[400px] p-4 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y text-slate-800 dark:text-slate-200"
+            id="output"
+            placeholder="JSON Schema will appear here"
+            readonly=""
+          ></textarea>
 
-            <!-- Output Column -->
-            <div class="flex flex-col gap-2">
-                <div class="toolbar">
-                    <h2 class="text-lg font-bold">Generated Schema</h2>
-                    <div class="flex gap-2">
-                        <button class="btn btn-secondary btn-sm" id="btnCopy" disabled>Copy Result</button>
-                    </div>
-                </div>
-                <textarea id="output" class="code-editor" readonly style="height: 500px;"
-                    placeholder="JSON Schema will appear here"></textarea>
-            </div>
+          <div
+            id="errorMsg"
+            class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 p-3 rounded text-sm font-medium"
+            style="display: none"
+          ></div>
+
+          <button
+            class="w-full tap-target bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold rounded-lg py-3 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            id="btnCopy"
+            disabled
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+            Copy Result
+          </button>
         </div>
+      </div>
+      <!-- Technical Content for AdSense Compliance -->
+      <article
+        class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 prose dark:prose-invert max-w-none"
+      >
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+          Technical Deep Dive: The Role of JSON Schema in Modern Architecture
+        </h2>
+        <p class="mb-4">
+          In an era dominated by microservices and data-driven applications, JSON is the primary
+          language of communication. However, the lack of a strict schema can lead to integration
+          headaches. <strong>JSON Schema</strong> provides the necessary contract to ensure data
+          integrity across systems.
+        </p>
 
-        <!-- Technical Content for AdSense Compliance -->
-        <article class="technical-content">
-            <h2>Technical Deep Dive: The Role of JSON Schema in Modern Architecture</h2>
-            <p>
-                In an era dominated by microservices and data-driven applications, JSON is the primary language of
-                communication. However, the lack of a strict schema can lead to integration headaches. <strong>JSON
-                    Schema</strong> provides the necessary contract to ensure data integrity across systems.
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          What is JSON Schema?
+        </h3>
+        <p class="mb-4">
+          JSON Schema is a declarative tool for validating the structure of JSON data. It allows you
+          to specify mandatory fields, data types, value ranges, and patterns. By using a schema,
+          you can automate data verification, generate documentation, and even create unit tests
+          based on the data's "shape."
+        </p>
+
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Intelligent Inference: Draft-07 Logic
+        </h3>
+        <p class="mb-4">
+          Our generator recursively analyzes your JSON structure to infer types and hierarchies. It
+          follows the
+          <strong>JSON Schema Draft-07</strong> specification, providing a standard-compliant output
+          that is compatible with the vast majority of modern validators and tools. Whether you have
+          nested objects or complex arrays, our engine derives a clean, structured schema in
+          milliseconds.
+        </p>
+
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Boosting Developer Productivity
+        </h3>
+        <p class="mb-4">
+          Manually writing a 500-line JSON Schema is error-prone and tedious. By starting with a
+          sample JSON payload and using our generator, you can create the foundation of your
+          documentation or validation layer in seconds. This is particularly useful for engineers
+          defining OpenAPI/Swagger specifications or setting up automated testing pipelines.
+        </p>
+
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Security by Local Processing
+        </h3>
+        <p class="mb-4">
+          JSON payloads often contain sensitive architectural information or internal system keys.
+          <strong>Absolute Privacy</strong> is our standard. Our tool performs all inference and
+          generation locally in your browser RAM. Your data is never uploaded, never stored, and
+          never shared. You can design your system's data contracts with the confidence that your
+          proprietary structures remain private.
+        </p>
+
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Frequently Asked Questions (FAQ)
+        </h3>
+        <div class="mt-4 space-y-4">
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. Can I use the generated schema for validation?
+            </h4>
+            <p class="text-sm">
+              A. Yes! Most modern libraries (like Ajv for Node.js) can read the Draft-07 schema
+              generated by this tool to perform runtime validation on incoming data.
             </p>
-
-            <h3>What is JSON Schema?</h3>
-            <p>
-                JSON Schema is a declarative tool for validating the structure of JSON data. It allows you to specify
-                mandatory fields, data types, value ranges, and patterns. By using a schema, you can automate data
-                verification, generate documentation, and even create unit tests based on the data's "shape."
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. How does it handle mixed-type arrays?
+            </h4>
+            <p class="text-sm">
+              A. For simplicity, the current algorithm infers the schema from the first element of
+              an array. For arrays with heterogeneous types, we recommend manually adjusting the
+              output to use <code>oneOf</code> or <code>anyOf</code>.
             </p>
-
-            <h3>Intelligent Inference: Draft-07 Logic</h3>
-            <p>
-                Our generator recursively analyzes your JSON structure to infer types and hierarchies. It follows the
-                <strong>JSON Schema Draft-07</strong> specification, providing a standard-compliant output that is
-                compatible with the vast majority of modern validators and tools. Whether you have nested objects or
-                complex arrays, our engine derives a clean, structured schema in milliseconds.
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. Is it compatible with older browsers?
+            </h4>
+            <p class="text-sm">
+              A. We use modern ES6+ JavaScript for high-speed processing, so any current version of
+              Chrome, Firefox, or Safari will handle the generation perfectly.
             </p>
-
-            <h3>Boosting Developer Productivity</h3>
-            <p>
-                Manually writing a 500-line JSON Schema is error-prone and tedious. By starting with a sample JSON
-                payload and using our generator, you can create the foundation of your documentation or validation layer
-                in seconds. This is particularly useful for engineers defining OpenAPI/Swagger specifications or setting
-                up automated testing pipelines.
-            </p>
-
-            <h3>Security by Local Processing</h3>
-            <p>
-                JSON payloads often contain sensitive architectural information or internal system keys.
-                <strong>Absolute Privacy</strong> is our standard. Our tool performs all inference and generation
-                locally in your browser RAM. Your data is never uploaded, never stored, and never shared. You can design
-                your system's data contracts with the confidence that your proprietary structures remain private.
-            </p>
-
-            <h3>Frequently Asked Questions (FAQ)</h3>
-            <div class="mt-4">
-                <h4 class="font-bold">Q. Can I use the generated schema for validation?</h4>
-                <p class="text-sm">A. Yes! Most modern libraries (like Ajv for Node.js) can read the Draft-07 schema
-                    generated by this tool to perform runtime validation on incoming data.</p>
-
-                <h4 class="font-bold">Q. How does it handle mixed-type arrays?</h4>
-                <p class="text-sm">A. For simplicity, the current algorithm infers the schema from the first element of
-                    an array. For arrays with heterogeneous types, we recommend manually adjusting the output to use
-                    <code>oneOf</code> or <code>anyOf</code>.
-                </p>
-
-                <h4 class="font-bold">Q. Is it compatible with older browsers?</h4>
-                <p class="text-sm">A. We use modern ES6+ JavaScript for high-speed processing, so any current version of
-                    Chrome, Firefox, or Safari will handle the generation perfectly.</p>
-            </div>
-        </article>
-
+          </div>
+        </div>
+      </article>
     </main>
 
     <site-footer></site-footer>
 
     <script src="/assets/js/ui.js"></script>
     <script>
-        const $ = (id) => document.getElementById(id);
-        const ta = $("ta");
-        const output = $("output");
-        const errorMsgEl = $("errorMsg");
+      const $ = (id) => document.getElementById(id);
+      const ta = $('ta');
+      const output = $('output');
+      const errorMsgEl = $('errorMsg');
 
-        const btnCopy = $("btnCopy");
-        const btnClear = $("btnClear");
-        const btnSample = $("btnSample");
+      const btnCopy = $('btnCopy');
+      const btnClear = $('btnClear');
+      const btnSample = $('btnSample');
 
-        function setError(text) {
-            if (!text) {
-                errorMsgEl.style.display = "none";
-                return;
-            }
-            errorMsgEl.textContent = text;
-            errorMsgEl.style.display = "block";
+      function setError(text) {
+        if (!text) {
+          errorMsgEl.style.display = 'none';
+          return;
         }
+        errorMsgEl.textContent = text;
+        errorMsgEl.style.display = 'block';
+      }
 
-        function getType(value) {
-            if (value === null) return "null";
-            if (Array.isArray(value)) return "array";
-            return typeof value;
+      function getType(value) {
+        if (value === null) return 'null';
+        if (Array.isArray(value)) return 'array';
+        return typeof value;
+      }
+
+      function generateSchema(data) {
+        const type = getType(data);
+        if (type === 'object') {
+          const properties = {};
+          for (const key in data) {
+            properties[key] = generateSchema(data[key]);
+          }
+          return { type: 'object', properties: properties };
+        } else if (type === 'array') {
+          let itemsSchema = {};
+          if (data.length > 0) {
+            itemsSchema = generateSchema(data[0]);
+          }
+          return { type: 'array', items: itemsSchema };
+        } else {
+          return { type: type };
         }
+      }
 
-        function generateSchema(data) {
-            const type = getType(data);
-            if (type === "object") {
-                const properties = {};
-                for (const key in data) {
-                    properties[key] = generateSchema(data[key]);
-                }
-                return { type: "object", properties: properties };
-            } else if (type === "array") {
-                let itemsSchema = {};
-                if (data.length > 0) {
-                    itemsSchema = generateSchema(data[0]);
-                }
-                return { type: "array", items: itemsSchema };
-            } else {
-                return { type: type };
-            }
+      function jsonToSchema(data) {
+        return {
+          $schema: 'http://json-schema.org/draft-07/schema#',
+          ...generateSchema(data),
+        };
+      }
+
+      function process() {
+        setError('');
+        const t = (ta.value ?? '').trim();
+        if (!t) {
+          output.value = '';
+          btnCopy.disabled = true;
+          return;
         }
-
-        function jsonToSchema(data) {
-            return {
-                $schema: "http://json-schema.org/draft-07/schema#",
-                ...generateSchema(data)
-            };
+        try {
+          const obj = JSON.parse(t);
+          const schema = jsonToSchema(obj);
+          output.value = JSON.stringify(schema, null, 2);
+          btnCopy.disabled = false;
+        } catch (e) {
+          output.value = '';
+          btnCopy.disabled = true;
+          setError('Invalid JSON format. Please check your syntax.');
         }
+      }
 
-        function process() {
-            setError("");
-            const t = (ta.value ?? "").trim();
-            if (!t) {
-                output.value = "";
-                btnCopy.disabled = true;
-                return;
-            }
-            try {
-                const obj = JSON.parse(t);
-                const schema = jsonToSchema(obj);
-                output.value = JSON.stringify(schema, null, 2);
-                btnCopy.disabled = false;
-            } catch (e) {
-                output.value = "";
-                btnCopy.disabled = true;
-                setError("Invalid JSON format. Please check your syntax.");
-            }
-        }
+      let debounceTimer = null;
+      ta.addEventListener('input', () => {
+        if (debounceTimer) clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(process, 300);
+      });
 
-        let debounceTimer = null;
-        ta.addEventListener("input", () => {
-            if (debounceTimer) clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(process, 300);
-        });
+      btnCopy.addEventListener('click', async () => {
+        if (!output.value) return;
+        navigator.clipboard.writeText(output.value);
+        const oldHtml = btnCopy.innerHTML;
+        btnCopy.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg> Copied!`;
+        setTimeout(() => (btnCopy.innerHTML = oldHtml), 2000);
+      });
 
-        btnCopy.addEventListener("click", async () => {
-            if (!output.value) return;
-            copyToClipboard(output.value, btnCopy);
-        });
+      btnClear.addEventListener('click', () => {
+        ta.value = '';
+        output.value = '';
+        setError('');
+        btnCopy.disabled = true;
+      });
 
-        btnClear.addEventListener("click", () => {
-            ta.value = "";
-            output.value = "";
-            setError("");
-            btnCopy.disabled = true;
-        });
+      btnSample.addEventListener('click', () => {
+        ta.value = JSON.stringify(
+          {
+            name: 'Product name',
+            price: 29.99,
+            available: true,
+            tags: ['home', 'office'],
+            dimensions: {
+              width: 10,
+              height: 20,
+            },
+          },
+          null,
+          2,
+        );
+        process();
+      });
 
-        btnSample.addEventListener("click", () => {
-            ta.value = JSON.stringify({
-                name: "Product name",
-                price: 29.99,
-                available: true,
-                tags: ["home", "office"],
-                dimensions: {
-                    width: 10,
-                    height: 20
-                }
-            }, null, 2);
-            process();
-        });
-
-        if (ta.value) process();
+      if (ta.value) process();
     </script>
-</body>
-
+  </body>
 </html>
