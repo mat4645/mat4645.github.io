@@ -1,179 +1,168 @@
 ﻿<!doctype html>
 <html lang="ja-jp">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="robots" content="index,follow" />
 
-    <title>ConvertFileBox | Redirecting...</title>
-    <meta
-      name="description"
-      content="Free online tool collection for CSV and JSON conversion. Safe, fast, and secure."
-    />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="index,follow" />
 
-    <!-- Strict Content Security Policy -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://pagead2.googlesyndication.com https://www.google.com; frame-src https://googleads.g.doubleclick.net https://www.google.com;"
-    />
+  <title>ConvertFileBox | Redirecting...</title>
+  <meta name="description" content="Free online tool collection for CSV and JSON conversion. Safe, fast, and secure." />
 
-    <!-- Open Graph & Twitter Card -->
-    <meta property="og:title" content="ConvertFileBox | Redirecting..." />
-    <meta
-      property="og:description"
-      content="Free online tool collection for CSV and JSON conversion. Safe, fast, and secure."
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.convertfilebox.net/" />
-    <meta property="og:image" content="https://www.convertfilebox.net/assets/icon-large.png" />
-    <meta name="twitter:card" content="summary_large_image" />
+  <!-- Strict Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-inline' https://pagead2.googlesyndication.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://pagead2.googlesyndication.com https://www.google.com; frame-src https://googleads.g.doubleclick.net https://www.google.com;" />
 
-    <link rel="canonical" href="https://www.convertfilebox.net/" />
-    <link rel="alternate" hreflang="ja-jp" href="https://www.convertfilebox.net/ja-jp/" />
-    <link rel="alternate" hreflang="en-us" href="https://www.convertfilebox.net/en-us/" />
-    <link rel="alternate" hreflang="x-default" href="https://www.convertfilebox.net/en-us/" />
+  <!-- Open Graph & Twitter Card -->
+  <meta property="og:title" content="ConvertFileBox | Redirecting..." />
+  <meta property="og:description"
+    content="Free online tool collection for CSV and JSON conversion. Safe, fast, and secure." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.convertfilebox.net/" />
+  <meta property="og:image" content="https://www.convertfilebox.net/assets/icon-large.png" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
-      crossorigin="anonymous"
-    ></script>
+  <link rel="canonical" href="https://www.convertfilebox.net/" />
+  <link rel="alternate" hreflang="ja-jp" href="https://www.convertfilebox.net/ja-jp/" />
+  <link rel="alternate" hreflang="en-us" href="https://www.convertfilebox.net/en-us/" />
+  <link rel="alternate" hreflang="x-default" href="https://www.convertfilebox.net/en-us/" />
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap"
-      rel="stylesheet"
-    />
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2739559953649909"
+    crossorigin="anonymous"></script>
 
-    <style>
-      :root {
-        --bg: #0f172a;
-        --text: #ffffff;
-        --primary: #3b82f6;
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --text: #ffffff;
+      --primary: #3b82f6;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .loader-container {
+      max-width: 400px;
+      padding: 2rem;
+    }
+
+    .logo {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      background: linear-gradient(to right, #60a5fa, #3b82f6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      border-left-color: var(--primary);
+      border-radius: 50%;
+      margin: 2rem auto;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .lang-options {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+      opacity: 0;
+      animation: fadeIn 0.5s forwards 1s;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-weight: 700;
+      transition: all 0.2s;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--primary);
+    }
+  </style>
+
+  <script>
+    // Language detection and redirect logic
+    (function () {
+      const PREFERRED_LANG_KEY = 'preferred-lang';
+
+      function getTargetDir() {
+        // 1. Explicit selection from localStorage
+        const saved = localStorage.getItem(PREFERRED_LANG_KEY);
+        if (saved === 'ja-jp' || saved === 'en-us') return saved;
+
+        // 2. Browser language
+        const browserLang = navigator.language || navigator.userLanguage || '';
+        if (browserLang.toLowerCase().startsWith('ja')) return 'ja-jp';
+
+        // 3. Default to English
+        return 'en-us';
       }
 
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Inter', system-ui, sans-serif;
-        background-color: var(--bg);
-        color: var(--text);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        text-align: center;
-      }
+      const target = getTargetDir();
 
-      .loader-container {
-        max-width: 400px;
-        padding: 2rem;
-      }
+      // Perform redirect after a tiny delay for visual feedback (or immediate if no splash needed)
+      // Using replace to keep history clean
+      window.location.replace('/' + target + '/tools/');
+    })();
+  </script>
+  <link rel="manifest" href="/manifest.json" />
+</head>
 
-      .logo {
-        font-size: 2rem;
-        font-weight: 800;
-        margin-bottom: 1rem;
-        background: linear-gradient(to right, #60a5fa, #3b82f6);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
+<body>
+  <div class="loader-container">
+    <div class="logo">ConvertFileBox</div>
+    <p id="msg">Redirecting to your language...</p>
+    <div class="spinner"></div>
 
-      .spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid rgba(255, 255, 255, 0.1);
-        border-left-color: var(--primary);
-        border-radius: 50%;
-        margin: 2rem auto;
-        animation: spin 1s linear infinite;
-      }
-
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      .lang-options {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        margin-top: 2rem;
-        opacity: 0;
-        animation: fadeIn 0.5s forwards 1s;
-      }
-
-      @keyframes fadeIn {
-        to {
-          opacity: 1;
-        }
-      }
-
-      .btn {
-        padding: 0.75rem 1.5rem;
-        border-radius: 0.5rem;
-        text-decoration: none;
-        font-weight: 700;
-        transition: all 0.2s;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-      }
-
-      .btn:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: var(--primary);
-      }
-    </style>
-
-    <script>
-      // Language detection and redirect logic
-      (function () {
-        const PREFERRED_LANG_KEY = 'preferred-lang';
-
-        function getTargetDir() {
-          // 1. Explicit selection from localStorage
-          const saved = localStorage.getItem(PREFERRED_LANG_KEY);
-          if (saved === 'ja-jp' || saved === 'en-us') return saved;
-
-          // 2. Browser language
-          const browserLang = navigator.language || navigator.userLanguage || '';
-          if (browserLang.toLowerCase().startsWith('ja')) return 'ja-jp';
-
-          // 3. Default to English
-          return 'en-us';
-        }
-
-        const target = getTargetDir();
-
-        // Perform redirect after a tiny delay for visual feedback (or immediate if no splash needed)
-        // Using replace to keep history clean
-        window.location.replace('/' + target + '/tools/');
-      })();
-    </script>
-    <link rel="manifest" href="/manifest.json" />
-  </head>
-
-  <body>
-    <div class="loader-container">
-      <div class="logo">ConvertFileBox</div>
-      <p id="msg">Redirecting to your language...</p>
-      <div class="spinner"></div>
-
-      <div class="lang-options">
-        <a href="/ja-jp/" class="btn">日本語 (Japanese)</a>
-        <a href="/en-us/" class="btn">English (US)</a>
-      </div>
+    <div class="lang-options">
+      <a href="/ja-jp/tools/" class="btn">日本語 (Japanese)</a>
+      <a href="/en-us/tools/" class="btn">English (US)</a>
     </div>
+  </div>
 
-    <script>
-      // Update message if fallback UI shows
-      setTimeout(() => {
-        document.getElementById('msg').textContent =
-          'Please select your language if you are not redirected automatically.';
-      }, 1500);
-    </script>
-  </body>
+  <script>
+    // Update message if fallback UI shows
+    setTimeout(() => {
+      document.getElementById('msg').textContent =
+        'Please select your language if you are not redirected automatically.';
+    }, 1500);
+  </script>
+</body>
+
 </html>
