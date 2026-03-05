@@ -133,116 +133,206 @@
     <link rel="manifest" href="/manifest.json" />
   </head>
 
-  <body>
+  <body
+    class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 leading-relaxed text-base transition-colors duration-200"
+  >
     <site-header></site-header>
 
-    <main class="container mt-8 mb-8" style="max-width: 1280px">
-      <div class="text-center mb-8">
-        <h1>JSON Schema 生成ツール</h1>
-        <p class="text-muted mt-2">
+    <main class="max-w-4xl mx-auto px-6 py-10 space-y-8">
+      <section class="text-center space-y-4">
+        <div
+          class="inline-flex items-center px-3 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-bold border border-emerald-200 dark:border-emerald-800"
+        >
+          <svg
+            class="w-4 h-4 mr-1.5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
+              fill-rule="evenodd"
+            ></path>
+          </svg>
+          100% ブラウザ内処理
+        </div>
+        <h1 class="text-4xl font-extrabold tracking-tight">JSON Schema 生成ツール</h1>
+        <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
           JSONからJSON Schema (Draft-07) を自動推論。仕様書作成やバリデーション定義を効率化します。
         </p>
-        <div class="flex justify-center gap-4 mt-4">
-          <span class="tag">サーバー送信なし</span>
+        <div class="flex justify-center gap-4 mt-2">
           <button
             id="btnSample"
-            class="text-sm text-primary"
-            style="background: none; border: none; text-decoration: underline; cursor: pointer"
+            class="text-sm font-medium text-[#1e3a8a] dark:text-blue-400 hover:text-emerald-600 transition-colors flex items-center gap-1 tap-target px-2"
           >
             サンプルを入力する
           </button>
         </div>
-      </div>
-
-      <!-- Standard Security Block -->
-      <section class="panel-security mb-8">
-        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-          <svg
-            class="w-6 h-6 text-brand-green"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-            style="width: 24px; height: 24px; display: inline-block"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
-            />
-          </svg>
-          セキュリティに関するお約束
-        </h2>
-        <p class="mb-4 font-bold">
-          当サイトでは、入力されたデータが一瞬たりとも外部サーバーへ送信されることはありません。
-        </p>
-        <ul class="list-disc list-inside text-sm text-muted pl-4">
-          <li>すべての解析・変換ロジックはあなたのブラウザ（JavaScript）内で実行されます。</li>
-          <li>機密性の高いログデータや個人情報を含むJSONなども、安心して処理いただけます。</li>
-          <li>入力された内容はページを閉じた瞬間にメモリから消去され、記録も残りません。</li>
-        </ul>
       </section>
 
       <div
-        class="grid"
-        style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem"
+        class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 p-5 flex items-start gap-4"
       >
-        <!-- Input -->
-        <div class="flex flex-col gap-4">
-          <div class="panel flex-1 flex flex-col">
-            <div class="toolbar mb-4">
-              <h2 class="text-lg font-bold">1. 入力 (JSON)</h2>
-              <button id="btnClear" class="btn-outline">クリア</button>
-            </div>
-            <textarea
-              id="ta"
-              class="code-editor flex-1"
-              style="min-height: 400px"
-              placeholder="ここにJSONをペースト..."
-            ></textarea>
-            <div id="errorMsg" class="alert alert-warning mt-2" style="display: none"></div>
-          </div>
+        <div class="text-emerald-600 dark:text-emerald-400">
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
         </div>
-
-        <!-- Output -->
-        <div class="flex flex-col gap-4">
-          <div class="panel" style="height: 100%; display: flex; flex-direction: column">
-            <div class="toolbar mb-4">
-              <h2 class="text-lg font-bold">2. 生成結果 (JSON Schema)</h2>
-              <button class="btn-outline" id="btnCopy" disabled>結果をコピー</button>
-            </div>
-            <textarea
-              id="output"
-              class="code-editor"
-              readonly
-              style="flex: 1; min-height: 400px"
-              placeholder="JSON Schemaがここに生成されます。"
-            ></textarea>
-          </div>
+        <div class="space-y-1">
+          <h3 class="font-bold text-emerald-800 dark:text-emerald-300">
+            セキュリティに関するお約束
+          </h3>
+          <p class="text-sm text-emerald-700/80 dark:text-emerald-400/80">
+            当サイトでは、入力されたデータが一瞬たりとも外部サーバーへ送信されることはありません。すべての解析・変換ロジックはあなたのブラウザ内で実行されます。機密性の高いログデータや個人情報を含むJSONなども、安心して処理いただけます。
+          </p>
         </div>
       </div>
 
-      <article class="technical-content">
-        <h2>技術解説：JSON Schemaの役割と自動生成の効率性</h2>
-        <p>
+      <!-- Layout: 2 Columns for Input and Output -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left Column: Input -->
+        <div class="space-y-3 flex flex-col h-full">
+          <div class="flex items-center justify-between">
+            <label class="font-bold flex items-center gap-2" for="ta">
+              <svg
+                class="w-5 h-5 text-slate-500"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              1. 入力 (JSON)
+            </label>
+            <button
+              class="text-sm font-medium text-slate-500 hover:text-red-600 transition-colors tap-target px-2 py-1"
+              id="btnClear"
+            >
+              クリア
+            </button>
+          </div>
+          <textarea
+            class="w-full h-full min-h-[400px] p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-colors"
+            id="ta"
+            placeholder="ここにJSONをペースト..."
+          ></textarea>
+        </div>
+
+        <!-- Right Column: Output -->
+        <div class="space-y-3 flex flex-col h-full">
+          <div class="flex items-center justify-between">
+            <label class="font-bold flex items-center gap-2" for="output">
+              <svg
+                class="w-5 h-5 text-slate-500"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125h-7.5c-.621 0-1.125-.504-1.125-1.125m0 0v-1.5c0-.621.504-1.125 1.125-1.125m0 0h7.5m-7.5 0V5.625m0 0a1.125 1.125 0 0 1 1.125-1.125h1.5a1.125 1.125 0 0 1 1.125 1.125m-3.75 0h7.5m-7.5 0V14.25m0-8.625a1.125 1.125 0 0 0-1.125 1.125v1.5a1.125 1.125 0 0 0 1.125 1.125m0 0h1.5a1.125 1.125 0 0 0 1.125-1.125v-1.5a1.125 1.125 0 0 0-1.125-1.125m0 0h-1.5Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              2. 生成結果 (JSON Schema)
+            </label>
+          </div>
+
+          <textarea
+            class="w-full flex-grow min-h-[400px] p-4 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y text-slate-800 dark:text-slate-200"
+            id="output"
+            placeholder="JSON Schemaがここに生成されます。"
+            readonly=""
+          ></textarea>
+
+          <div
+            id="errorMsg"
+            class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 p-3 rounded text-sm font-medium"
+            style="display: none"
+          ></div>
+
+          <button
+            class="w-full tap-target bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold rounded-lg py-3 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            id="btnCopy"
+            disabled
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+            結果をコピー
+          </button>
+        </div>
+      </div>
+      <article
+        class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 prose dark:prose-invert max-w-none"
+      >
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+          技術解説：JSON Schemaの役割と自動生成の効率性
+        </h2>
+        <p class="mb-4">
           モダンなAPI設計において、JSONはデータの物理的な形式に過ぎません。そのデータがどのような構造を持ち、どのフィールドが必須（Required）であるかを定義するのが「JSON
           Schema」の役割です。
         </p>
 
-        <h3>Draft-07 準拠の自動推論エンジン</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Draft-07 準拠の自動推論エンジン
+        </h3>
+        <p class="mb-4">
           当ツールは、入力されたJSONデータを再帰的にスキャンし、各ノードのデータ型を自動的に判定します。数値、文字列、ブーリアンといった基本型から、複雑なネストを持つオブジェクトや配列までを解析し、標準的な「JSON
           Schema Draft-07」仕様に基づいたスキーマを即座に書き出します。
         </p>
 
-        <h3>APIドキュメントとバリデーションの基盤</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          APIドキュメントとバリデーションの基盤
+        </h3>
+        <p class="mb-4">
           Swagger（OpenAPI）の定義ファイルを作成する際、既存のレスポンスJSONからスキーマを手動で書き起こすのは苦行です。このツールを使えば、たたき台となるスキーマを数秒で手に入れ、あとはビジネスロジックに合わせた微調整（required属性の追加など）を行うだけで済み、開発スピードを劇的に向上させます。
         </p>
 
-        <h3>「型」の安全性とプライバシー</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          「型」の安全性とプライバシー
+        </h3>
+        <p class="mb-4">
           スキーマ設計時には、時に本番環境に近い秘匿性の高いデータを用いることもあります。ConvertFileBoxはブラウザ内で動作を完結させるため、解析中のデータがインターネットを経由して外部へ漏れることはありません。セキュアな設計室のように、安心して設計に集中できます。
         </p>
       </article>
@@ -321,9 +411,9 @@
 
       btnCopy.addEventListener('click', () => {
         navigator.clipboard.writeText(output.value);
-        const old = btnCopy.textContent;
-        btnCopy.textContent = 'コピー完了';
-        setTimeout(() => (btnCopy.textContent = old), 1500);
+        const oldHtml = btnCopy.innerHTML;
+        btnCopy.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg> コピー完了`;
+        setTimeout(() => (btnCopy.innerHTML = oldHtml), 2000);
       });
 
       $('btnClear').addEventListener('click', () => {

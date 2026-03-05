@@ -148,120 +148,203 @@
     <link rel="manifest" href="/manifest.json" />
   </head>
 
-  <body>
+  <body
+    class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 leading-relaxed text-base transition-colors duration-200"
+  >
     <site-header></site-header>
 
-    <main class="container mt-8 mb-8" style="max-width: 1280px">
-      <div class="text-center mb-8">
-        <h1>JSON to JSON Schema Generator</h1>
-        <p class="text-muted mt-2">
-          Automatically derive a JSON Schema (Draft-07 compliant) from your JSON data. Streamline
-          your API documentation and validation workflows.
+    <main class="max-w-4xl mx-auto px-6 py-10 space-y-8">
+      <section class="text-center space-y-4">
+        <div
+          class="inline-flex items-center px-3 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-bold border border-emerald-200 dark:border-emerald-800"
+        >
+          <svg
+            class="w-4 h-4 mr-1.5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
+              fill-rule="evenodd"
+            ></path>
+          </svg>
+          100% Client-Side Execution
+        </div>
+        <h1 class="text-4xl font-extrabold tracking-tight">JSON to JSON Schema Generator</h1>
+        <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          Automatically derive a JSON Schema (Draft-07) from your JSON data. Streamline your API
+          documentation and validation workflows.
         </p>
-        <div class="flex justify-center gap-4 mt-4">
-          <span class="tag">Zero Server Latency</span>
+        <div class="flex justify-center gap-4 mt-2">
           <button
             id="btnSample"
-            class="text-sm text-primary"
-            style="background: none; border: none; text-decoration: underline; cursor: pointer"
+            class="text-sm font-medium text-[#1e3a8a] dark:text-blue-400 hover:text-emerald-600 transition-colors flex items-center gap-1 tap-target px-2"
           >
             Load Sample Data
           </button>
         </div>
-      </div>
-
-      <!-- Standard Security Block -->
-      <section class="panel-security mb-8">
-        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-          <svg
-            class="w-6 h-6 text-brand-green"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-            style="width: 24px; height: 24px; display: inline-block"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
-            />
-          </svg>
-          Security & Privacy Guaranteed
-        </h2>
-        <p class="mb-4 font-bold">
-          Your data never leaves your browser. We prioritize your privacy above all else.
-        </p>
-        <ul class="list-disc list-inside text-sm text-muted pl-4">
-          <li>All conversion logic is executed locally in your browser using JavaScript.</li>
-          <li>
-            Sensitive data, such as corporate logs or PII, can be processed safely without any risk
-            of exposure.
-          </li>
-          <li>No data is sent to our servers, and nothing is stored or logged.</li>
-        </ul>
       </section>
 
       <div
-        class="grid"
-        style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem"
+        class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 p-5 flex items-start gap-4"
       >
-        <!-- Left Column: Input -->
-        <div class="flex flex-col gap-4">
-          <div class="panel flex-1 flex flex-col">
-            <div class="toolbar mb-4">
-              <h2 class="text-lg font-bold">1. Input JSON</h2>
-              <button id="btnClear" class="btn-outline">Clear</button>
-            </div>
-            <textarea
-              id="ta"
-              class="code-editor flex-1"
-              style="min-height: 400px"
-              placeholder="Paste your JSON data here..."
-            ></textarea>
-            <div id="errorMsg" class="alert alert-warning mt-2" style="display: none"></div>
-          </div>
+        <div class="text-emerald-600 dark:text-emerald-400">
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
         </div>
-
-        <!-- Right Column: Output -->
-        <div class="flex flex-col gap-4">
-          <div class="panel" style="height: 100%; display: flex; flex-direction: column">
-            <div class="toolbar mb-4">
-              <h2 class="text-lg font-bold">2. Generated Schema</h2>
-              <button class="btn-outline" id="btnCopy" disabled>Copy Result</button>
-            </div>
-            <textarea
-              id="output"
-              class="code-editor"
-              readonly
-              style="flex: 1; min-height: 400px"
-              placeholder="JSON Schema will appear here"
-            ></textarea>
-          </div>
+        <div class="space-y-1">
+          <h3 class="font-bold text-emerald-800 dark:text-emerald-300">
+            Security & Privacy Guaranteed
+          </h3>
+          <p class="text-sm text-emerald-700/80 dark:text-emerald-400/80">
+            Your data never leaves your browser. All conversion logic is executed locally, ensuring
+            sensitive data remains truly private.
+          </p>
         </div>
       </div>
 
+      <!-- Layout: 2 Columns for Input and Output -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left Column: Input -->
+        <div class="space-y-3 flex flex-col h-full">
+          <div class="flex items-center justify-between">
+            <label class="font-bold flex items-center gap-2" for="ta">
+              <svg
+                class="w-5 h-5 text-slate-500"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              1. Input JSON
+            </label>
+            <button
+              class="text-sm font-medium text-slate-500 hover:text-red-600 transition-colors tap-target px-2 py-1"
+              id="btnClear"
+            >
+              Clear
+            </button>
+          </div>
+          <textarea
+            class="w-full h-full min-h-[400px] p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-colors"
+            id="ta"
+            placeholder="Paste your JSON data here..."
+          ></textarea>
+        </div>
+
+        <!-- Right Column: Output -->
+        <div class="space-y-3 flex flex-col h-full">
+          <div class="flex items-center justify-between">
+            <label class="font-bold flex items-center gap-2" for="output">
+              <svg
+                class="w-5 h-5 text-slate-500"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125h-7.5c-.621 0-1.125-.504-1.125-1.125m0 0v-1.5c0-.621.504-1.125 1.125-1.125m0 0h7.5m-7.5 0V5.625m0 0a1.125 1.125 0 0 1 1.125-1.125h1.5a1.125 1.125 0 0 1 1.125 1.125m-3.75 0h7.5m-7.5 0V14.25m0-8.625a1.125 1.125 0 0 0-1.125 1.125v1.5a1.125 1.125 0 0 0 1.125 1.125m0 0h1.5a1.125 1.125 0 0 0 1.125-1.125v-1.5a1.125 1.125 0 0 0-1.125-1.125m0 0h-1.5Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              2. Generated Schema
+            </label>
+          </div>
+
+          <textarea
+            class="w-full flex-grow min-h-[400px] p-4 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y text-slate-800 dark:text-slate-200"
+            id="output"
+            placeholder="JSON Schema will appear here"
+            readonly=""
+          ></textarea>
+
+          <div
+            id="errorMsg"
+            class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 p-3 rounded text-sm font-medium"
+            style="display: none"
+          ></div>
+
+          <button
+            class="w-full tap-target bg-[#1e3a8a] hover:bg-blue-800 text-white font-bold rounded-lg py-3 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            id="btnCopy"
+            disabled
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+            Copy Result
+          </button>
+        </div>
+      </div>
       <!-- Technical Content for AdSense Compliance -->
-      <article class="technical-content">
-        <h2>Technical Deep Dive: The Role of JSON Schema in Modern Architecture</h2>
-        <p>
+      <article
+        class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 prose dark:prose-invert max-w-none"
+      >
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+          Technical Deep Dive: The Role of JSON Schema in Modern Architecture
+        </h2>
+        <p class="mb-4">
           In an era dominated by microservices and data-driven applications, JSON is the primary
           language of communication. However, the lack of a strict schema can lead to integration
           headaches. <strong>JSON Schema</strong> provides the necessary contract to ensure data
           integrity across systems.
         </p>
 
-        <h3>What is JSON Schema?</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          What is JSON Schema?
+        </h3>
+        <p class="mb-4">
           JSON Schema is a declarative tool for validating the structure of JSON data. It allows you
           to specify mandatory fields, data types, value ranges, and patterns. By using a schema,
           you can automate data verification, generate documentation, and even create unit tests
           based on the data's "shape."
         </p>
 
-        <h3>Intelligent Inference: Draft-07 Logic</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Intelligent Inference: Draft-07 Logic
+        </h3>
+        <p class="mb-4">
           Our generator recursively analyzes your JSON structure to infer types and hierarchies. It
           follows the
           <strong>JSON Schema Draft-07</strong> specification, providing a standard-compliant output
@@ -270,16 +353,26 @@
           milliseconds.
         </p>
 
-        <h3>Boosting Developer Productivity</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Boosting Developer Productivity
+        </h3>
+        <p class="mb-4">
           Manually writing a 500-line JSON Schema is error-prone and tedious. By starting with a
           sample JSON payload and using our generator, you can create the foundation of your
           documentation or validation layer in seconds. This is particularly useful for engineers
           defining OpenAPI/Swagger specifications or setting up automated testing pipelines.
         </p>
 
-        <h3>Security by Local Processing</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Security by Local Processing
+        </h3>
+        <p class="mb-4">
           JSON payloads often contain sensitive architectural information or internal system keys.
           <strong>Absolute Privacy</strong> is our standard. Our tool performs all inference and
           generation locally in your browser RAM. Your data is never uploaded, never stored, and
@@ -287,26 +380,41 @@
           proprietary structures remain private.
         </p>
 
-        <h3>Frequently Asked Questions (FAQ)</h3>
-        <div class="mt-4">
-          <h4 class="font-bold">Q. Can I use the generated schema for validation?</h4>
-          <p class="text-sm">
-            A. Yes! Most modern libraries (like Ajv for Node.js) can read the Draft-07 schema
-            generated by this tool to perform runtime validation on incoming data.
-          </p>
-
-          <h4 class="font-bold">Q. How does it handle mixed-type arrays?</h4>
-          <p class="text-sm">
-            A. For simplicity, the current algorithm infers the schema from the first element of an
-            array. For arrays with heterogeneous types, we recommend manually adjusting the output
-            to use <code>oneOf</code> or <code>anyOf</code>.
-          </p>
-
-          <h4 class="font-bold">Q. Is it compatible with older browsers?</h4>
-          <p class="text-sm">
-            A. We use modern ES6+ JavaScript for high-speed processing, so any current version of
-            Chrome, Firefox, or Safari will handle the generation perfectly.
-          </p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Frequently Asked Questions (FAQ)
+        </h3>
+        <div class="mt-4 space-y-4">
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. Can I use the generated schema for validation?
+            </h4>
+            <p class="text-sm">
+              A. Yes! Most modern libraries (like Ajv for Node.js) can read the Draft-07 schema
+              generated by this tool to perform runtime validation on incoming data.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. How does it handle mixed-type arrays?
+            </h4>
+            <p class="text-sm">
+              A. For simplicity, the current algorithm infers the schema from the first element of
+              an array. For arrays with heterogeneous types, we recommend manually adjusting the
+              output to use <code>oneOf</code> or <code>anyOf</code>.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. Is it compatible with older browsers?
+            </h4>
+            <p class="text-sm">
+              A. We use modern ES6+ JavaScript for high-speed processing, so any current version of
+              Chrome, Firefox, or Safari will handle the generation perfectly.
+            </p>
+          </div>
         </div>
       </article>
     </main>
@@ -393,7 +501,10 @@
 
       btnCopy.addEventListener('click', async () => {
         if (!output.value) return;
-        copyToClipboard(output.value, btnCopy);
+        navigator.clipboard.writeText(output.value);
+        const oldHtml = btnCopy.innerHTML;
+        btnCopy.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg> Copied!`;
+        setTimeout(() => (btnCopy.innerHTML = oldHtml), 2000);
       });
 
       btnClear.addEventListener('click', () => {

@@ -172,132 +172,299 @@
     <link rel="manifest" href="/manifest.json" />
   </head>
 
-  <body>
+  <body
+    class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 leading-relaxed text-base transition-colors duration-200"
+  >
     <site-header></site-header>
 
-    <main class="container mt-8 mb-8" style="max-width: 1280px">
-      <div class="text-center mb-8">
-        <h1>JSON to CSV Converter (Flatten & Excel Ready)</h1>
-        <p class="text-muted mt-2">
-          Effortlessly transform complex JSON data into clean, Excel-ready CSV files. Featuring
-          advanced auto-flattening for nested structures.
-        </p>
-        <div class="flex justify-center gap-4 mt-4">
-          <span class="tag">Zero Server Latency</span>
-          <button
-            id="btnSample"
-            class="text-sm text-primary"
-            style="background: none; border: none; text-decoration: underline; cursor: pointer"
-          >
-            Load Sample Data
-          </button>
-        </div>
-      </div>
-
-      <!-- Standard Security Block -->
-      <section class="panel-security mb-8">
-        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
+    <main class="max-w-4xl mx-auto px-6 py-10 space-y-8">
+      <section class="text-center space-y-4">
+        <div
+          class="inline-flex items-center px-3 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-bold border border-emerald-200 dark:border-emerald-800"
+        >
           <svg
-            class="w-6 h-6 text-brand-green"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-            style="width: 24px; height: 24px; display: inline-block"
+            class="w-4 h-4 mr-1.5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
-            />
+              clip-rule="evenodd"
+              d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
+              fill-rule="evenodd"
+            ></path>
           </svg>
-          Security & Privacy Guaranteed
-        </h2>
-        <p class="mb-4 font-bold">
-          Your data never leaves your browser. We prioritize your privacy above all else.
+          100% Client-Side Execution
+        </div>
+        <h1 class="text-4xl font-extrabold tracking-tight">JSON to CSV Converter</h1>
+        <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          Effortlessly transform complex JSON data into clean, Excel-ready CSV files. Zero data sent
+          to server. Free and secure.
         </p>
-        <ul class="list-disc list-inside text-sm text-muted pl-4">
-          <li>All conversion logic is executed locally in your browser using JavaScript.</li>
-          <li>
-            Sensitive data, such as corporate logs or PII, can be processed safely without any risk
-            of exposure.
-          </li>
-          <li>No data is sent to our servers, and nothing is stored or logged.</li>
-        </ul>
       </section>
 
       <div
-        class="grid"
-        style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem"
+        class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 p-5 flex items-start gap-4"
       >
-        <!-- Left Column: Settings and Input -->
-        <div class="flex flex-col gap-4">
-          <div class="panel">
-            <h2 class="text-lg font-bold mb-4">1. Settings</h2>
-            <div class="flex flex-col gap-4">
-              <div class="form-group">
-                <label class="text-xs font-bold text-muted" for="delim">Delimiter</label>
-                <select id="delim" class="form-select">
-                  <option value="," selected>Comma (,)</option>
-                  <option value="tab">Tab (\t)</option>
-                  <option value=";">Semicolon (;)</option>
-                </select>
-              </div>
-            </div>
-            <div class="mt-4 flex flex-col gap-2">
-              <label class="checkbox-wrapper">
-                <input type="checkbox" id="includeHeader" checked />
-                <span>Include Column Headers</span>
-              </label>
-              <label class="checkbox-wrapper">
-                <input type="checkbox" id="flatten" checked />
-                <span>Flatten Nested Objects</span>
-              </label>
-            </div>
-          </div>
-
-          <div class="panel flex-1 flex flex-col">
-            <div class="toolbar mb-4">
-              <h2 class="text-lg font-bold">2. JSON Input</h2>
-              <button id="btnClear" class="btn-outline">Clear Input</button>
-            </div>
-            <textarea
-              id="input"
-              class="code-editor flex-1"
-              style="min-height: 300px"
-              placeholder="Paste your JSON code here..."
-            ></textarea>
-            <div id="errorMsg" class="alert alert-warning mt-2" style="display: none"></div>
-          </div>
+        <div class="text-emerald-600 dark:text-emerald-400">
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
         </div>
+        <div class="space-y-1">
+          <h3 class="font-bold text-emerald-800 dark:text-emerald-300">
+            Security & Privacy Guaranteed
+          </h3>
+          <p class="text-sm text-emerald-700/80 dark:text-emerald-400/80">
+            Your data never leaves your browser. Sensitive data can be processed safely without any
+            risk of exposure.
+          </p>
+        </div>
+      </div>
 
-        <!-- Right Column: Output -->
-        <div class="flex flex-col gap-4">
-          <div class="panel" style="height: 100%; display: flex; flex-direction: column">
-            <div class="toolbar mb-4">
-              <h2 class="text-lg font-bold">3. CSV Output</h2>
-              <div class="flex gap-2">
-                <button class="btn-outline" id="btnCopy" disabled>Copy</button>
-                <button class="btn-primary" id="btnDownload" disabled>Download</button>
-              </div>
-            </div>
-            <div class="text-sm text-muted mb-2 min-h-[1.5em] font-bold" id="statusMsg"></div>
-            <textarea
-              id="output"
-              class="code-editor"
-              readonly
-              style="flex: 1; min-height: 400px"
-              placeholder="Formatted CSV will be generated here"
-            ></textarea>
+      <div
+        class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 space-y-6"
+      >
+        <div class="flex items-center gap-2 border-b border-slate-100 dark:border-slate-700 pb-4">
+          <h2 class="font-bold text-lg">1. Settings</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="space-y-2">
+            <label class="block text-sm font-semibold" for="delim">Delimiter</label>
+            <select
+              id="delim"
+              class="w-full tap-target bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-colors rounded"
+            >
+              <option value=",">Comma (,)</option>
+              <option value="\t">Tab (\t)</option>
+              <option value=";">Semicolon (;)</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-3 md:pt-7">
+            <input
+              type="checkbox"
+              id="includeHeader"
+              checked
+              class="w-6 h-6 rounded border-slate-300 dark:border-slate-600 text-[#1e3a8a] focus:ring-[#1e3a8a] cursor-pointer"
+            />
+            <label
+              class="text-sm font-medium cursor-pointer tap-target flex items-center"
+              for="includeHeader"
+              >Include Column Headers</label
+            >
+          </div>
+          <div class="flex items-center gap-3 md:pt-7">
+            <input
+              type="checkbox"
+              id="flatten"
+              checked
+              class="w-6 h-6 rounded border-slate-300 dark:border-slate-600 text-[#1e3a8a] focus:ring-[#1e3a8a] cursor-pointer"
+            />
+            <label
+              class="text-sm font-medium cursor-pointer tap-target flex items-center"
+              for="flatten"
+              >Flatten Nested Objects</label
+            >
           </div>
         </div>
       </div>
 
-      <!-- Enhanced Technical Content for AdSense Compliance -->
-      <article class="technical-content">
-        <h2>Technical Perspective: Bridging the Gap Between JSON and CSV</h2>
-        <p>
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <label class="font-bold flex items-center gap-2" for="input">
+            <svg
+              class="w-5 h-5 text-slate-500"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              ></path>
+            </svg>
+            2. JSON Input
+          </label>
+          <div class="flex gap-2">
+            <button
+              id="btnSample"
+              class="text-sm text-slate-500 hover:text-emerald-600 transition-colors flex items-center gap-1 tap-target px-2"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+                ></path>
+              </svg>
+              Sample
+            </button>
+            <button
+              id="btnClear"
+              class="text-sm text-slate-500 hover:text-red-600 transition-colors flex items-center gap-1 tap-target px-2"
+            >
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              Clear
+            </button>
+          </div>
+        </div>
+        <div class="relative">
+          <textarea
+            id="input"
+            class="w-full h-64 p-4 bg-slate-50 dark:bg-slate-900 border-2 border-dashed border-slate-300 dark:border-slate-700 focus:border-[#1e3a8a] focus:ring-0 rounded-lg font-mono text-sm resize-y"
+            placeholder="Paste your JSON code here..."
+          ></textarea>
+          <div
+            id="errorMsg"
+            class="mt-2 text-sm text-red-500 min-h-[20px]"
+            style="display: none"
+          ></div>
+        </div>
+      </div>
+
+      <div class="space-y-6">
+        <button
+          id="btnConvert"
+          class="w-full tap-target bg-[#1e3a8a] hover:bg-[#1e3a8a]/90 text-white font-bold rounded-lg flex items-center justify-center gap-3 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <svg
+            id="loadingSpinner"
+            class="animate-spin h-5 w-5 text-white hidden"
+            fill="none"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              class="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              stroke-width="4"
+            ></circle>
+            <path
+              class="opacity-75"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              fill="currentColor"
+            ></path>
+          </svg>
+          <span>Convert</span>
+        </button>
+
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <label class="font-bold flex items-center gap-2" for="output">
+              <svg
+                class="w-5 h-5 text-slate-500"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125h-7.5c-.621 0-1.125-.504-1.125-1.125m0 0v-1.5c0-.621.504-1.125 1.125-1.125m0 0h7.5m-7.5 0V5.625m0 0a1.125 1.125 0 0 1 1.125-1.125h1.5a1.125 1.125 0 0 1 1.125 1.125m-3.75 0h7.5m-7.5 0V14.25m0-8.625a1.125 1.125 0 0 0-1.125 1.125v1.5a1.125 1.125 0 0 0 1.125 1.125m0 0h1.5a1.125 1.125 0 0 0 1.125-1.125v-1.5a1.125 1.125 0 0 0-1.125-1.125m0 0h-1.5Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              3. CSV Output
+            </label>
+            <div class="text-xs font-medium text-slate-500" id="statusMsg">Waiting...</div>
+          </div>
+          <textarea
+            id="output"
+            class="w-full h-64 p-4 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y"
+            placeholder="Formatted CSV will be generated here"
+            readonly
+          ></textarea>
+
+          <div class="grid grid-cols-2 gap-4">
+            <button
+              id="btnCopy"
+              class="tap-target bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              Copy
+            </button>
+            <button
+              id="btnDownload"
+              class="tap-target bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              Download
+            </button>
+          </div>
+        </div>
+      </div>
+      <article
+        class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 prose dark:prose-invert max-w-none"
+      >
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+          Technical Perspective: Bridging the Gap Between JSON and CSV
+        </h2>
+        <p class="mb-4">
           In modern web development, JSON (JavaScript Object Notation) is the fuel for APIs and
           frontend frameworks. However, when it comes to business analysis, reporting, or migrating
           data to platforms like Microsoft Excel and Google Sheets, CSV (Comma-Separated Values)
@@ -305,22 +472,33 @@
           changing delimiters— it requires an understanding of data hierarchy.
         </p>
 
-        <h3>The Challenge of Flattening Hierarchy</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          The Challenge of Flattening Hierarchy
+        </h3>
+        <p class="mb-4">
           JSON is a recursive, tree-like structure that allows for deep nesting and arrays within
           objects. A CSV, by definition, is a two-dimensional grid. To map a 3D data structure into
           a 2D plane without losing information, we use a process called
           <strong>Flattening</strong>.
         </p>
-        <p>
+        <p class="mb-4">
           Our advanced algorithm recursively traverses your JSON object, generating descriptive
-          column headers like <code>user.contact.email</code> from nested paths. This allows complex
-          enterprise-level datasets to be converted into flat tables that are ready for immediate
-          pivot table analysis or database ingestion.
+          column headers like
+          <code>user.contact.email</code> from nested paths. This allows complex enterprise-level
+          datasets to be converted into flat tables that are ready for immediate pivot table
+          analysis or database ingestion.
         </p>
 
-        <h3>Strict Compliance with RFC 8259 and RFC 4180</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Strict Compliance with RFC 8259 and RFC 4180
+        </h3>
+        <p class="mb-4">
           Data integrity is our top priority. Our parser follows the strict specifications of
           <strong>RFC 8259</strong> for JSON parsing and <strong>RFC 4180</strong> for CSV
           generation. Special attention is paid to character escaping: if your data contains commas,
@@ -329,44 +507,68 @@
           resulting file is 100% compatible with Excel and Pandas.
         </p>
 
-        <h3>Developer Privacy & Corporate Security</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Developer Privacy & Corporate Security
+        </h3>
+        <p class="mb-4">
           <strong>Zero Server-Side Footprint:</strong> We understand that the data you convert may
           contain proprietary intellectual property, API keys, or PII (Personally Identifiable
           Information). While competitors often store "anonymous" copies of your data on their
           servers, ConvertFileBox operates with a <strong>Pure Client-Side architecture</strong>.
         </p>
-        <p>
+        <p class="mb-4">
           By leveraging the power of modern JavaScript engines within your browser, we perform
           high-speed data processing locally on your hardware. Your data never traverses the
           internet, eliminating any risk of interception or unauthorized storage.
         </p>
 
-        <h3>Frequently Asked Questions (FAQ)</h3>
-        <div class="mt-4">
-          <h4 class="font-bold">Q. How do you handle arrays within objects?</h4>
-          <p class="text-sm">
-            A. Arrays are stringified (using <code>JSON.stringify</code>) and placed within a single
-            cell. Mapping multi-dimensional arrays to a single row requires specific business logic,
-            so we provide the raw string for further manual processing.
-          </p>
-
-          <h4 class="font-bold">Q. Can I convert large JSON payloads?</h4>
-          <p class="text-sm">
-            A. Yes. Since the processing occurs in your browser RAM, performance depends on your
-            device. Most desktops can handle several megabytes of JSON text instantly. For extremely
-            large files (500MB+), consider memory-efficient streaming parsers on your local machine.
-          </p>
-
-          <h4 class="font-bold">Q. What if my JSON is invalid?</h4>
-          <p class="text-sm">
-            A. Our built-in validator will catch Syntax Errors immediately and provide real-time
-            feedback, helping you debug your payload before conversion.
-          </p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Frequently Asked Questions (FAQ)
+        </h3>
+        <div class="mt-4 space-y-4">
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. How do you handle arrays within objects?
+            </h4>
+            <p class="text-sm">
+              A. Arrays are stringified (using <code>JSON.stringify</code>) and placed within a
+              single cell. Mapping multi-dimensional arrays to a single row requires specific
+              business logic, so we provide the raw string for further manual processing.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. Can I convert large JSON payloads?
+            </h4>
+            <p class="text-sm">
+              A. Yes. Since the processing occurs in your browser RAM, performance depends on your
+              device. Most desktops can handle several megabytes of JSON text instantly. For
+              extremely large files (500MB+), consider memory-efficient streaming parsers on your
+              local machine.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">Q. What if my JSON is invalid?</h4>
+            <p class="text-sm">
+              A. Our built-in validator will catch Syntax Errors immediately and provide real-time
+              feedback, helping you debug your payload before conversion.
+            </p>
+          </div>
         </div>
 
-        <h3 class="mt-8">Designed for Analysts and Developers</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Designed for Analysts and Developers
+        </h3>
+        <p class="mb-8">
           Whether you're a data scientist needing to clean up an API response for R, or a marketing
           manager moving lead data into a CRM, ConvertFileBox provides the professional-grade
           reliability you need. We are committed to maintaining a fast, ad-supported, and secure
@@ -431,6 +633,8 @@
         outputEl.value = 'Processing... Please wait.';
         btnCopy.disabled = true;
         btnDownload.disabled = true;
+        btnConvert.disabled = true;
+        loadingSpinner.classList.remove('hidden');
         setStatus('Processing in background web worker...');
 
         try {
@@ -448,6 +652,8 @@
               setStatus(`${data.count} rows / ${data.headers.length} columns converted`);
               lastFileBase = 'json_to_csv';
               setError('');
+              btnConvert.disabled = false;
+              loadingSpinner.classList.add('hidden');
             } else {
               lastCsv = '';
               outputEl.value = '';
@@ -459,6 +665,8 @@
               } else {
                 setError('Conversion failed: ' + data.error);
               }
+              btnConvert.disabled = false;
+              loadingSpinner.classList.add('hidden');
             }
           };
 
@@ -467,6 +675,8 @@
             outputEl.value = '';
             setStatus('Error');
             setError('A critical web worker error occurred.');
+            btnConvert.disabled = false;
+            loadingSpinner.classList.add('hidden');
           };
 
           jsonWorker.postMessage({
@@ -482,6 +692,8 @@
           lastCsv = '';
           setStatus('Error');
           setError('Unexpected error setting up conversion.');
+          btnConvert.disabled = false;
+          loadingSpinner.classList.add('hidden');
         }
       }
 
@@ -490,14 +702,31 @@
         debounceTimer = setTimeout(run, 500);
       }
 
+      const btnConvert = $('btnConvert');
+      const loadingSpinner = $('loadingSpinner');
+
       inputEl.addEventListener('input', scheduleRun);
       delimEl.addEventListener('change', run);
       includeHeaderEl.addEventListener('change', run);
       flattenEl.addEventListener('change', run);
 
-      btnCopy.addEventListener('click', async () => {
+      btnConvert.addEventListener('click', run);
+
+      btnCopy.addEventListener('click', () => {
         if (!lastCsv) return;
-        copyToClipboard(lastCsv, btnCopy);
+        const textArea = document.createElement('textarea');
+        textArea.value = lastCsv;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          const oldHtml = btnCopy.innerHTML;
+          btnCopy.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg> Copied!`;
+          setTimeout(() => (btnCopy.innerHTML = oldHtml), 2000);
+        } catch (err) {
+          console.error('Copy failed', err);
+        }
+        document.body.removeChild(textArea);
       });
 
       btnDownload.addEventListener('click', () => {

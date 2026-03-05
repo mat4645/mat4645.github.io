@@ -164,147 +164,270 @@
     <link rel="manifest" href="/manifest.json" />
   </head>
 
-  <body>
+  <body
+    class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 leading-relaxed text-base transition-colors duration-200"
+  >
     <site-header></site-header>
 
-    <main class="container mt-8 mb-8" style="max-width: 1280px">
-      <div class="text-center mb-8">
-        <h1>CSV → JSON 変換（貼り付け版）</h1>
-        <p class="text-muted mt-2">
+    <main class="max-w-4xl mx-auto px-6 py-10 space-y-8">
+      <section class="text-center space-y-4">
+        <div
+          class="inline-flex items-center px-3 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-bold border border-emerald-200 dark:border-emerald-800"
+        >
+          <svg
+            class="w-4 h-4 mr-1.5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
+              fill-rule="evenodd"
+            ></path>
+          </svg>
+          完全クライアントサイド実行
+        </div>
+        <h1 class="text-4xl font-extrabold tracking-tight">CSV to JSON 変換（貼り付け版）</h1>
+        <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
           テキストを貼り付けるだけで即座に構造化されたJSONへ。ファイル出力できない環境やデバッグに最適です。
         </p>
-        <div class="flex justify-center gap-4 mt-4">
-          <span class="tag">サーバー送信なし</span>
+        <div class="flex justify-center gap-4 mt-2">
           <button
             id="btnSample"
-            class="text-sm text-primary"
-            style="background: none; border: none; text-decoration: underline; cursor: pointer"
+            class="text-sm font-medium text-[#1e3a8a] dark:text-blue-400 hover:text-emerald-600 transition-colors flex items-center gap-1 tap-target px-2"
           >
             サンプルを入力する
           </button>
           <a
             href="/ja-jp/tools/csv-to-json/"
-            class="text-sm text-primary"
-            style="text-decoration: underline"
-            >ファイル読み込み版はこちら</a
+            class="text-sm font-medium text-[#1e3a8a] dark:text-blue-400 hover:text-emerald-600 transition-colors flex items-center gap-1 tap-target px-2"
           >
+            ファイル読み込み版はこちら
+          </a>
+        </div>
+      </section>
+
+      <div
+        class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 p-5 flex items-start gap-4"
+      >
+        <div class="text-emerald-600 dark:text-emerald-400">
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </div>
+        <div class="space-y-1">
+          <h3 class="font-bold text-emerald-800 dark:text-emerald-300">100% プライバシー保護</h3>
+          <p class="text-sm text-emerald-700/80 dark:text-emerald-400/80">
+            当サイトでは、入力されたデータが一瞬たりとも外部サーバーへ送信されることはありません。機密性の高いログデータも安心して処理いただけます。
+          </p>
         </div>
       </div>
 
-      <!-- Standard Security Block -->
-      <section class="panel-security mb-8">
-        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-          <svg
-            class="w-6 h-6 text-brand-green"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-            style="width: 24px; height: 24px; display: inline-block"
+      <!-- Layout: 2 Columns for Input and Output -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left Column: Input and Configuration -->
+        <div class="space-y-6 flex flex-col h-full">
+          <div
+            class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 space-y-6"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
-            />
-          </svg>
-          セキュリティに関するお約束
-        </h2>
-        <p class="mb-4 font-bold">
-          当サイトでは、入力されたデータが一瞬たりとも外部サーバーへ送信されることはありません。
-        </p>
-        <ul class="list-disc list-inside text-sm text-muted pl-4">
-          <li>すべての解析・変換ロジックはあなたのブラウザ（JavaScript）内で実行されます。</li>
-          <li>機密性の高いログデータや個人情報を含むCSVなども、安心して処理いただけます。</li>
-          <li>入力された内容はページを閉じた瞬間にメモリから消去され、記録も残りません。</li>
-        </ul>
-      </section>
-
-      <!-- ツール本体 -->
-      <div
-        class="grid"
-        style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem"
-      >
-        <!-- 左カラム: 設定・入力 -->
-        <div class="flex flex-col gap-4">
-          <div class="panel">
-            <h2 class="text-lg font-bold mb-4">1. 設定</h2>
-            <div class="flex flex-col gap-4">
-              <div class="form-group">
-                <label class="text-xs font-bold text-muted">区切り文字</label>
-                <select id="delimiter" class="form-select">
+            <div
+              class="flex items-center gap-2 border-b border-slate-100 dark:border-slate-700 pb-4"
+            >
+              <h2 class="font-bold text-lg">1. 変換設定</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label class="block text-sm font-semibold" for="delimiter">区切り文字</label>
+                <select
+                  class="w-full tap-target bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-colors rounded"
+                  id="delimiter"
+                >
                   <option value="," selected>カンマ (,)</option>
-                  <option value="tab">タブ (\t)</option>
+                  <option value="\t">タブ (Tab)</option>
                   <option value=";">セミコロン (;)</option>
                 </select>
               </div>
-            </div>
-            <div class="mt-4">
-              <label class="checkbox-wrapper">
-                <input type="checkbox" id="hasHeader" checked />
-                <span>1行目はヘッダー行</span>
-              </label>
+              <div class="flex items-center gap-3 md:pt-7">
+                <input
+                  checked=""
+                  class="w-6 h-6 rounded border-slate-300 dark:border-slate-600 text-[#1e3a8a] focus:ring-[#1e3a8a] cursor-pointer"
+                  id="hasHeader"
+                  type="checkbox"
+                />
+                <label
+                  class="text-sm font-medium cursor-pointer tap-target flex items-center"
+                  for="hasHeader"
+                  >1行目はヘッダー行</label
+                >
+              </div>
             </div>
           </div>
 
-          <div class="panel flex-1 flex flex-col">
-            <div class="toolbar mb-4">
-              <h2 class="text-lg font-bold">2. CSV 入力</h2>
-              <button id="btnClear" class="btn-outline">クリア</button>
+          <div class="space-y-3 flex-grow flex flex-col">
+            <div class="flex items-center justify-between">
+              <label class="font-bold flex items-center gap-2" for="csvInput">
+                <svg
+                  class="w-5 h-5 text-slate-500"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+                2. CSV 入力
+              </label>
+              <button
+                class="text-sm font-medium text-slate-500 hover:text-red-600 transition-colors tap-target px-2 py-1"
+                id="btnClear"
+              >
+                クリア
+              </button>
             </div>
             <textarea
+              class="w-full h-full min-h-[400px] p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-colors"
               id="csvInput"
-              class="code-editor flex-1"
-              style="min-height: 300px"
               placeholder="ここにCSVをペーストしてください..."
             ></textarea>
           </div>
         </div>
 
-        <!-- 右カラム: 出力 -->
-        <div class="flex flex-col gap-4">
-          <div class="panel" style="height: 100%; display: flex; flex-direction: column">
-            <div class="toolbar mb-4">
-              <h2 class="text-lg font-bold">3. JSON 変換結果</h2>
-              <div class="flex gap-2">
-                <button class="btn-outline" id="btnCopy" disabled>コピー</button>
-                <button class="btn-primary" id="btnDownload" disabled>ダウンロード</button>
-              </div>
-            </div>
-            <div class="text-sm text-muted mb-2 min-h-[1.5em] font-bold" id="statusMsg"></div>
-            <textarea
-              id="outputText"
-              class="code-editor"
-              readonly
-              style="flex: 1; min-height: 400px"
-              placeholder="変換されたJSONがここに表示されます。"
-            ></textarea>
+        <!-- Right Column: Output -->
+        <div class="space-y-3 flex flex-col h-full">
+          <div class="flex items-center justify-between">
+            <label class="font-bold flex items-center gap-2" for="outputText">
+              <svg
+                class="w-5 h-5 text-slate-500"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125h-7.5c-.621 0-1.125-.504-1.125-1.125m0 0v-1.5c0-.621.504-1.125 1.125-1.125m0 0h7.5m-7.5 0V5.625m0 0a1.125 1.125 0 0 1 1.125-1.125h1.5a1.125 1.125 0 0 1 1.125 1.125m-3.75 0h7.5m-7.5 0V14.25m0-8.625a1.125 1.125 0 0 0-1.125 1.125v1.5a1.125 1.125 0 0 0 1.125 1.125m0 0h1.5a1.125 1.125 0 0 0 1.125-1.125v-1.5a1.125 1.125 0 0 0-1.125-1.125m0 0h-1.5Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              3. JSON 変換結果
+            </label>
+            <div class="text-xs font-bold text-slate-500" id="statusMsg">待機中...</div>
+          </div>
+          <textarea
+            class="w-full flex-grow min-h-[400px] p-4 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y"
+            id="outputText"
+            placeholder="変換されたJSONがここに表示されます"
+            readonly=""
+          ></textarea>
 
-            <div id="errorMsg" class="alert alert-warning mt-2" style="display: none"></div>
+          <div
+            id="errorMsg"
+            class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 p-3 rounded text-sm font-medium"
+            style="display: none"
+          ></div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <button
+              class="tap-target bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg py-3 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              id="btnCopy"
+              disabled
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              コピー
+            </button>
+            <button
+              class="tap-target bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg py-3 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              id="btnDownload"
+              disabled
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              ダウンロード
+            </button>
           </div>
         </div>
       </div>
-
       <!-- 技術解説コンテンツ -->
-      <article class="technical-content">
-        <h2>「貼り付け版」ツールの活用シーンと技術的メリット</h2>
-        <p>
+      <article
+        class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 prose dark:prose-invert max-w-none"
+      >
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+          「貼り付け版」ツールの活用シーンと技術的メリット
+        </h2>
+        <p class="mb-4">
           エンジニアリングやデータ解析の現場では、必ずしも「ファイル」としてデータが存在しているわけではありません。ブラウザのデベロッパーツール、クラウド上の管理画面、あるいは共有されたドキュメントの一部。これらの断片的なデータを素早く構造化するために、この「貼り付け版」ツールは設計されました。
         </p>
 
-        <h3>VDI（仮想デスクトップ）や制限環境での有用性</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          VDI（仮想デスクトップ）や制限環境での有用性
+        </h3>
+        <p class="mb-4">
           セキュリティの厳しいVDI環境や、特定のクラウドストレージ以外へのファイル書き出しが制限されているプロジェクト等、物理的な「ファイル」をアップロードすることが困難な場合があります。本ツールはクリップボードを経由したデータの直接投入を可能にすることで、環境の制約を回避し、ワークフローを阻害しません。
         </p>
 
-        <h3>リアルタイム・フィードバックの重要性</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          リアルタイム・フィードバックの重要性
+        </h3>
+        <p class="mb-4">
           当ツールは、1文字入力されるごとに内部でパース処理を行う「ストリーム指向」の設計を採用しています。一般的な変換サイトのように「変換ボタン」を押してから結果を待つ必要はありません。これにより、区切り文字の設定ミスや、データの欠損をその場でリアルタイムに修正できます。
         </p>
 
-        <h3>RFC 4180への厳格な準拠</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          RFC 4180への厳格な準拠
+        </h3>
+        <p class="mb-8">
           貼り付けられたテキストであっても、私たちのパースエンジンはRFC
           4180の仕様を厳格に遵守します。クォートで囲まれたフィールド内の改行、クォート自体のエスケープ（""）を正確に処理し、ビジネスユースに耐えうる高品質なJSONオブジェクトを生成します。
         </p>
@@ -427,9 +550,9 @@
 
       btnCopy.addEventListener('click', () => {
         navigator.clipboard.writeText(lastJsonText);
-        const old = btnCopy.textContent;
-        btnCopy.textContent = 'コピー完了';
-        setTimeout(() => (btnCopy.textContent = old), 1500);
+        const oldHtml = btnCopy.innerHTML;
+        btnCopy.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg> コピー完了`;
+        setTimeout(() => (btnCopy.innerHTML = oldHtml), 2000);
       });
 
       btnDownload.addEventListener('click', () => {

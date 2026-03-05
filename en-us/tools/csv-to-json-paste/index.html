@@ -165,142 +165,256 @@
     <link rel="manifest" href="/manifest.json" />
   </head>
 
-  <body>
+  <body
+    class="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 leading-relaxed text-base transition-colors duration-200"
+  >
     <site-header></site-header>
 
-    <main class="container mt-8 mb-8" style="max-width: 1280px">
-      <div class="text-center mb-8">
-        <h1>CSV to JSON Converter (Paste)</h1>
-        <p class="text-muted mt-2">
+    <main class="max-w-4xl mx-auto px-6 py-10 space-y-8">
+      <section class="text-center space-y-4">
+        <div
+          class="inline-flex items-center px-3 py-1 rounded bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 text-sm font-bold border border-emerald-200 dark:border-emerald-800"
+        >
+          <svg
+            class="w-4 h-4 mr-1.5"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z"
+              fill-rule="evenodd"
+            ></path>
+          </svg>
+          100% Client-Side Execution
+        </div>
+        <h1 class="text-4xl font-extrabold tracking-tight">CSV to JSON Converter (Paste)</h1>
+        <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
           Instantly transform CSV text into JSON objects. Fast, reliable, and privacy-focused
           processing directly in your browser.
         </p>
-        <div class="flex justify-center gap-4 mt-4">
-          <span class="tag">Zero Server Latency</span>
+        <div class="flex justify-center gap-4 mt-2">
           <button
             id="btnSample"
-            class="text-sm text-primary"
-            style="background: none; border: none; text-decoration: underline; cursor: pointer"
+            class="text-sm font-medium text-[#1e3a8a] dark:text-blue-400 hover:text-emerald-600 transition-colors flex items-center gap-1 tap-target px-2"
           >
             Load Sample Data
           </button>
           <a
             href="/en-us/tools/csv-to-json/"
-            class="text-sm text-primary"
-            style="text-decoration: underline"
-            >Switch to File Mode</a
+            class="text-sm font-medium text-[#1e3a8a] dark:text-blue-400 hover:text-emerald-600 transition-colors flex items-center gap-1 tap-target px-2"
           >
+            Switch to File Mode
+          </a>
         </div>
-      </div>
-
-      <!-- Standard Security Block -->
-      <section class="panel-security mb-8">
-        <h2 class="text-lg font-bold mb-4 flex items-center gap-2">
-          <svg
-            class="w-6 h-6 text-brand-green"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-            style="width: 24px; height: 24px; display: inline-block"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
-            />
-          </svg>
-          Security & Privacy Guaranteed
-        </h2>
-        <p class="mb-4 font-bold">
-          Your data never leaves your browser. We prioritize your privacy above all else.
-        </p>
-        <ul class="list-disc list-inside text-sm text-muted pl-4">
-          <li>All conversion logic is executed locally in your browser using JavaScript.</li>
-          <li>
-            Sensitive data, such as corporate logs or PII, can be processed safely without any risk
-            of exposure.
-          </li>
-          <li>No data is sent to our servers, and nothing is stored or logged.</li>
-        </ul>
       </section>
 
       <div
-        class="grid"
-        style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem"
+        class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-800/50 p-5 flex items-start gap-4"
       >
-        <!-- Left Column: Settings and Input -->
-        <div class="flex flex-col gap-4">
-          <div class="panel">
-            <h2 class="text-lg font-bold mb-4">1. Settings</h2>
-            <div class="flex flex-col gap-4">
-              <div class="form-group">
-                <label class="text-xs font-bold text-muted" for="delimiter">Delimiter</label>
-                <select id="delimiter" class="form-select">
+        <div class="text-emerald-600 dark:text-emerald-400">
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></path>
+          </svg>
+        </div>
+        <div class="space-y-1">
+          <h3 class="font-bold text-emerald-800 dark:text-emerald-300">
+            Security & Privacy Guaranteed
+          </h3>
+          <p class="text-sm text-emerald-700/80 dark:text-emerald-400/80">
+            Your data never leaves your browser. All conversion logic is executed locally, ensuring
+            sensitive data remains truly private.
+          </p>
+        </div>
+      </div>
+
+      <!-- Layout: 2 Columns for Input and Output -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Left Column: Input and Configuration -->
+        <div class="space-y-6 flex flex-col h-full">
+          <div
+            class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-6 space-y-6"
+          >
+            <div
+              class="flex items-center gap-2 border-b border-slate-100 dark:border-slate-700 pb-4"
+            >
+              <h2 class="font-bold text-lg">1. Settings</h2>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div class="space-y-2">
+                <label class="block text-sm font-semibold" for="delimiter">Delimiter</label>
+                <select
+                  class="w-full tap-target bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-600 focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-colors rounded"
+                  id="delimiter"
+                >
                   <option value="," selected>Comma (,)</option>
-                  <option value="tab">Tab (\t)</option>
+                  <option value="\t">Tab (Tab)</option>
                   <option value=";">Semicolon (;)</option>
                 </select>
               </div>
-            </div>
-            <div class="mt-4 flex flex-col gap-2">
-              <label class="checkbox-wrapper">
-                <input type="checkbox" id="hasHeader" checked />
-                <span>Has Header Row</span>
-              </label>
+              <div class="flex items-center gap-3 md:pt-7">
+                <input
+                  checked=""
+                  class="w-6 h-6 rounded border-slate-300 dark:border-slate-600 text-[#1e3a8a] focus:ring-[#1e3a8a] cursor-pointer"
+                  id="hasHeader"
+                  type="checkbox"
+                />
+                <label
+                  class="text-sm font-medium cursor-pointer tap-target flex items-center"
+                  for="hasHeader"
+                  >Has Header Row</label
+                >
+              </div>
             </div>
           </div>
 
-          <div class="panel flex-1 flex flex-col">
-            <div class="toolbar mb-4">
-              <h2 class="text-lg font-bold">2. Paste CSV</h2>
-              <button id="btnClear" class="btn-outline">Clear Input</button>
+          <div class="space-y-3 flex-grow flex flex-col">
+            <div class="flex items-center justify-between">
+              <label class="font-bold flex items-center gap-2" for="csvInput">
+                <svg
+                  class="w-5 h-5 text-slate-500"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14.25 9.75 16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  ></path>
+                </svg>
+                2. Paste CSV
+              </label>
+              <button
+                class="text-sm font-medium text-slate-500 hover:text-red-600 transition-colors tap-target px-2 py-1"
+                id="btnClear"
+              >
+                Clear Input
+              </button>
             </div>
             <textarea
+              class="w-full h-full min-h-[400px] p-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y focus:ring-2 focus:ring-[#1e3a8a] focus:border-[#1e3a8a] transition-colors"
               id="csvInput"
-              class="code-editor flex-1"
-              style="min-height: 300px"
               placeholder="Paste your CSV data here..."
             ></textarea>
           </div>
         </div>
 
         <!-- Right Column: Output -->
-        <div class="flex flex-col gap-4">
-          <div class="panel" style="height: 100%; display: flex; flex-direction: column">
-            <div class="toolbar mb-4">
-              <h2 class="text-lg font-bold">3. JSON Result</h2>
-              <div class="flex gap-2">
-                <button class="btn-outline" id="btnCopy" disabled>Copy</button>
-                <button class="btn-primary" id="btnDownload" disabled>Download</button>
-              </div>
-            </div>
-            <div class="text-sm text-muted mb-2 min-h-[1.5em] font-bold" id="statusMsg"></div>
-            <textarea
-              id="outputText"
-              class="code-editor"
-              readonly
-              style="flex: 1; min-height: 400px"
-              placeholder="JSON output will be generated automatically"
-            ></textarea>
+        <div class="space-y-3 flex flex-col h-full">
+          <div class="flex items-center justify-between">
+            <label class="font-bold flex items-center gap-2" for="outputText">
+              <svg
+                class="w-5 h-5 text-slate-500"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 0 1-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125h-7.5c-.621 0-1.125-.504-1.125-1.125m0 0v-1.5c0-.621.504-1.125 1.125-1.125m0 0h7.5m-7.5 0V5.625m0 0a1.125 1.125 0 0 1 1.125-1.125h1.5a1.125 1.125 0 0 1 1.125 1.125m-3.75 0h7.5m-7.5 0V14.25m0-8.625a1.125 1.125 0 0 0-1.125 1.125v1.5a1.125 1.125 0 0 0 1.125 1.125m0 0h1.5a1.125 1.125 0 0 0 1.125-1.125v-1.5a1.125 1.125 0 0 0-1.125-1.125m0 0h-1.5Z"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              3. JSON Result
+            </label>
+            <div class="text-xs font-bold text-slate-500" id="statusMsg">Waiting for input...</div>
+          </div>
+          <textarea
+            class="w-full flex-grow min-h-[400px] p-4 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg font-mono text-sm resize-y"
+            id="outputText"
+            placeholder="JSON output will be generated automatically"
+            readonly=""
+          ></textarea>
 
-            <div id="errorMsg" class="alert alert-warning mt-2" style="display: none"></div>
+          <div
+            id="errorMsg"
+            class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 p-3 rounded text-sm font-medium"
+            style="display: none"
+          ></div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <button
+              class="tap-target bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg py-3 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              id="btnCopy"
+              disabled
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 0 1-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 0 1 1.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 0 0-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 0 1-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H9.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              Copy
+            </button>
+            <button
+              class="tap-target bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg py-3 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              id="btnDownload"
+              disabled
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                ></path>
+              </svg>
+              Download
+            </button>
           </div>
         </div>
       </div>
-
       <!-- Technical Content for AdSense Compliance -->
-      <article class="technical-content">
-        <h2>Technical Insights: Why Paste-Mode CSV Conversion Matters</h2>
-        <p>
+      <article
+        class="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 prose dark:prose-invert max-w-none"
+      >
+        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-4">
+          Technical Insights: Why Paste-Mode CSV Conversion Matters
+        </h2>
+        <p class="mb-4">
           For developers and data analysts, the ability to quickly transform data snippets without
           the overhead of creating, saving, and managing files is a major productivity boost. "Paste
           Mode" provides a high-velocity workflow for real-time debugging and data inspection.
         </p>
 
-        <h3>The Value of Immediate Data Transformation</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          The Value of Immediate Data Transformation
+        </h3>
+        <p class="mb-4">
           When working with API responses or database query results that are in CSV format, the
           traditional "File Mode" requires multiple manual steps. By using a clipboard-centric
           approach, ConvertFileBox allows you to skip the filesystem entirely. Our engine listens
@@ -308,8 +422,13 @@
           large pastes are handled smoothly without freezing the UI.
         </p>
 
-        <h3>Maintaining Structure: RFC 4180 Parsing</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Maintaining Structure: RFC 4180 Parsing
+        </h3>
+        <p class="mb-4">
           Even when data is "just pasted," it still requires a robust parser to be useful. Our
           algorithm handles delicate CSV edge cases defined in <strong>RFC 4180</strong>, such as
           multi-line fields (line breaks within quotes) and escaped double quotes (<code>""</code>).
@@ -317,8 +436,13 @@
           JSON array accurately mirrors the source data's intended structure.
         </p>
 
-        <h3>Corporate Security: Protection by Omission</h3>
-        <p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Corporate Security: Protection by Omission
+        </h3>
+        <p class="mb-4">
           In high-security enterprise environments, file uploads to external domains are often
           strictly blocked by firewall rules or proxy policies. However, clipboard interactions
           within the browser are usually permitted. This makes the Paste version of ConvertFileBox
@@ -326,28 +450,43 @@
           restucture data without violating data egress policies.
         </p>
 
-        <h3>Frequently Asked Questions (FAQ)</h3>
-        <div class="mt-4">
-          <h4 class="font-bold">Q. Can I paste TSV (Tab-Separated Values)?</h4>
-          <p class="text-sm">
-            A. Yes. Simply change the Delimiter setting to "Tab (\t)". Excel often uses tabs when
-            copying a range of cells to the clipboard, making this the ideal setting for
-            spreadsheet-to-JSON workflows.
-          </p>
-
-          <h4 class="font-bold">Q. Is there an input character limit?</h4>
-          <p class="text-sm">
-            A. While the tool can handle several megabytes, browser performance when rendering large
-            text areas can decrease with very large inputs (50,000+ rows). For massive datasets, we
-            recommend our File-based converter.
-          </p>
-
-          <h4 class="font-bold">Q. Are my pastes tracked or logged?</h4>
-          <p class="text-sm">
-            A. No. Everything happens in your browser's local RAM. We do not store any logs of the
-            data processed through our converters. Your privacy is protected by our client-side
-            architecture.
-          </p>
+        <h3
+          class="text-xl font-bold text-slate-900 dark:text-white mt-8 mb-3 flex items-center gap-2"
+        >
+          <div class="w-1 h-5 bg-[#059669] rounded"></div>
+          Frequently Asked Questions (FAQ)
+        </h3>
+        <div class="mt-4 space-y-4">
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. Can I paste TSV (Tab-Separated Values)?
+            </h4>
+            <p class="text-sm">
+              A. Yes. Simply change the Delimiter setting to "Tab (\t)". Excel often uses tabs when
+              copying a range of cells to the clipboard, making this the ideal setting for
+              spreadsheet-to-JSON workflows.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. Is there an input character limit?
+            </h4>
+            <p class="text-sm">
+              A. While the tool can handle several megabytes, browser performance when rendering
+              large text areas can decrease with very large inputs (50,000+ rows). For massive
+              datasets, we recommend our File-based converter.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-bold text-slate-900 dark:text-white">
+              Q. Are my pastes tracked or logged?
+            </h4>
+            <p class="text-sm">
+              A. No. Everything happens in your browser's local RAM. We do not store any logs of the
+              data processed through our converters. Your privacy is protected by our client-side
+              architecture.
+            </p>
+          </div>
         </div>
       </article>
     </main>
@@ -470,7 +609,10 @@
 
       btnCopy.addEventListener('click', () => {
         if (!lastJsonText) return;
-        copyToClipboard(lastJsonText, btnCopy);
+        navigator.clipboard.writeText(lastJsonText);
+        const oldHtml = btnCopy.innerHTML;
+        btnCopy.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path></svg> Copied!`;
+        setTimeout(() => (btnCopy.innerHTML = oldHtml), 2000);
       });
 
       btnDownload.addEventListener('click', () => {

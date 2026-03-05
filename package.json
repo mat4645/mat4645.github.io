@@ -6,6 +6,7 @@
     "doc": "docs"
   },
   "scripts": {
+    "dev": "concurrently \"npm run dev:css\" \"serve .\"",
     "test": "playwright test",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -31,11 +32,13 @@
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.58.2",
     "@tailwindcss/cli": "^4.2.1",
+    "concurrently": "^9.2.1",
     "eslint": "^10.0.2",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
     "lint-staged": "^16.3.1",
     "prettier": "^3.8.1",
+    "serve": "^14.2.5",
     "tailwindcss": "^4.2.1"
   }
 }

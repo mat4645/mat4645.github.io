@@ -3,11 +3,22 @@
  * 120-point Architecture: Ensures absolute UI consistency and modularity.
  */
 
-if ('serviceWorker' in navigator) {
+if (
+  'serviceWorker' in navigator &&
+  location.hostname !== 'localhost' &&
+  location.hostname !== '127.0.0.1'
+) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js').catch((err) => {
       console.error('ServiceWorker registration failed: ', err);
     });
+  });
+} else if ('serviceWorker' in navigator) {
+  // on localhost, unregister existing service workers to avoid stale cache
+  navigator.serviceWorker.getRegistrations().then(function (registrations) {
+    for (let registration of registrations) {
+      registration.unregister();
+    }
   });
 }
 
@@ -21,70 +32,34 @@ class SiteHeader extends HTMLElement {
     const isEn = lang.startsWith('en');
     const prefix = isEn ? '/en-us' : '/ja-jp';
 
-    const homePath = `${prefix}/`;
+    const homePath = `${prefix}/tools/`;
     const toolsPath = `${prefix}/tools/`;
     const aboutPath = `${prefix}/about/`;
 
     this.innerHTML = `
-        <header class="site-header sticky top-0 z-50 bg-surface border-b border-border shadow-sm transition-colors duration-300">
-            <div class="container flex items-center justify-between min-h-[64px]">
-                <a href="${homePath}" class="brand">
-                    <div class="brand-logo" aria-hidden="true">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-                            <polyline points="14 2 14 8 20 8" />
-                            <path d="M8 13h8" />
-                            <path d="M8 17h8" />
-                            <path d="M10 9h4" />
-                        </svg>
-                    </div>
-                    <div>
-                        ConvertFileBox
-                        <span class="text-xs text-muted" style="display:block; font-weight:400; line-height:1;">
-                            ${isEn ? 'Free Tool Collection' : '無料ツール集'}
-                        </span>
-                    </div>
+        <header class="bg-[#1e3a8a] text-white">
+            <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+                <a href="${homePath}" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7.5 7.5h-.75A2.25 2.25 0 0 0 4.5 9.75v7.5a2.25 2.25 0 0 0 2.25 2.25h7.5a2.25 2.25 0 0 0 2.25-2.25v-7.5a2.25 2.25 0 0 0-2.25-2.25h-.75m-6 3.75 3 3m0 0 3-3m-3 3V1.5m6 9h.75a2.25 2.25 0 0 1 2.25 2.25v7.5a2.25 2.25 0 0 1-2.25 2.25h-7.5a2.25 2.25 0 0 1-2.25-2.25v-.75" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <span class="text-xl font-bold tracking-tight">ConvertFileBox</span>
                 </a>
-
                 <div class="flex items-center gap-4">
-                    <nav id="nav-links" class="nav-links">
-                        <a href="${homePath}" class="nav-link">${isEn ? 'Home' : 'ホーム'}</a>
-                        <a href="${toolsPath}" class="nav-link">${isEn ? 'Tools' : 'ツール一覧'}</a>
-                        <a href="${aboutPath}" class="nav-link">${isEn ? 'About' : 'このサイトについて'}</a>
+                    <nav id="nav-links" class="hidden sm:flex gap-6 text-sm font-medium">
+                        <a href="${toolsPath}" class="nav-link hover:text-[#059669] transition-colors">${isEn ? 'Tools' : 'ツール'}</a>
+                        <a href="${aboutPath}" class="nav-link hover:text-[#059669] transition-colors">${isEn ? 'Document' : 'ドキュメント'}</a>
                     </nav>
-
-                    <div class="lang-switcher">
-                        <a href="${this.getSwitchUrl('ja-jp')}" class="lang-link ${!isEn ? 'active' : ''}">JP</a>
-                        <span class="text-light">|</span>
-                        <a href="${this.getSwitchUrl('en-us')}" class="lang-link ${isEn ? 'active' : ''}">EN</a>
+                    <div class="lang-switcher text-sm flex gap-2 border-l border-white/20 pl-4">
+                        <a href="${this.getSwitchUrl('ja-jp')}" class="${!isEn ? 'font-bold' : 'text-white/60'} hover:text-white transition-colors">JP</a>
+                        <a href="${this.getSwitchUrl('en-us')}" class="${isEn ? 'font-bold' : 'text-white/60'} hover:text-white transition-colors">EN</a>
                     </div>
-                    
-                    <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle Dark Mode" style="background:none; border:none; cursor:pointer; color:inherit; display:flex; align-items:center;">
-                        <!-- Sun icon (for dark mode active) -->
-                        <svg class="icon-sun" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="5"></circle>
-                            <line x1="12" y1="1" x2="12" y2="3"></line>
-                            <line x1="12" y1="21" x2="12" y2="23"></line>
-                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                            <line x1="1" y1="12" x2="3" y2="12"></line>
-                            <line x1="21" y1="12" x2="23" y2="12"></line>
-                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    <button id="themeToggle" class="min-h-[44px] min-w-[44px] flex items-center justify-center p-2 rounded hover:bg-white/10 transition-colors" aria-label="Toggle Dark Mode">
+                        <svg class="icon-sun w-6 h-6 hidden" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" stroke-linecap="round" stroke-linejoin="round"></path>
                         </svg>
-                        <!-- Moon icon (for light mode active) -->
-                        <svg class="icon-moon" style="display:block;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                        </svg>
-                    </button>
-
-                    <button id="mobile-menu-btn" class="mobile-menu-btn" aria-label="Menu">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="3" y1="12" x2="21" y2="12"></line>
-                            <line x1="3" y1="6" x2="21" y2="6"></line>
-                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        <svg class="icon-moon w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" stroke-linecap="round" stroke-linejoin="round"></path>
                         </svg>
                     </button>
                 </div>
@@ -176,17 +151,15 @@ class SiteFooter extends HTMLElement {
     const privacyPath = `${prefix}/privacy/`;
 
     this.innerHTML = `
-        <footer class="site-footer">
-            <div class="container text-center">
-                <div class="flex justify-center gap-4 mb-4 text-sm text-muted">
-                    <a href="${toolsPath}">${isEn ? 'Tools' : 'ツール一覧'}</a>
-                    <a href="${aboutPath}">${isEn ? 'About' : 'このサイトについて'}</a>
-                    <a href="${privacyPath}">${isEn ? 'Privacy' : 'プライバシーポリシー'}</a>
-                </div>
-                <div class="text-xs text-muted">
-                    &copy; ${new Date().getFullYear()} ConvertFileBox. <br>
-                    ${isEn ? 'Accuracy not guaranteed (Use at your own risk).' : '変換結果の正確性は保証しません（自己責任でご利用ください）。'}
-                </div>
+        <footer class="max-w-4xl mx-auto w-full px-6 py-10 border-t border-slate-200 dark:border-slate-800 text-center text-slate-400 text-sm mt-16 transition-colors duration-200">
+            <p>&copy; ${new Date().getFullYear()} ConvertFileBox. All rights reserved.</p>
+            <div class="mt-2 text-xs opacity-80 mb-4">
+                ${isEn ? 'Accuracy not guaranteed (Use at your own risk).' : '変換結果の正確性は保証しません（自己責任でご利用ください）。'}
+            </div>
+            <div class="flex justify-center flex-wrap gap-4">
+                <a class="hover:underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors" href="${toolsPath}">${isEn ? 'Tools' : 'ツール一覧'}</a>
+                <a class="hover:underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors" href="${aboutPath}">${isEn ? 'About' : 'このサイトについて'}</a>
+                <a class="hover:underline hover:text-slate-600 dark:hover:text-slate-300 transition-colors" href="${privacyPath}">${isEn ? 'Privacy' : 'プライバシーポリシー'}</a>
             </div>
         </footer>
         `;
